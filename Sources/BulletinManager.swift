@@ -472,52 +472,23 @@ extension BulletinManager {
         let animationDuration = isPreparing ? 0 : 0.75
         let transitionAnimationChain = AnimationChain(duration: animationDuration)
 
-        let hideSubviewsAnimationPhase = AnimationPhase(relativeDuration: 1/3, curve: .linear)
-
-        hideSubviewsAnimationPhase.block = {
-
+		let hideSubviewsAnimationPhase = AnimationPhase(relativeDuration: 1/3, curve: .linear, animations: {
             self.viewController.hideActivityIndicator(showContentStack: false)
 
-            for arrangedSubview in oldArrangedSubviews {
-                arrangedSubview.alpha = 0
-            }
+			oldArrangedSubviews.forEach({ $0.alpha = 0 })
+			newArrangedSubviews.forEach({ $0.alpha = 0 })
+		}, completion: nil)
 
-            for arrangedSubview in newArrangedSubviews {
-                arrangedSubview.alpha = 0
-            }
+		let displayNewItemsAnimationPhase = AnimationPhase(relativeDuration: 1/3, curve: .linear, animations: {
+			oldHideableArrangedSubviews.forEach({ $0.isHidden = true })
+			newHideableArrangedSubviews.forEach({ $0.isHidden = false })
+		}, completion: {
+			self.viewController.contentStackView.alpha = 1
+		})
 
-        }
-
-        let displayNewItemsAnimationPhase = AnimationPhase(relativeDuration: 1/3, curve: .linear)
-
-        displayNewItemsAnimationPhase.block = {
-
-            for arrangedSubview in oldHideableArrangedSubviews {
-                arrangedSubview.isHidden = true
-            }
-
-            for arrangedSubview in newHideableArrangedSubviews {
-                arrangedSubview.isHidden = false
-            }
-
-        }
-
-        displayNewItemsAnimationPhase.completionHandler = {
-            self.viewController.contentStackView.alpha = 1
-        }
-
-        let finalAnimationPhase = AnimationPhase(relativeDuration: 1/3, curve: .linear)
-
-        finalAnimationPhase.block = {
-
-            for arrangedSubview in newArrangedSubviews {
-                arrangedSubview.alpha = 1
-            }
-
-        }
-
-        finalAnimationPhase.completionHandler = {
-
+		let finalAnimationPhase = AnimationPhase(relativeDuration: 1/3, curve: .linear, animations: {
+            newArrangedSubviews.forEach({ $0.alpha = 1 })
+		}, completion: {
             self.viewController.isDismissable = self.currentItem.isDismissable
 
             for arrangedSubview in oldArrangedSubviews {
@@ -526,8 +497,7 @@ extension BulletinManager {
             }
 
             UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, newArrangedSubviews.first)
-
-        }
+        })
 
         transitionAnimationChain.add(hideSubviewsAnimationPhase)
         transitionAnimationChain.add(displayNewItemsAnimationPhase)

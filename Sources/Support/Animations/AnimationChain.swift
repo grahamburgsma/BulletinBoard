@@ -84,11 +84,11 @@ public class AnimationChain {
         let options = UIViewAnimationOptions(rawValue: UInt(animation.curve.rawValue << 16))
         let delay: TimeInterval = didFinishFirstAnimation ? 0 : initialDelay
 
-        UIView.animate(withDuration: duration, delay: delay, options: options, animations: animation.block) { _ in
+        UIView.animate(withDuration: duration, delay: delay, options: options, animations: animation.animations) { _ in
 
             self.didFinishFirstAnimation = true
 
-            animation.completionHandler()
+            animation.completion?()
             self.performNextAnimation()
 
         }
@@ -131,13 +131,13 @@ public class AnimationPhase {
      * The animation code.
      */
 
-    public var block: () -> Void
+    public let animations: () -> Void
 
     /**
      * A block to execute at the end of the animation.
      */
 
-    public var completionHandler: () -> Void
+    public let completion: (() -> Void)?
 
     // MARK: Initialization
 
@@ -149,13 +149,12 @@ public class AnimationPhase {
      * - parameter curve: The animation curve
      */
 
-    public init(relativeDuration: TimeInterval, curve: UIViewAnimationCurve) {
+	public init(relativeDuration: TimeInterval, curve: UIViewAnimationCurve, animations: @escaping () -> Void, completion: (() -> Void)? = nil) {
 
         self.relativeDuration = relativeDuration
         self.curve = curve
-
-        self.block = {}
-        self.completionHandler = {}
+        self.animations = animations
+        self.completion = completion
 
     }
 
