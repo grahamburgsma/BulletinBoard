@@ -195,9 +195,7 @@ class PetSelectorBulletinPage: FeedbackPageBulletinItem {
         selectionFeedbackGenerator.prepare()
         selectionFeedbackGenerator.selectionChanged()
 
-        // Ask the manager to present the next item.
-        manager?.displayNextItem()
-
+        board?.showNext()
     }
 
 }

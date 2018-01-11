@@ -38,7 +38,7 @@ enum BulletinDataSource {
         page.isDismissable = true
 
         page.actionHandler = { item in
-            item.manager?.displayNextItem()
+			page.board?.showNext()
         }
 
         page.nextItem = makeTextFieldPage()
@@ -64,7 +64,7 @@ enum BulletinDataSource {
         page.textInputHandler = { (item, text) in
 
             let datePage = self.makeDatePage(userName: text)
-            item.manager?.push(item: datePage)
+//            item.manager?.push(item: datePage)
         }
 
         return page
@@ -94,8 +94,7 @@ enum BulletinDataSource {
 
         page.actionHandler = { item in
             print(page.datePicker.date)
-            item.manager?.displayNextItem()
-        }
+item.board?.showNext()        }
 
         page.nextItem = makeNotitificationsPage()
 
@@ -127,11 +126,11 @@ enum BulletinDataSource {
 
         page.actionHandler = { item in
             PermissionsManager.shared.requestLocalNotifications()
-            item.manager?.displayNextItem()
+item.board?.showNext()
         }
 
         page.alternativeHandler = { item in
-            item.manager?.displayNextItem()
+item.board?.showNext()
         }
 
         page.nextItem = makeLocationPage()
@@ -165,11 +164,11 @@ enum BulletinDataSource {
 
         page.actionHandler = { item in
             PermissionsManager.shared.requestWhenInUseLocation()
-            item.manager?.displayNextItem()
+			item.board?.showNext()
         }
 
         page.alternativeHandler = { item in
-            item.manager?.displayNextItem()
+			item.board?.showNext()
         }
 
         page.nextItem = makeChoicePage()
@@ -224,11 +223,11 @@ enum BulletinDataSource {
         }
 
         page.actionHandler = { item in
-            item.manager?.dismissBulletin(animated: true)
-        }
+			item.board?.dismiss(animated: true, completion: nil)
+		}
 
         page.alternativeHandler = { item in
-            item.manager?.popToRootItem()
+            item.board?.showFirst()
         }
 
         return page

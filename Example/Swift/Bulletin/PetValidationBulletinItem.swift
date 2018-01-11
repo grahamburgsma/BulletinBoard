@@ -73,7 +73,7 @@ class PetValidationBulletinItem: FeedbackPageBulletinItem {
 
         // > Display the loading indicator
 
-        manager?.displayActivityIndicator()
+//        manager?.displayActivityIndicator()
 
         // > Wait for a "task" to complete before displaying the next item
 
@@ -89,8 +89,7 @@ class PetValidationBulletinItem: FeedbackPageBulletinItem {
             // Display next item
 
             self.nextItem = BulletinDataSource.makeCompletionPage()
-            self.manager?.displayNextItem()
-
+			self.board?.showNext()
         }
 
     }
@@ -104,7 +103,7 @@ class PetValidationBulletinItem: FeedbackPageBulletinItem {
 
         // Display previous item
 
-        manager?.popItem()
+//        manager?.popItem()
 
     }
 

@@ -11,18 +11,7 @@ import UIKit
 
 @objc public protocol BulletinItem: class {
 
-    // MARK: - Configuration
-
-    /**
-     * The current object managing the item.
-     *
-     * This property is set when the item is currently being displayed. It will be set to `nil` when
-     * the item is removed from view.
-     *
-     * When implementing `BulletinItem`, you should mark this property `weak` to avoid retain cycles.
-     */
-
-    var manager: BulletinManager? { get set }
+	weak var board: BulletinBoard? { get set }
 
     /**
      * Whether the page can be dismissed.

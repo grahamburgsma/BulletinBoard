@@ -15,7 +15,7 @@ class BulletinDismissAnimationController: NSObject, UIViewControllerAnimatedTran
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
 
-        guard let fromVC = transitionContext.viewController(forKey: .from) as? BulletinViewController else {
+        guard let fromVC = transitionContext.viewController(forKey: .from) as? BulletinBoard else {
             transitionContext.completeTransition(false)
             return
         }

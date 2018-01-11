@@ -9,10 +9,82 @@ import UIKit
  * A view controller that displays a card at the bottom of the screen.
  */
 
-final class BulletinViewController: UIViewController, UIGestureRecognizerDelegate {
+final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate {
 
-    /// The object managing the view controller.
-    weak var manager: BulletinManager?
+	public var items: [BulletinItem]
+
+	public var currentItem: BulletinItem {
+		didSet {
+			show(item: currentItem)
+		}
+	}
+	fileprivate var currentIndex: Int = 0
+
+	// Mark: - Manager stuff
+
+	/**
+	* The style of the view covering the content. Defaults to `.dimmed`.
+	*
+	* Set this value before calling `prepare`. Changing it after will have no effect.
+	*/
+
+	@objc public var backgroundViewStyle: BulletinBackgroundViewStyle = .dimmed
+
+	// MARK: - Status Bar
+
+	/**
+	* The style of status bar to use with the bulltin. Defaults to `.automatic`.
+	*
+	* Set this value before calling `prepare`. Changing it after will have no effect.
+	*/
+
+	@objc public var statusBarAppearance: BulletinStatusBarAppearance = .automatic
+
+	/**
+	* The style of status bar animation. Defaults to `.fade`.
+	*
+	* Set this value before calling `prepare`. Changing it after will have no effect.
+	*/
+
+	@objc public var statusBarAnimation: UIStatusBarAnimation = .fade
+
+	/**
+	* The home indicator for iPhone X should be hidden or not. Defaults to false.
+	*
+	* Set this value before calling `prepare`. Changing it after will have no effect.
+	*/
+
+	@objc public var hidesHomeIndicator: Bool = false
+
+	// MARK: - Card Presentation
+
+	/**
+	* The spacing between the edge of the screen and the edge of the card. Defaults to regular.
+	*
+	* Set this value before calling `prepare`. Changing it after will have no effect.
+	*/
+
+	@objc public var cardPadding: BulletinPadding = .regular
+
+	/**
+	* The rounded corner radius of the bulletin card. Defaults to 12, and 36 on iPhone X.
+	*
+	* Set this value before calling `prepare`. Changing it after will have no effect.
+	*/
+
+	@objc public var cardCornerRadius: NSNumber?
+
+	/**
+	* Whether swipe to dismiss should be allowed. Defaults to true.
+	*
+	* If you set this value to true, the user will be able to drag the card, and swipe down to
+	* dismiss it (if allowed by the current item).
+	*
+	* If you set this value to false, no pan gesture will be recognized, and swipe to dismiss
+	* won't be available.
+	*/
+
+	@objc public var allowsSwipeInteraction: Bool = true
 
     // MARK: - UI Elements
 
@@ -69,6 +141,28 @@ final class BulletinViewController: UIViewController, UIGestureRecognizerDelegat
     fileprivate var contentTopConstraint: NSLayoutConstraint!
     fileprivate var contentBottomConstraint: NSLayoutConstraint!
 
+	public init(items: [BulletinItem]) {
+		self.items = items
+		self.currentItem = items.first!
+
+		super.init(nibName: nil, bundle: nil)
+
+		self.items.forEach({ $0.board = self })
+
+		modalPresentationStyle = .overFullScreen
+		transitioningDelegate = self
+		loadBackgroundView()
+		setNeedsStatusBarAppearanceUpdate()
+
+		if #available(iOS 11.0, *) {
+			setNeedsUpdateOfHomeIndicatorAutoHidden()
+		}
+	}
+
+	required public init?(coder aDecoder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+
     // MARK: - Deinit
 
     deinit {
@@ -79,14 +173,14 @@ final class BulletinViewController: UIViewController, UIGestureRecognizerDelegat
 
 // MARK: - Lifecycle
 
-extension BulletinViewController {
+extension BulletinBoard {
 
-    override func viewWillAppear(_ animated: Bool) {
+	override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setUpLayout(with: traitCollection)
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
+	override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         /// Animate status bar appearance when hiding
@@ -96,7 +190,7 @@ extension BulletinViewController {
 
     }
 
-    override func loadView() {
+	override public func loadView() {
 
         super.loadView()
         view.backgroundColor = .clear
@@ -184,8 +278,14 @@ extension BulletinViewController {
 
     }
 
+	public override func viewDidLoad() {
+		super.viewDidLoad()
+
+		show(item: currentItem)
+	}
+
     @available(iOS 11.0, *)
-    override func viewSafeAreaInsetsDidChange() {
+	override public func viewSafeAreaInsetsDidChange() {
         super.viewSafeAreaInsetsDidChange()
         updateCornerRadius()
         setUpLayout(with: traitCollection)
@@ -195,14 +295,11 @@ extension BulletinViewController {
 
     fileprivate func configureContentView() {
 
-        guard let manager = self.manager else {
-            fatalError("Trying to set up the content view, but the BulletinViewController is not managed.")
-        }
+		contentView.backgroundColor = .white
+//        contentView.backgroundColor = manager.backgroundColor
+        contentView.layer.cornerRadius = CGFloat((cardCornerRadius ?? 12).doubleValue)
 
-        contentView.backgroundColor = manager.backgroundColor
-        contentView.layer.cornerRadius = CGFloat((manager.cardCornerRadius ?? 12).doubleValue)
-
-        let cardPadding = manager.cardPadding.rawValue
+        let cardPadding = self.cardPadding.rawValue
 
         // Set left and right padding
         leadingConstraint = contentView.leadingAnchor.constraint(equalTo: view.safeLeadingAnchor,
@@ -219,7 +316,7 @@ extension BulletinViewController {
         maxWidthConstraint.priority = UILayoutPriorityRequired
         maxWidthConstraint.isActive = true
 
-        if manager.hidesHomeIndicator {
+        if hidesHomeIndicator {
             contentBottomConstraint = contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             bottomSafeAreaCoverView.removeFromSuperview()
         } else {
@@ -233,7 +330,7 @@ extension BulletinViewController {
 
     // MARK: - Gesture Recognizer
 
-    internal func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+	public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         if touch.view?.isDescendant(of: contentView) == true {
             return false
         }
@@ -243,11 +340,37 @@ extension BulletinViewController {
 
 }
 
+extension BulletinBoard {
+
+	func show(item: BulletinItem) {
+		contentStackView.arrangedSubviews.forEach({ $0.removeFromSuperview() })
+		
+		item.makeArrangedSubviews().forEach({ (view) in
+			contentStackView.addArrangedSubview(view)
+		})
+	}
+
+	public func showFirst() {
+		 currentIndex = 0
+		currentItem = items.first!
+	}
+
+	public func showNext() {
+		currentIndex += 1
+		currentItem = items[currentIndex]
+	}
+
+	public func showLast() {
+		currentIndex = items.count - 1
+		currentItem = items.last!
+	}
+}
+
 // MARK: - Layout
 
-extension BulletinViewController {
+extension BulletinBoard {
 
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+	override public func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
 
         coordinator.animate(alongsideTransition: { _ in
             self.setUpLayout(with: newCollection)
@@ -301,10 +424,10 @@ extension BulletinViewController {
 
     func bottomMargin() -> CGFloat {
 
-        var bottomMargin: CGFloat = manager?.cardPadding.rawValue ?? 12
+        var bottomMargin: CGFloat = cardPadding.rawValue
 
-        if manager?.hidesHomeIndicator == true {
-            bottomMargin = manager?.cardPadding.rawValue == 0 ? 0 : 6
+        if hidesHomeIndicator == true {
+            bottomMargin = cardPadding.rawValue == 0 ? 0 : 6
         }
 
         return bottomMargin
@@ -323,72 +446,48 @@ extension BulletinViewController {
 
     }
 
-    // MARK: - Presentation/Dismissal
-
-    /// Dismisses the presnted BulletinViewController if `isDissmisable` is set to `true`.
-    @discardableResult
-    func dismissIfPossible() -> Bool {
-
-        guard isDismissable else {
-            return false
-        }
-
-        manager?.dismissBulletin(animated: true)
-        return true
-
-    }
-
     // MARK: - Touch Events
 
     @objc fileprivate func handleTap(recognizer: UITapGestureRecognizer) {
-        dismissIfPossible()
+        dismiss(animated: true, completion: nil)
     }
-
-    // MARK: - Accessibility
-
-    override func accessibilityPerformEscape() -> Bool {
-        return dismissIfPossible()
-    }
-
 }
 
 // MARK: - System Elements
 
-extension BulletinViewController {
+extension BulletinBoard {
 
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        if let manager = manager {
-            switch manager.statusBarAppearance {
-            case .lightContent:
-                return .lightContent
-            case .automatic:
-                return manager.backgroundViewStyle.rawValue.isDark ? .lightContent : .default
-            default:
-                break
-            }
-        }
+	override public var preferredStatusBarStyle: UIStatusBarStyle {
+		switch statusBarAppearance {
+		case .lightContent:
+			return .lightContent
+		case .automatic:
+			return backgroundViewStyle.rawValue.isDark ? .lightContent : .default
+		default:
+			break
+		}
 
-        return .default
+		return .default
     }
 
-    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
-        return manager?.statusBarAnimation ?? .fade
+	override public var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+        return statusBarAnimation
     }
 
-    override var prefersStatusBarHidden: Bool {
-        return manager?.statusBarAppearance == .hidden
+	override public var prefersStatusBarHidden: Bool {
+        return statusBarAppearance == .hidden
     }
 
     @available(iOS 11.0, *)
-    override func prefersHomeIndicatorAutoHidden() -> Bool {
-        return manager?.hidesHomeIndicator ?? false
+	override public func prefersHomeIndicatorAutoHidden() -> Bool {
+        return hidesHomeIndicator
     }
 
 }
 
 // MARK: - Safe Area
 
-extension BulletinViewController {
+extension BulletinBoard {
 
     @available(iOS 11.0, *)
     fileprivate var screenHasRoundedCorners: Bool {
@@ -397,7 +496,7 @@ extension BulletinViewController {
 
     fileprivate func updateCornerRadius() {
 
-        if manager?.cardPadding.rawValue == 0 {
+        if cardPadding.rawValue == 0 {
             contentView.layer.cornerRadius = 0
             return
         }
@@ -408,9 +507,7 @@ extension BulletinViewController {
             defaultRadius = screenHasRoundedCorners ? 36 : 12
         }
 
-
-
-        contentView.layer.cornerRadius = CGFloat((manager?.cardCornerRadius ?? defaultRadius).doubleValue)
+        contentView.layer.cornerRadius = CGFloat((cardCornerRadius ?? defaultRadius).doubleValue)
 
     }
 
@@ -418,19 +515,17 @@ extension BulletinViewController {
 
 // MARK: - Background
 
-extension BulletinViewController {
+extension BulletinBoard {
 
     /// Creates a new background view for the bulletin.
     func loadBackgroundView() {
-        backgroundView = BulletinBackgroundView(style: manager?.backgroundViewStyle ?? .dimmed)
+        backgroundView = BulletinBackgroundView(style: backgroundViewStyle)
     }
 
     /// Displays the cover view at the bottom of the safe area. Animatable.
     func showBottomSafeAreaCover() {
 
-        guard let isDark = manager?.backgroundViewStyle.rawValue.isDark else {
-            return
-        }
+        let isDark = backgroundViewStyle.rawValue.isDark
 
         let blurStyle: UIBlurEffectStyle = isDark ? .dark : .extraLight
         bottomSafeAreaCoverView.effect = UIBlurEffect(style: blurStyle)
@@ -446,7 +541,7 @@ extension BulletinViewController {
 
 // MARK: - Activity Indicator
 
-extension BulletinViewController {
+extension BulletinBoard {
 
     /// Displays the activity indicator.
     func displayActivityIndicator(color: UIColor) {
@@ -487,20 +582,19 @@ extension BulletinViewController {
 
 // MARK: - Transitions
 
-extension BulletinViewController: UIViewControllerTransitioningDelegate {
+extension BulletinBoard: UIViewControllerTransitioningDelegate {
 
-    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return BulletinPresentationAnimationController(style: manager?.backgroundViewStyle ?? .dimmed)
+	public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return BulletinPresentationAnimationController(style: backgroundViewStyle)
     }
 
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+	public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return BulletinDismissAnimationController()
     }
 
-    func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning)
-        -> UIViewControllerInteractiveTransitioning? {
+	public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
 
-            guard manager?.allowsSwipeInteraction == true else {
+            guard allowsSwipeInteraction == true else {
                 return nil
             }
 
@@ -511,8 +605,7 @@ extension BulletinViewController: UIViewControllerTransitioningDelegate {
 
     /// Creates a new view swipe interaction controller and wires it to the content view.
     func refreshSwipeInteractionController() {
-
-        guard manager?.allowsSwipeInteraction == true else {
+        guard allowsSwipeInteraction == true else {
             return
         }
 
@@ -531,7 +624,7 @@ extension BulletinViewController: UIViewControllerTransitioningDelegate {
 
 // MARK: - Keyboard
 
-extension BulletinViewController {
+extension BulletinBoard {
     func setUpKeyboardLogic() {
         NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardShow), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardHide), name: .UIKeyboardWillHide, object: nil)
@@ -544,7 +637,7 @@ extension BulletinViewController {
 
     @objc func onKeyboardShow(_ notification: Notification) {
 
-        guard manager?.currentItem.shouldRespondToKeyboardChanges == true else {
+        guard currentItem.shouldRespondToKeyboardChanges == true else {
             return
         }
 
@@ -564,7 +657,7 @@ extension BulletinViewController {
 
             if #available(iOS 11.0, *) {
 
-                if self.manager?.hidesHomeIndicator == false {
+                if self.hidesHomeIndicator == false {
                     bottomSpacing += self.view.safeAreaInsets.bottom
                 }
 
@@ -581,7 +674,7 @@ extension BulletinViewController {
 
     @objc func onKeyboardHide(_ notification: Notification) {
 
-        guard manager?.currentItem.shouldRespondToKeyboardChanges == true else {
+        guard currentItem.shouldRespondToKeyboardChanges == true else {
             return
         }
 

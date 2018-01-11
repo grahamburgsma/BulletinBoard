@@ -27,7 +27,7 @@ class BulletinPresentationAnimationController: NSObject, UIViewControllerAnimate
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
 
-        guard let toVC = transitionContext.viewController(forKey: .to) as? BulletinViewController else {
+        guard let toVC = transitionContext.viewController(forKey: .to) as? BulletinBoard else {
             return
         }
 

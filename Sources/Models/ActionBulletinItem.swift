@@ -29,6 +29,9 @@ import UIKit
 
 @objc open class ActionBulletinItem: NSObject, BulletinItem {
 
+	@objc public weak var board: BulletinBoard?
+
+
     // MARK: - Page Contents
 
     /**
@@ -47,18 +50,6 @@ import UIKit
      */
 
     @objc public var alternativeButtonTitle: String?
-
-
-    // MARK: - BulletinItem
-
-    /**
-     * The object managing the item.
-     *
-     * This property is set when the item is currently being displayed. It will be set to `nil` when
-     * the item is removed from bulletin.
-     */
-
-    @objc public weak var manager: BulletinManager?
 
     /**
      * Whether the page can be dismissed.

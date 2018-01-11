@@ -42,12 +42,8 @@ class ViewController: UIViewController {
      * the bulletin manager.
      */
 
-    lazy var bulletinManager: BulletinManager = {
-        let introPage = BulletinDataSource.makeIntroPage()
-        return BulletinManager(rootItem: introPage)
-    }()
-
     // MARK: - View
+	var bulletinBoard: BulletinBoard!
 
     override func viewDidLoad() {
 
@@ -140,15 +136,25 @@ class ViewController: UIViewController {
 //        bulletinManager.hidesHomeIndicator = true
 //        bulletinManager.backgroundColor = .blue
 
-        bulletinManager.backgroundViewStyle = currentBackground.style
-        bulletinManager.statusBarAppearance = shouldHideStatusBar ? .hidden : .automatic
-        bulletinManager.prepareAndPresent(above: self)
+		bulletinBoard = BulletinBoard(items: [
+			BulletinDataSource.makeIntroPage(),
+//			BulletinDataSource.makeTextFieldPage(),
+			BulletinDataSource.makeNotitificationsPage(),
+			BulletinDataSource.makeLocationPage(),
+			BulletinDataSource.makeChoicePage(),
+			BulletinDataSource.makeCompletionPage()
+			])
+
+        bulletinBoard.backgroundViewStyle = currentBackground.style
+        bulletinBoard.statusBarAppearance = shouldHideStatusBar ? .hidden : .automatic
+
+		present(bulletinBoard, animated: true, completion: nil)
 
     }
 
     func reloadManager() {
         let introPage = BulletinDataSource.makeIntroPage()
-        bulletinManager = BulletinManager(rootItem: introPage)
+		bulletinBoard = BulletinBoard(items: [BulletinDataSource.makeIntroPage()])
     }
 
     // MARK: - Actions

@@ -20,7 +20,7 @@ class BulletinSwipeInteractionController: UIPercentDrivenInteractiveTransition, 
 
     private var isFinished = false
     private var currentPercentage: CGFloat = -1
-    private weak var viewController: BulletinViewController!
+    private weak var viewController: BulletinBoard!
 
     private var snapshotView: UIView? {
         return viewController.activeSnapshotView
@@ -40,7 +40,7 @@ class BulletinSwipeInteractionController: UIPercentDrivenInteractiveTransition, 
      * Sets up the interaction recognizer for the given view controller and content view.
      */
 
-    func wire(to viewController: BulletinViewController) {
+    func wire(to viewController: BulletinBoard) {
         self.viewController = viewController
         prepareGestureRecognizer()
     }
@@ -97,7 +97,7 @@ class BulletinSwipeInteractionController: UIPercentDrivenInteractiveTransition, 
                     return
                 }
 
-                self.viewController.manager?.completeDismissal()
+//                self.viewController.manager?.completeDismissal()
 
             }
 
