@@ -31,7 +31,6 @@ import UIKit
 
 	@objc public weak var board: BulletinBoard?
 
-
     // MARK: - Page Contents
 
     /**
@@ -92,8 +91,7 @@ import UIKit
      * the stack.
      */
 
-    @objc public var nextItem: BulletinItem? = nil
-
+    @objc public var nextItem: BulletinItem?
 
     // MARK: - Customization
 
@@ -123,25 +121,25 @@ import UIKit
      * The action button managed by the item.
      */
 
-    @objc public private(set) var actionButton: UIButton? = nil
+    @objc public private(set) var actionButton: UIButton?
 
     /**
      * The alternative button managed by the item.
      */
 
-    @objc public private(set) var alternativeButton: UIButton? = nil
+    @objc public private(set) var alternativeButton: UIButton?
 
     /**
      * The code to execute when the action button is tapped.
      */
 
-    @objc public var actionHandler: ((ActionBulletinItem) -> Void)? = nil
+    @objc public var actionHandler: ((ActionBulletinItem) -> Void)?
 
     /**
      * The code to execute when the alternative button is tapped.
      */
 
-    @objc public var alternativeHandler: ((ActionBulletinItem) -> Void)? = nil
+    @objc public var alternativeHandler: ((ActionBulletinItem) -> Void)?
 
     /**
      * Handles a tap on the action button.
@@ -164,7 +162,6 @@ import UIKit
     @objc open func alternativeButtonTapped(sender: UIButton) {
         alternativeHandler?(self)
     }
-
 
     // MARK: - View Management
 

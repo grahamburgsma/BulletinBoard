@@ -20,7 +20,7 @@ import UIKit
     @objc public var actionButtonTitleColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
 
     /// The border color to apply to action button.
-    @objc public var actionButtonBorderColor: UIColor? = nil
+    @objc public var actionButtonBorderColor: UIColor?
 
     /// The border width to apply to action button.
     @objc public var actionButtonBorderWidth: CGFloat = 1.0
@@ -29,7 +29,7 @@ import UIKit
     @objc public var alternativeButtonColor: UIColor = #colorLiteral(red: 0, green: 0.4784313725, blue: 1, alpha: 1)
 
     /// The border color to apply to the alternative button.
-    @objc public var alternativeButtonBorderColor: UIColor? = nil
+    @objc public var alternativeButtonBorderColor: UIColor?
 
     /// The border width to apply to the alternative button.
     @objc public var alternativeButtonBorderWidth: CGFloat = 1.0
@@ -69,7 +69,6 @@ import UIKit
      */
 
     @objc public var shouldUseCompactDescriptionText: Bool = false
-
 
     // MARK: - Font Constants
 

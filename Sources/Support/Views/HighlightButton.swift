@@ -35,7 +35,6 @@ class HighlightButton: UIButton {
         return _cachedHitArea ?? makeHitArea()
     }
 
-
     // MARK: - Touch Handling
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

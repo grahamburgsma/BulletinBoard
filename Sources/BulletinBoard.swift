@@ -344,7 +344,7 @@ extension BulletinBoard {
 
 	func show(item: BulletinItem) {
 		contentStackView.arrangedSubviews.forEach({ $0.removeFromSuperview() })
-		
+
 		item.makeArrangedSubviews().forEach({ (view) in
 			contentStackView.addArrangedSubview(view)
 		})
@@ -667,7 +667,7 @@ extension BulletinBoard {
             self.contentBottomConstraint.constant = bottomSpacing
             self.centerYConstraint.constant = -(keyboardFrameFinal.size.height + 12) / 2
             self.contentView.superview?.layoutIfNeeded()
-        
+
         }, completion: nil)
 
     }
