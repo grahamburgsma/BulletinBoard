@@ -27,7 +27,6 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 
 	@objc public var allowsSwipeInteraction: Bool = true
 
-	@IBOutlet var backgroundView: BulletinBackgroundView!
 	@IBOutlet var contentView: UIView!
 	@IBOutlet var contentStackView: UIStackView!
 	@IBOutlet var activityIndicator: UIActivityIndicatorView!
@@ -49,7 +48,7 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 
 		self.items.forEach({ $0.board = self })
 
-		modalPresentationStyle = .overFullScreen
+		modalPresentationStyle = .custom
 		transitioningDelegate = self
 		setNeedsStatusBarAppearanceUpdate()
 
@@ -305,12 +304,16 @@ extension BulletinBoard {
 
 extension BulletinBoard: UIViewControllerTransitioningDelegate {
 
+	public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+		return BulletinPresentationController(presentedViewController: presented, presenting: presenting, backgroundStyle: backgroundViewStyle)
+	}
+
 	public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
 		return BulletinPresentationAnimationController(style: backgroundViewStyle)
 	}
 
 	public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-		return BulletinDismissAnimationController()
+		return BulletinDismissalAnimationController()
 	}
 
 	public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {

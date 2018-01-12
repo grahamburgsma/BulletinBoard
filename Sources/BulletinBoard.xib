@@ -14,7 +14,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BulletinBoard" customModule="BulletinBoard" customModuleProvider="target">
             <connections>
                 <outlet property="activityIndicator" destination="gcr-BY-SJX" id="LZD-gw-gOQ"/>
-                <outlet property="backgroundView" destination="xk3-9U-KRW" id="GJe-qx-FMx"/>
                 <outlet property="contentStackView" destination="BgX-jg-QK4" id="6PA-Tr-hlH"/>
                 <outlet property="contentView" destination="ZwM-bG-OYm" id="61Q-CD-Raq"/>
                 <outlet property="view" destination="iN0-l3-epB" id="8pS-fW-cp8"/>
@@ -25,10 +24,6 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xk3-9U-KRW" customClass="BulletinBackgroundView" customModule="BulletinBoard" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                </view>
                 <activityIndicatorView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="gcr-BY-SJX">
                     <rect key="frame" x="169" y="562.5" width="37" height="37"/>
                     <color key="color" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -66,14 +61,10 @@
             <constraints>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="ZwM-bG-OYm" secondAttribute="trailing" constant="12" id="1jE-mX-4kT"/>
                 <constraint firstItem="gcr-BY-SJX" firstAttribute="centerX" secondItem="ZwM-bG-OYm" secondAttribute="centerX" id="7el-kA-Mvp"/>
-                <constraint firstAttribute="bottom" secondItem="xk3-9U-KRW" secondAttribute="bottom" id="EFN-UF-i1z"/>
                 <constraint firstItem="ZwM-bG-OYm" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="12" id="GJ7-OA-Jy5"/>
-                <constraint firstItem="xk3-9U-KRW" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Jl9-G2-rTF"/>
                 <constraint firstItem="ZwM-bG-OYm" firstAttribute="top" relation="greaterThanOrEqual" secondItem="vUN-kp-3ea" secondAttribute="top" constant="12" id="Mru-cN-h9S"/>
-                <constraint firstItem="xk3-9U-KRW" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="RcJ-mf-4ob"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="ZwM-bG-OYm" secondAttribute="bottom" constant="12" id="dso-wr-LTW"/>
                 <constraint firstItem="gcr-BY-SJX" firstAttribute="centerY" secondItem="ZwM-bG-OYm" secondAttribute="centerY" id="en2-9v-SO4"/>
-                <constraint firstAttribute="trailing" secondItem="xk3-9U-KRW" secondAttribute="trailing" id="o99-YT-8A0"/>
                 <constraint firstItem="ZwM-bG-OYm" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="yQY-lS-Y6J"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
