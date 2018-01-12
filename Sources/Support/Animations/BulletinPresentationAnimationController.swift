@@ -30,9 +30,9 @@ class BulletinPresentationAnimationController: NSObject, UIViewControllerAnimate
         guard let toVC = transitionContext.viewController(forKey: .to) as? BulletinBoard else {
             return
         }
-
+		
         let rootView = toVC.view!
-        let contentView = toVC.contentView
+        let contentView = toVC.contentView!
         let backgroundView = toVC.backgroundView!
         let containerView = transitionContext.containerView
 
@@ -69,7 +69,6 @@ class BulletinPresentationAnimationController: NSObject, UIViewControllerAnimate
 
         let animations = {
 
-            toVC.moveIntoPlace()
             backgroundView.show()
             toVC.showBottomSafeAreaCover()
 

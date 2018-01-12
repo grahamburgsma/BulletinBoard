@@ -21,9 +21,9 @@ class BulletinDismissAnimationController: NSObject, UIViewControllerAnimatedTran
         }
 
         let rootView = fromVC.view!
-        let contentView = fromVC.contentView
+        let contentView = fromVC.contentView!
         let backgroundView = fromVC.backgroundView!
-        let activityIndicatorView = fromVC.activityIndicator
+        let activityIndicatorView = fromVC.activityIndicator!
         let snapshotActivityIndicator = ActivityIndicator()
         snapshotActivityIndicator.startAnimating()
 
