@@ -43,7 +43,6 @@ class ViewController: UIViewController {
      */
 
     // MARK: - View
-	var bulletinBoard: BulletinBoard!
 
     override func viewDidLoad() {
 
@@ -136,7 +135,7 @@ class ViewController: UIViewController {
 //        bulletinManager.hidesHomeIndicator = true
 //        bulletinManager.backgroundColor = .blue
 
-		bulletinBoard = BulletinBoard(items: [
+		let bulletinBoard = BulletinBoard(items: [
 			BulletinDataSource.makeIntroPage(),
 //			BulletinDataSource.makeTextFieldPage(),
 			BulletinDataSource.makeNotitificationsPage(),
@@ -150,11 +149,6 @@ class ViewController: UIViewController {
 
 		present(bulletinBoard, animated: true, completion: nil)
 
-    }
-
-    func reloadManager() {
-        let introPage = BulletinDataSource.makeIntroPage()
-		bulletinBoard = BulletinBoard(items: [BulletinDataSource.makeIntroPage()])
     }
 
     // MARK: - Actions
@@ -198,13 +192,11 @@ class ViewController: UIViewController {
     @objc func fontButtonItemTapped(sender: UIBarButtonItem) {
         BulletinDataSource.useAvenirFont = !BulletinDataSource.useAvenirFont
         sender.title = BulletinDataSource.currentFontName()
-        reloadManager()
     }
 
     @objc func fullScreenButtonTapped(sender: UIBarButtonItem) {
         shouldHideStatusBar = !shouldHideStatusBar
         sender.title = shouldHideStatusBar ? "Status Bar: OFF" : "Status Bar: ON"
-        reloadManager()
     }
 
     // MARK: - Notifications

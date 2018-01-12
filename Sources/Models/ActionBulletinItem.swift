@@ -84,15 +84,6 @@ import UIKit
 
     @objc public var dismissalHandler: ((_ item: BulletinItem) -> Void)?
 
-    /**
-     * The item to display after this one.
-     *
-     * If you set this value, you'll be able to call `displayNextItem()` to push the next item to
-     * the stack.
-     */
-
-    @objc public var nextItem: BulletinItem?
-
     // MARK: - Customization
 
     /**

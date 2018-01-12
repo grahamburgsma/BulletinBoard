@@ -115,10 +115,6 @@ class PetSelectorBulletinPage: FeedbackPageBulletinItem {
         button.setTitleColor(buttonColor, for: .normal)
         button.layer.borderColor = buttonColor.cgColor
 
-        if isSelected {
-            nextItem = PetValidationBulletinItem(dataSource: dataSource, animalType: animalType.lowercased())
-        }
-
         return button
 
     }
@@ -150,11 +146,6 @@ class PetSelectorBulletinPage: FeedbackPageBulletinItem {
         NotificationCenter.default.post(name: .FavoriteTabIndexDidChange,
                                         object: self,
                                         userInfo: ["Index": 0])
-
-        // Set the next item
-
-        nextItem = PetValidationBulletinItem(dataSource: .cat, animalType: "cats")
-
     }
 
     /// Called when the dog button is tapped.
@@ -182,11 +173,6 @@ class PetSelectorBulletinPage: FeedbackPageBulletinItem {
         NotificationCenter.default.post(name: .FavoriteTabIndexDidChange,
                                         object: self,
                                         userInfo: ["Index": 1])
-
-        // Set the next item
-
-        nextItem = PetValidationBulletinItem(dataSource: .dog, animalType: "dogs")
-
     }
 
     override func actionButtonTapped(sender: UIButton) {

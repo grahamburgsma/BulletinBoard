@@ -18,7 +18,10 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 			show(item: currentItem)
 		}
 	}
-	fileprivate var currentIndex: Int = 0
+
+	var currentIndex: Int? {
+		return items.index(where: { $0 === currentItem })
+	}
 
 	// Mark: - Manager stuff
 
@@ -166,6 +169,7 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
     // MARK: - Deinit
 
     deinit {
+		print("DEINIT: ", String(describing: self))
         cleanUpKeyboardLogic()
     }
 
@@ -281,7 +285,7 @@ extension BulletinBoard {
 	public override func viewDidLoad() {
 		super.viewDidLoad()
 
-		show(item: currentItem)
+		show(item: currentItem, animated: false)
 	}
 
     @available(iOS 11.0, *)
@@ -342,26 +346,63 @@ extension BulletinBoard {
 
 extension BulletinBoard {
 
-	func show(item: BulletinItem) {
-		contentStackView.arrangedSubviews.forEach({ $0.removeFromSuperview() })
+	func show(item: BulletinItem, animated: Bool = true) {
+		swipeInteractionController?.cancelIfNeeded()
+		refreshSwipeInteractionController()
 
-		item.makeArrangedSubviews().forEach({ (view) in
+		let oldArrangedSubviews = contentStackView.arrangedSubviews
+
+		let newArrangedSubviews = item.makeArrangedSubviews()
+		newArrangedSubviews.forEach { (view) in
+			view.isHidden = true
 			contentStackView.addArrangedSubview(view)
+		}
+
+		let animationDuration = animated ? 0.75 : 0
+		let transitionAnimationChain = AnimationChain(duration: animationDuration)
+
+		let hideSubviewsAnimationPhase = AnimationPhase(relativeDuration: 1/3, curve: .linear, animations: {
+			self.hideActivityIndicator(showContentStack: false)
+
+			oldArrangedSubviews.forEach({ $0.alpha = 0 })
+			newArrangedSubviews.forEach({ $0.alpha = 0 })
+		}, completion: nil)
+
+		let displayNewItemsAnimationPhase = AnimationPhase(relativeDuration: 1/3, curve: .linear, animations: {
+			newArrangedSubviews.forEach({ $0.isHidden = false })
+			oldArrangedSubviews.forEach({ $0.isHidden = true })
+		}, completion: {
+			self.contentStackView.alpha = 1
 		})
+
+		let finalAnimationPhase = AnimationPhase(relativeDuration: 1/3, curve: .linear, animations: {
+			newArrangedSubviews.forEach({ $0.alpha = 1 })
+		}, completion: {
+			self.isDismissable = self.currentItem.isDismissable
+
+			oldArrangedSubviews.forEach({ $0.removeFromSuperview() })
+
+			UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, newArrangedSubviews.first)
+		})
+
+		transitionAnimationChain.add(hideSubviewsAnimationPhase)
+		transitionAnimationChain.add(displayNewItemsAnimationPhase)
+		transitionAnimationChain.add(finalAnimationPhase)
+
+		transitionAnimationChain.start()
 	}
 
 	public func showFirst() {
-		 currentIndex = 0
 		currentItem = items.first!
 	}
 
 	public func showNext() {
-		currentIndex += 1
-		currentItem = items[currentIndex]
+		if let index = currentIndex, items.count > index {
+			currentItem = items[index + 1]
+		}
 	}
 
 	public func showLast() {
-		currentIndex = items.count - 1
 		currentItem = items.last!
 	}
 }

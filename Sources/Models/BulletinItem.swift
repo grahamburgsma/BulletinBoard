@@ -46,15 +46,6 @@ import UIKit
 
     var dismissalHandler: ((_ item: BulletinItem) -> Void)? { get set }
 
-    /**
-     * The item to display after this one.
-     *
-     * If you set this value, you'll be able to call `manager?.displayNextItem()` to push the next item to
-     * the stack.
-     */
-
-    var nextItem: BulletinItem? { get set }
-
     // MARK: - Interface
 
     /**

@@ -41,8 +41,6 @@ enum BulletinDataSource {
 			page.board?.showNext()
         }
 
-        page.nextItem = makeTextFieldPage()
-
         return page
 
     }
@@ -96,8 +94,6 @@ enum BulletinDataSource {
             print(page.datePicker.date)
 item.board?.showNext()        }
 
-        page.nextItem = makeNotitificationsPage()
-
         return page
 
     }
@@ -132,8 +128,6 @@ item.board?.showNext()
         page.alternativeHandler = { item in
 item.board?.showNext()
         }
-
-        page.nextItem = makeLocationPage()
 
         return page
 
@@ -170,8 +164,6 @@ item.board?.showNext()
         page.alternativeHandler = { item in
 			item.board?.showNext()
         }
-
-        page.nextItem = makeChoicePage()
 
         return page
 
