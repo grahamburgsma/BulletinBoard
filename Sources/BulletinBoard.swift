@@ -1,13 +1,9 @@
 /**
- *  BulletinBoard
- *  Copyright (c) 2017 Alexis Aubry. Licensed under the MIT license.
- */
+*  BulletinBoard
+*  Copyright (c) 2017 Alexis Aubry. Licensed under the MIT license.
+*/
 
 import UIKit
-
-/**
- * A view controller that displays a card at the bottom of the screen.
- */
 
 final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate {
 
@@ -23,86 +19,27 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 		return items.index(where: { $0 === currentItem })
 	}
 
-	// Mark: - Manager stuff
-
-	/**
-	* The style of the view covering the content. Defaults to `.dimmed`.
-	*
-	* Set this value before calling `prepare`. Changing it after will have no effect.
-	*/
-
 	@objc public var backgroundViewStyle: BulletinBackgroundViewStyle = .dimmed
-
-	// MARK: - Status Bar
-
-	/**
-	* The style of status bar to use with the bulltin. Defaults to `.automatic`.
-	*
-	* Set this value before calling `prepare`. Changing it after will have no effect.
-	*/
-
 	@objc public var statusBarAppearance: BulletinStatusBarAppearance = .automatic
-
-	/**
-	* The style of status bar animation. Defaults to `.fade`.
-	*
-	* Set this value before calling `prepare`. Changing it after will have no effect.
-	*/
-
 	@objc public var statusBarAnimation: UIStatusBarAnimation = .fade
-
-	/**
-	* The home indicator for iPhone X should be hidden or not. Defaults to false.
-	*
-	* Set this value before calling `prepare`. Changing it after will have no effect.
-	*/
-
 	@objc public var hidesHomeIndicator: Bool = false
-
-	// MARK: - Card Presentation
-
-	/**
-	* The spacing between the edge of the screen and the edge of the card. Defaults to regular.
-	*
-	* Set this value before calling `prepare`. Changing it after will have no effect.
-	*/
-
 	@objc public var cardPadding: BulletinPadding = .regular
 
-
-	/**
-	* Whether swipe to dismiss should be allowed. Defaults to true.
-	*
-	* If you set this value to true, the user will be able to drag the card, and swipe down to
-	* dismiss it (if allowed by the current item).
-	*
-	* If you set this value to false, no pan gesture will be recognized, and swipe to dismiss
-	* won't be available.
-	*/
-
 	@objc public var allowsSwipeInteraction: Bool = true
-
-    // MARK: - UI Elements
 
 	@IBOutlet var backgroundView: BulletinBackgroundView!
 	@IBOutlet var contentView: UIView!
 	@IBOutlet var contentStackView: UIStackView!
 	@IBOutlet var activityIndicator: UIActivityIndicatorView!
 
-    // MARK: - Dismissal Support Properties
+	var isDismissable: Bool = false
 
-    /// Indicates whether the bulletin can be dismissed by a tap outside the card.
-    var isDismissable: Bool = false
+	var activeSnapshotView: UIView?
+	var swipeInteractionController: BulletinSwipeInteractionController!
 
-    /// The snapshot view of the content used during dismissal.
-    var activeSnapshotView: UIView?
+	// MARK: - Private Interface Elements
 
-    /// The active swipe interaction controller.
-    var swipeInteractionController: BulletinSwipeInteractionController!
-
-    // MARK: - Private Interface Elements
-
-    fileprivate let bottomSafeAreaCoverView = UIVisualEffectView()
+	fileprivate let bottomSafeAreaCoverView = UIVisualEffectView()
 
 	public init(items: [BulletinItem]) {
 		self.items = items
@@ -143,22 +80,22 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 		})
 	}
 
-    @available(iOS 11.0, *)
+	@available(iOS 11.0, *)
 	override public func viewSafeAreaInsetsDidChange() {
-        super.viewSafeAreaInsetsDidChange()
+		super.viewSafeAreaInsetsDidChange()
 
-        updateCornerRadius()
-    }
+		updateCornerRadius()
+	}
 
-    // MARK: - Gesture Recognizer
+	// MARK: - Gesture Recognizer
 
 	public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view?.isDescendant(of: contentView) == true {
-            return false
-        }
+		if touch.view?.isDescendant(of: contentView) == true {
+			return false
+		}
 
-        return true
-    }
+		return true
+	}
 
 	deinit {
 		print("DEINIT: ", String(describing: self))
@@ -183,21 +120,21 @@ extension BulletinBoard {
 		let animationDuration = animated ? 0.75 : 0
 		let transitionAnimationChain = AnimationChain(duration: animationDuration)
 
-		let hideSubviewsAnimationPhase = AnimationPhase(relativeDuration: 1/3, curve: .linear, animations: {
+		let hideSubviewsAnimationPhase = AnimationPhase(relativeDuration: 1 / 3, curve: .linear, animations: {
 			self.hideActivityIndicator(showContentStack: false)
 
 			oldArrangedSubviews.forEach({ $0.alpha = 0 })
 			newArrangedSubviews.forEach({ $0.alpha = 0 })
 		}, completion: nil)
 
-		let displayNewItemsAnimationPhase = AnimationPhase(relativeDuration: 1/3, curve: .linear, animations: {
+		let displayNewItemsAnimationPhase = AnimationPhase(relativeDuration: 1 / 3, curve: .linear, animations: {
 			newArrangedSubviews.forEach({ $0.isHidden = false })
 			oldArrangedSubviews.forEach({ $0.isHidden = true })
 		}, completion: {
 			self.contentStackView.alpha = 1
 		})
 
-		let finalAnimationPhase = AnimationPhase(relativeDuration: 1/3, curve: .linear, animations: {
+		let finalAnimationPhase = AnimationPhase(relativeDuration: 1 / 3, curve: .linear, animations: {
 			newArrangedSubviews.forEach({ $0.alpha = 1 })
 		}, completion: {
 			self.isDismissable = self.currentItem.isDismissable
@@ -233,25 +170,25 @@ extension BulletinBoard {
 
 extension BulletinBoard {
 
-    // MARK: - Transition Adaptivity
+	// MARK: - Transition Adaptivity
 
-    func bottomMargin() -> CGFloat {
+	func bottomMargin() -> CGFloat {
 
-        var bottomMargin: CGFloat = cardPadding.rawValue
+		var bottomMargin: CGFloat = cardPadding.rawValue
 
-        if hidesHomeIndicator == true {
-            bottomMargin = cardPadding.rawValue == 0 ? 0 : 6
-        }
+		if hidesHomeIndicator == true {
+			bottomMargin = cardPadding.rawValue == 0 ? 0 : 6
+		}
 
-        return bottomMargin
+		return bottomMargin
 
-    }
+	}
 
-    // MARK: - Touch Events
+	// MARK: - Touch Events
 
-    @IBAction fileprivate func handleTap(recognizer: UITapGestureRecognizer) {
-        dismiss(animated: true, completion: nil)
-    }
+	@IBAction fileprivate func handleTap(recognizer: UITapGestureRecognizer) {
+		dismiss(animated: true, completion: nil)
+	}
 }
 
 // MARK: - System Elements
@@ -269,20 +206,20 @@ extension BulletinBoard {
 		}
 
 		return .default
-    }
+	}
 
 	override public var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
-        return statusBarAnimation
-    }
+		return statusBarAnimation
+	}
 
 	override public var prefersStatusBarHidden: Bool {
-        return statusBarAppearance == .hidden
-    }
+		return statusBarAppearance == .hidden
+	}
 
-    @available(iOS 11.0, *)
+	@available(iOS 11.0, *)
 	override public func prefersHomeIndicatorAutoHidden() -> Bool {
-        return hidesHomeIndicator
-    }
+		return hidesHomeIndicator
+	}
 
 }
 
@@ -290,46 +227,46 @@ extension BulletinBoard {
 
 extension BulletinBoard {
 
-    @available(iOS 11.0, *)
-    fileprivate var screenHasRoundedCorners: Bool {
-        return view.safeAreaInsets.bottom > 0
-    }
+	@available(iOS 11.0, *)
+	fileprivate var screenHasRoundedCorners: Bool {
+		return view.safeAreaInsets.bottom > 0
+	}
 
-    fileprivate func updateCornerRadius() {
+	fileprivate func updateCornerRadius() {
 
-        if cardPadding.rawValue == 0 {
-            contentView.layer.cornerRadius = 0
-            return
-        }
+		if cardPadding.rawValue == 0 {
+			contentView.layer.cornerRadius = 0
+			return
+		}
 
-        var defaultRadius: CGFloat = 12
+		var defaultRadius: CGFloat = 12
 
-        if #available(iOS 11.0, *) {
-            defaultRadius = screenHasRoundedCorners ? 36 : 12
-        }
+		if #available(iOS 11.0, *) {
+			defaultRadius = screenHasRoundedCorners ? 36 : 12
+		}
 
-        contentView.layer.cornerRadius = defaultRadius
-    }
+		contentView.layer.cornerRadius = defaultRadius
+	}
 }
 
 // MARK: - Background
 
 extension BulletinBoard {
 
-    /// Displays the cover view at the bottom of the safe area. Animatable.
-    func showBottomSafeAreaCover() {
+	/// Displays the cover view at the bottom of the safe area. Animatable.
+	func showBottomSafeAreaCover() {
 
-        let isDark = backgroundViewStyle.rawValue.isDark
+		let isDark = backgroundViewStyle.rawValue.isDark
 
-        let blurStyle: UIBlurEffectStyle = isDark ? .dark : .extraLight
-        bottomSafeAreaCoverView.effect = UIBlurEffect(style: blurStyle)
+		let blurStyle: UIBlurEffectStyle = isDark ? .dark : .extraLight
+		bottomSafeAreaCoverView.effect = UIBlurEffect(style: blurStyle)
 
-    }
+	}
 
-    /// Hides the cover view at the bottom of the safe area. Animatable.
-    func hideBottomSafeAreaCover() {
-        bottomSafeAreaCoverView.effect = nil
-    }
+	/// Hides the cover view at the bottom of the safe area. Animatable.
+	func hideBottomSafeAreaCover() {
+		bottomSafeAreaCoverView.effect = nil
+	}
 
 }
 
@@ -337,41 +274,31 @@ extension BulletinBoard {
 
 extension BulletinBoard {
 
-    /// Displays the activity indicator.
-    func displayActivityIndicator(color: UIColor) {
+	/// Displays the activity indicator.
+	func displayActivityIndicator(color: UIColor) {
 
-        activityIndicator.color = color
-        activityIndicator.startAnimating()
+		activityIndicator.color = color
+		activityIndicator.startAnimating()
 
-        let animations = {
-            self.activityIndicator.alpha = 1
-            self.contentStackView.alpha = 0
-        }
+		UIView.animate(withDuration: 0.25, animations: {
+			self.contentStackView.alpha = 0
+		}) { _ in
+			UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, self.activityIndicator)
+		}
 
-        UIView.animate(withDuration: 0.25, animations: animations) { _ in
-            UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, self.activityIndicator)
-        }
+	}
 
-    }
+	/// Hides the activity indicator.
+	func hideActivityIndicator(showContentStack: Bool) {
 
-    /// Hides the activity indicator.
-    func hideActivityIndicator(showContentStack: Bool) {
+		activityIndicator.stopAnimating()
 
-        activityIndicator.stopAnimating()
-        activityIndicator.alpha = 0
-
-        let animations = {
-            self.activityIndicator.alpha = 0
-
-            if showContentStack {
-                self.contentStackView.alpha = 1
-            }
-        }
-
-        UIView.animate(withDuration: 0.25, animations: animations)
-
-    }
-
+		UIView.animate(withDuration: 0.25) {
+			if showContentStack {
+				self.contentStackView.alpha = 1
+			}
+		}
+	}
 }
 
 // MARK: - Transitions
@@ -379,53 +306,46 @@ extension BulletinBoard {
 extension BulletinBoard: UIViewControllerTransitioningDelegate {
 
 	public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return BulletinPresentationAnimationController(style: backgroundViewStyle)
-    }
+		return BulletinPresentationAnimationController(style: backgroundViewStyle)
+	}
 
 	public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return BulletinDismissAnimationController()
-    }
+		return BulletinDismissAnimationController()
+	}
 
 	public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+		guard allowsSwipeInteraction else { return nil }
 
-            guard allowsSwipeInteraction == true else {
-                return nil
-            }
+		let isEligible = swipeInteractionController.isInteractionInProgress
+		return isEligible ? swipeInteractionController : nil
+	}
 
-            let isEligible = swipeInteractionController.isInteractionInProgress
-            return isEligible ? swipeInteractionController : nil
+	/// Creates a new view swipe interaction controller and wires it to the content view.
+	func refreshSwipeInteractionController() {
+		guard allowsSwipeInteraction else { return }
 
-    }
+		swipeInteractionController = BulletinSwipeInteractionController()
+		swipeInteractionController.wire(to: self)
+	}
 
-    /// Creates a new view swipe interaction controller and wires it to the content view.
-    func refreshSwipeInteractionController() {
-        guard allowsSwipeInteraction == true else {
-            return
-        }
-
-        swipeInteractionController = BulletinSwipeInteractionController()
-        swipeInteractionController.wire(to: self)
-
-    }
-
-    /// Prepares the view controller for dismissal.
-    func prepareForDismissal(displaying snapshot: UIView) {
-        view.bringSubview(toFront: bottomSafeAreaCoverView)
-        activeSnapshotView = snapshot
-    }
+	/// Prepares the view controller for dismissal.
+	func prepareForDismissal(displaying snapshot: UIView) {
+		view.bringSubview(toFront: bottomSafeAreaCoverView)
+		activeSnapshotView = snapshot
+	}
 
 }
 
- extension UIViewAnimationOptions {
-    init(curve: UIViewAnimationCurve) {
-        self = UIViewAnimationOptions(rawValue: UInt(curve.rawValue << 16))
-    }
+extension UIViewAnimationOptions {
+	init(curve: UIViewAnimationCurve) {
+		self = UIViewAnimationOptions(rawValue: UInt(curve.rawValue << 16))
+	}
 }
 
 // MARK: - Swift Compatibility
 
 #if swift(>=4.0)
-let UILayoutPriorityRequired = UILayoutPriority.required
-let UILayoutPriorityDefaultHigh = UILayoutPriority.defaultHigh
-let UILayoutPriorityDefaultLow = UILayoutPriority.defaultLow
+	let UILayoutPriorityRequired = UILayoutPriority.required
+	let UILayoutPriorityDefaultHigh = UILayoutPriority.defaultHigh
+	let UILayoutPriorityDefaultLow = UILayoutPriority.defaultLow
 #endif
