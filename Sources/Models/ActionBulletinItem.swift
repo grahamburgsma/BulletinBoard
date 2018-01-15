@@ -214,9 +214,9 @@ import UIKit
 
             let actionButton = interfaceBuilder.makeActionButton(title: actionButtonTitle)
             buttonsStack.addArrangedSubview(actionButton)
-            actionButton.button.addTarget(self, action: #selector(actionButtonTapped(sender:)), for: .touchUpInside)
+            actionButton.addTarget(self, action: #selector(actionButtonTapped(sender:)), for: .touchUpInside)
 
-            self.actionButton = actionButton.button
+            self.actionButton = actionButton
 
         }
 

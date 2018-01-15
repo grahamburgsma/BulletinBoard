@@ -87,7 +87,7 @@ import UIKit
      * - parameter title: The title of the button.
      */
 
-    @objc open func makeActionButton(title: String) -> HighlightButtonWrapper {
+    @objc open func makeActionButton(title: String) -> HighlightButton {
 
         let actionButton = HighlightButton(type: .custom)
         actionButton.setBackgroundColor(appearance.actionButtonColor, forState: .normal)
@@ -105,14 +105,9 @@ import UIKit
           actionButton.layer.borderWidth = appearance.actionButtonBorderWidth
         }
 
-        let wrapper = HighlightButtonWrapper(button: actionButton)
-        wrapper.setContentHuggingPriority(UILayoutPriorityDefaultLow, for: .horizontal)
+		actionButton.heightAnchor.constraint(equalToConstant: 55).isActive = true
 
-        let heightConstraint = wrapper.heightAnchor.constraint(equalToConstant: 55)
-        heightConstraint.priority = UILayoutPriorityDefaultHigh
-        heightConstraint.isActive = true
-
-        return wrapper
+        return actionButton
 
     }
 
