@@ -25,25 +25,22 @@ enum BulletinDataSource {
      * The action button presents the next item (the textfield page).
      */
 
-    static func makeIntroPage() -> FeedbackPageBulletinItem {
+	static func makeIntroPage() -> FeedbackPageBulletinItem {
 
-        let page = FeedbackPageBulletinItem(title: "Welcome to PetBoard")
-        page.image = #imageLiteral(resourceName: "RoundedIcon")
-        page.imageAccessibilityLabel = "😻"
-        page.appearance = makeLightAppearance()
+		let page = FeedbackPageBulletinItem(title: "Welcome to PetBoard",
+											description: "Discover curated images of the best pets in the world.",
+											image: #imageLiteral(resourceName: "RoundedIcon"))
 
-        page.descriptionText = "Discover curated images of the best pets in the world."
-        page.actionButtonTitle = "Configure"
+		page.addAction(BulletinItemAction(title: "Configure", style: .main) { (page) in
+			print("action")
+			page.showNext()
+//			page.board?.showNext()
+		})
 
-        page.isDismissable = true
+		page.isDismissable = true
 
-        page.actionHandler = { item in
-			page.board?.showNext()
-        }
-
-        return page
-
-    }
+		return page
+	}
 
     /**
      * Create the textfield page.
@@ -52,51 +49,48 @@ enum BulletinDataSource {
      *
      * The keyboard return button presents the next item (the notification page).
      */
-    static func makeTextFieldPage() -> TextFieldBulletinPage {
+//    static func makeTextFieldPage() -> TextFieldBulletinPage {
+//
+//        let page = TextFieldBulletinPage(title: "Enter your Name",
+//										 description: "To create your profile, please tell us your name. We will use it to customize your feed.",
+//										 image: nil)
+//
+//		page.addAction(BulletinItemAction(title: "Done", style: .main, handler: { (action) in
+//			page.board?.showNext()
+//		}))
+//
+//        return page
+//
+//    }
 
-        let page = TextFieldBulletinPage(title: "Enter your Name")
-        page.isDismissable = false
-        page.descriptionText = "To create your profile, please tell us your name. We will use it to customize your feed."
-        page.actionButtonTitle = "Done"
-
-        page.textInputHandler = { (item, text) in
-
-            let datePage = self.makeDatePage(userName: text)
-//            item.manager?.push(item: datePage)
-        }
-
-        return page
-
-    }
-
-    static func makeDatePage(userName: String?) -> BulletinItem {
-
-        var greeting = userName ?? "Lone Ranger"
-
-        if let name = userName {
-
-            let formatter = PersonNameComponentsFormatter()
-
-            if #available(iOS 10.0, *) {
-                if let components = formatter.personNameComponents(from: name) {
-                    greeting = components.givenName ?? name
-                }
-            }
-
-        }
-
-        let page = DatePickerBulletinItem(title: "Enter Birth Date")
-        page.descriptionText = "When were you born, \(greeting)?"
-        page.isDismissable = false
-        page.actionButtonTitle = "Done"
-
-        page.actionHandler = { item in
-            print(page.datePicker.date)
-item.board?.showNext()        }
-
-        return page
-
-    }
+//    static func makeDatePage(userName: String?) -> BulletinItem {
+//
+//        var greeting = userName ?? "Lone Ranger"
+//
+//        if let name = userName {
+//
+//            let formatter = PersonNameComponentsFormatter()
+//
+//            if #available(iOS 10.0, *) {
+//                if let components = formatter.personNameComponents(from: name) {
+//                    greeting = components.givenName ?? name
+//                }
+//            }
+//
+//        }
+//
+//        let page = DatePickerBulletinItem(title: "Enter Birth Date")
+//        page.descriptionText = "When were you born, \(greeting)?"
+//        page.isDismissable = false
+//        page.actionButtonTitle = "Done"
+//
+//        page.actionHandler = { item in
+//            print(page.datePicker.date)
+//item.board?.showNext()        }
+//
+//        return page
+//
+//    }
 
     /**
      * Create the notifications page.
@@ -108,30 +102,23 @@ item.board?.showNext()        }
      * starts a notification registration request.
      */
 
-    static func makeNotitificationsPage() -> FeedbackPageBulletinItem {
+	static func makeNotitificationsPage() -> FeedbackPageBulletinItem {
 
-        let page = FeedbackPageBulletinItem(title: "Push Notifications")
-        page.image = #imageLiteral(resourceName: "NotificationPrompt")
-        page.imageAccessibilityLabel = "Notifications Icon"
+		let page = FeedbackPageBulletinItem(title: "Push Notifications",
+											description: "Receive push notifications when new photos of pets are available.",
+											image: #imageLiteral(resourceName: "NotificationPrompt"))
 
-        page.descriptionText = "Receive push notifications when new photos of pets are available."
-        page.actionButtonTitle = "Subscribe"
-        page.alternativeButtonTitle = "Not now"
+		page.addAction(BulletinItemAction(title: "Subscribe", style: .main) { (page) in
+			PermissionsManager.shared.requestLocalNotifications()
+			page.showNext()
+		})
 
-        page.isDismissable = false
+		page.addAction(BulletinItemAction(title: "Subscribe", style: .alternate) { (page) in
+			page.showNext()
+		})
 
-        page.actionHandler = { item in
-            PermissionsManager.shared.requestLocalNotifications()
-item.board?.showNext()
-        }
-
-        page.alternativeHandler = { item in
-item.board?.showNext()
-        }
-
-        return page
-
-    }
+		return page
+	}
 
     /**
      * Create the location page.
@@ -143,31 +130,25 @@ item.board?.showNext()
      * requests permission for location.
      */
 
-    static func makeLocationPage() -> FeedbackPageBulletinItem {
+	static func makeLocationPage() -> FeedbackPageBulletinItem {
 
-        let page = FeedbackPageBulletinItem(title: "Customize Feed")
-        page.image = #imageLiteral(resourceName: "LocationPrompt")
-        page.imageAccessibilityLabel = "Location Icon"
+		let page = FeedbackPageBulletinItem(title: "Customize Feed",
+											description: "We can use your location to customize the feed. This data will be sent to our servers anonymously. You can update your choice later in the app settings.",
+											image:#imageLiteral(resourceName: "LocationPrompt"))
 
-        page.descriptionText = "We can use your location to customize the feed. This data will be sent to our servers anonymously. You can update your choice later in the app settings."
-        page.actionButtonTitle = "Send location data"
-        page.alternativeButtonTitle = "No thanks"
+		page.addAction(BulletinItemAction(title: "Send location data", style: .main) { (page) in
+			PermissionsManager.shared.requestWhenInUseLocation()
+			page.showNext()
+		})
 
-        page.appearance.shouldUseCompactDescriptionText = true
-        page.isDismissable = false
+		page.addAction(BulletinItemAction(title: "No thanks", style: .alternate) { (page) in
+			page.showNext()
+		})
 
-        page.actionHandler = { item in
-            PermissionsManager.shared.requestWhenInUseLocation()
-			item.board?.showNext()
-        }
+		page.descriptionLabel?.font = .systemFont(ofSize: 15)
 
-        page.alternativeHandler = { item in
-			item.board?.showNext()
-        }
-
-        return page
-
-    }
+		return page
+	}
 
     /**
      * Creates a custom item.
@@ -175,16 +156,16 @@ item.board?.showNext()
      * The next item is managed by the item itself. See `PetSelectorBulletinPage` for more info.
      */
 
-    static func makeChoicePage() -> PetSelectorBulletinPage {
-
-        let page = PetSelectorBulletinPage(title: "Choose your Favorite")
-        page.isDismissable = false
-        page.descriptionText = "Your favorite pets will appear when you open the app."
-        page.actionButtonTitle = "Select"
-
-        return page
-
-    }
+//    static func makeChoicePage() -> PetSelectorBulletinPage {
+//
+//        let page = PetSelectorBulletinPage(title: "Choose your Favorite")
+//        page.isDismissable = false
+//        page.descriptionText = "Your favorite pets will appear when you open the app."
+//        page.actionButtonTitle = "Select"
+//
+//        return page
+//
+//    }
 
     /**
      * Create the location page.
@@ -196,30 +177,27 @@ item.board?.showNext()
      */
 
     static func makeCompletionPage() -> PageBulletinItem {
+		let page = FeedbackPageBulletinItem(title: "Setup Completed",
+											description: "PetBoard is ready for you to use. Happy browsing!",
+											image:#imageLiteral(resourceName: "IntroCompletion"))
 
-        let page = PageBulletinItem(title: "Setup Completed")
-        page.image = #imageLiteral(resourceName: "IntroCompletion")
-        page.imageAccessibilityLabel = "Checkmark"
-        page.appearance.actionButtonColor = #colorLiteral(red: 0.2980392157, green: 0.8509803922, blue: 0.3921568627, alpha: 1)
-        page.appearance.imageViewTintColor = #colorLiteral(red: 0.2980392157, green: 0.8509803922, blue: 0.3921568627, alpha: 1)
-        page.appearance.actionButtonTitleColor = .white
+		page.addAction(BulletinItemAction(title: "Get started", style: .main) { (page) in
+			page.board?.dismiss(animated: true, completion: nil)
+		})
 
-        page.descriptionText = "PetBoard is ready for you to use. Happy browsing!"
-        page.actionButtonTitle = "Get started"
-        page.alternativeButtonTitle = "Replay"
+		page.addAction(BulletinItemAction(title: "Replay", style: .alternate) { (page) in
+			page.board?.showFirst()
+		})
+
+//        page.imageAccessibilityLabel = "Checkmark"
+//        page.appearance.actionButtonColor = #colorLiteral(red: 0.2980392157, green: 0.8509803922, blue: 0.3921568627, alpha: 1)
+//        page.appearance.imageViewTintColor = #colorLiteral(red: 0.2980392157, green: 0.8509803922, blue: 0.3921568627, alpha: 1)
+//        page.appearance.actionButtonTitleColor = .white
 
         page.isDismissable = true
 
         page.dismissalHandler = { item in
             NotificationCenter.default.post(name: .SetupDidComplete, object: item)
-        }
-
-        page.actionHandler = { item in
-			item.board?.dismiss(animated: true, completion: nil)
-		}
-
-        page.alternativeHandler = { item in
-            item.board?.showFirst()
         }
 
         return page

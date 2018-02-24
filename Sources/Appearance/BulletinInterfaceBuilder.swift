@@ -10,50 +10,49 @@ import UIKit
  * standard components.
  */
 
-@objc open class BulletinInterfaceBuilder: NSObject {
-
-    /// The appearance to use to generate the items.
-    @objc public let appearance: BulletinAppearance
-
-    /// Creates a new interface builder.
-    @objc public required init(appearance: BulletinAppearance) {
-        self.appearance = appearance
-    }
+open class BulletinInterfaceBuilder {
 
     /**
      * Creates a standard title label.
      */
 
-    @objc open func makeTitleLabel() -> UILabel {
+	static func titleLabel(text: String?) -> UILabel {
 
         let titleLabel = UILabel()
         titleLabel.textAlignment = .center
-        titleLabel.textColor = appearance.titleTextColor
+        titleLabel.textColor = #colorLiteral(red: 0.568627451, green: 0.5647058824, blue: 0.5725490196, alpha: 1)
         titleLabel.accessibilityTraits |= UIAccessibilityTraitHeader
         titleLabel.numberOfLines = 1
         titleLabel.adjustsFontSizeToFitWidth = true
+		titleLabel.text = text
 
-        titleLabel.font = appearance.makeTitleFont()
+		titleLabel.font = .systemFont(ofSize: 30)
 
         return titleLabel
-
     }
 
     /**
      * Creates a standard description label.
      */
 
-    @objc open func makeDescriptionLabel() -> UILabel {
+	static func descriptionLabel(text: String?) -> UILabel {
 
         let descriptionLabel = UILabel()
         descriptionLabel.textAlignment = .center
-        descriptionLabel.textColor = appearance.descriptionTextColor
+        descriptionLabel.textColor = .black
         descriptionLabel.numberOfLines = 0
-        descriptionLabel.font = appearance.makeDescriptionFont()
+        descriptionLabel.font = .systemFont(ofSize: 20)
+		descriptionLabel.text = text
 
         return descriptionLabel
-
     }
+
+	static func imageView(image: UIImage) -> UIImageView {
+		let imageView = UIImageView(image: image)
+		imageView.contentMode = .scaleAspectFit
+		imageView.heightAnchor.constraint(lessThanOrEqualToConstant: 128).isActive = true
+		return imageView
+	}
 
     /**
      * Creates a standard text field with an optional delegate.
@@ -63,7 +62,7 @@ import UIKit
      * - parameter delegate: The delegate for the text field.
      */
 
-    @objc open func makeTextField(placeholder: String? = nil,
+    static func textField(placeholder: String? = nil,
                                   returnKey: UIReturnKeyType = .default,
                                   delegate: UITextFieldDelegate? = nil) -> UITextField {
 
@@ -75,7 +74,6 @@ import UIKit
         textField.returnKeyType = returnKey
 
         return textField
-
     }
 
     /**
@@ -87,7 +85,7 @@ import UIKit
      * - parameter title: The title of the button.
      */
 
-    @objc open func makeActionButton(title: String) -> HighlightButton {
+    static func actionButton(title: String?) -> HighlightButton {
 
         let actionButton = HighlightButton(type: .custom)
         actionButton.setBackgroundColor(appearance.actionButtonColor, forState: .normal)
@@ -119,40 +117,13 @@ import UIKit
      * - parameter title: The title of the button.
      */
 
-    @objc open func makeAlternativeButton(title: String) -> UIButton {
+    static func alternativeButton(title: String?) -> UIButton {
 
         let alternativeButton = UIButton(type: .system)
         alternativeButton.setTitle(title, for: .normal)
-        alternativeButton.setTitleColor(appearance.alternativeButtonColor, for: .normal)
-        alternativeButton.titleLabel?.font = appearance.makeAlternativeButtonFont()
-
-        if let color = appearance.alternativeButtonBorderColor {
-          alternativeButton.layer.cornerRadius = appearance.alternativeButtonCornerRadius
-          alternativeButton.clipsToBounds = true
-          alternativeButton.layer.borderColor = color.cgColor
-          alternativeButton.layer.borderWidth = appearance.alternativeButtonBorderWidth
-        }
+        alternativeButton.setTitleColor(#colorLiteral(red: 0, green: 0.4784313725, blue: 1, alpha: 1), for: .normal)
+        alternativeButton.titleLabel?.font = .systemFont(ofSize: 15)
 
         return alternativeButton
-
     }
-
-    /**
-     * Creates a stack view to contain a group of objects.
-     *
-     * - parameter spacing: The spacing between elements. Defaults to `10`.
-     */
-
-    @objc open func makeGroupStack(spacing: CGFloat = 10) -> UIStackView {
-
-        let buttonsStack = UIStackView()
-        buttonsStack.axis = .vertical
-        buttonsStack.alignment = .fill
-        buttonsStack.distribution = .fill
-        buttonsStack.spacing = spacing
-
-        return buttonsStack
-
-    }
-
 }

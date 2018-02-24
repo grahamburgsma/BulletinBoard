@@ -140,7 +140,7 @@ class ViewController: UIViewController {
 //			BulletinDataSource.makeTextFieldPage(),
 			BulletinDataSource.makeNotitificationsPage(),
 			BulletinDataSource.makeLocationPage(),
-			BulletinDataSource.makeChoicePage(),
+//			BulletinDataSource.makeChoicePage(),
 			BulletinDataSource.makeCompletionPage()
 			])
 

@@ -180,24 +180,6 @@
 
 #pragma mark Font
 
-+(BulletinAppearance *)makeLightAppearance {
-
-    BulletinAppearance *appearance = [[BulletinAppearance alloc] init];
-
-    if ([BulletinDataSource useAvenirFont]) {
-
-        [appearance setTitleFontDescriptor:[UIFontDescriptor fontDescriptorWithName:@"AvenitNext-Medium" matrix:CGAffineTransformIdentity]];
-
-        [appearance setDescriptionFontDescriptor:[UIFontDescriptor fontDescriptorWithName:@"AvenirNext-Regular" matrix:CGAffineTransformIdentity]];
-
-        [appearance setButtonFontDescriptor:[UIFontDescriptor fontDescriptorWithName:@"AvenirNext-DemiBold" matrix:CGAffineTransformIdentity]];
-
-    }
-
-    return appearance;
-
-};
-
 @end
 
 #pragma mark Notifications

@@ -21,17 +21,10 @@ class PetSelectorBulletinPage: FeedbackPageBulletinItem {
 
     // MARK: - BulletinItem
 
-    /**
-     * Called by the manager when the item is about to be removed from the bulletin.
-     *
-     * Use this function as an opportunity to do any clean up or remove tap gesture recognizers /
-     * button targets from your views to avoid retain cycles.
-     */
-
-    override func tearDown() {
-        catButtonContainer?.removeTarget(self, action: nil, for: .touchUpInside)
-        dogButtonContainer?.removeTarget(self, action: nil, for: .touchUpInside)
-    }
+	deinit {
+		catButtonContainer?.removeTarget(self, action: nil, for: .touchUpInside)
+		dogButtonContainer?.removeTarget(self, action: nil, for: .touchUpInside)
+	}
 
     /**
      * Called by the manager to build the view hierachy of the bulletin.
@@ -40,34 +33,34 @@ class PetSelectorBulletinPage: FeedbackPageBulletinItem {
      * `BulletinInterfaceFactory` to generate standard views, such as title labels and buttons.
      */
 
-    override func viewsUnderDescription(_ interfaceBuilder: BulletinInterfaceBuilder) -> [UIView]? {
-
-        let favoriteTabIndex = BulletinDataSource.favoriteTabIndex
-
-        // Pets Stack
-
-        // We add choice cells to a group stack because they need less spacing
-        let petsStack = interfaceBuilder.makeGroupStack(spacing: 16)
-
-        // Cat Button
-
-        let catButtonContainer = createChoiceCell(dataSource: .cat, isSelected: favoriteTabIndex == 0)
-        catButtonContainer.addTarget(self, action: #selector(catButtonTapped), for: .touchUpInside)
-        petsStack.addArrangedSubview(catButtonContainer)
-
-        self.catButtonContainer = catButtonContainer
-
-        // Dog Button
-
-        let dogButtonContainer = createChoiceCell(dataSource: .dog, isSelected: favoriteTabIndex == 1)
-        dogButtonContainer.addTarget(self, action: #selector(dogButtonTapped), for: .touchUpInside)
-        petsStack.addArrangedSubview(dogButtonContainer)
-
-        self.dogButtonContainer = dogButtonContainer
-
-        return [petsStack]
-
-    }
+//    override func viewsUnderDescription(_ interfaceBuilder: BulletinInterfaceBuilder) -> [UIView]? {
+//
+//        let favoriteTabIndex = BulletinDataSource.favoriteTabIndex
+//
+//        // Pets Stack
+//
+//        // We add choice cells to a group stack because they need less spacing
+//        let petsStack = interfaceBuilder.makeGroupStack(spacing: 16)
+//
+//        // Cat Button
+//
+//        let catButtonContainer = createChoiceCell(dataSource: .cat, isSelected: favoriteTabIndex == 0)
+//        catButtonContainer.addTarget(self, action: #selector(catButtonTapped), for: .touchUpInside)
+//        petsStack.addArrangedSubview(catButtonContainer)
+//
+//        self.catButtonContainer = catButtonContainer
+//
+//        // Dog Button
+//
+//        let dogButtonContainer = createChoiceCell(dataSource: .dog, isSelected: favoriteTabIndex == 1)
+//        dogButtonContainer.addTarget(self, action: #selector(dogButtonTapped), for: .touchUpInside)
+//        petsStack.addArrangedSubview(dogButtonContainer)
+//
+//        self.dogButtonContainer = dogButtonContainer
+//
+//        return [petsStack]
+//
+//    }
 
     // MARK: - Custom Views
 
@@ -110,10 +103,10 @@ class PetSelectorBulletinPage: FeedbackPageBulletinItem {
         heightConstraint.priority = .defaultHigh
         heightConstraint.isActive = true
 
-        let buttonColor = isSelected ? appearance.actionButtonColor : .lightGray
-        button.layer.borderColor = buttonColor.cgColor
-        button.setTitleColor(buttonColor, for: .normal)
-        button.layer.borderColor = buttonColor.cgColor
+//        let buttonColor = isSelected ? appearance.actionButtonColor : .lightGray
+//        button.layer.borderColor = buttonColor.cgColor
+//        button.setTitleColor(buttonColor, for: .normal)
+//        button.layer.borderColor = buttonColor.cgColor
 
         return button
 
@@ -131,10 +124,10 @@ class PetSelectorBulletinPage: FeedbackPageBulletinItem {
 
         // Update UI
 
-        let catButtonColor = appearance.actionButtonColor
-        catButtonContainer?.layer.borderColor = catButtonColor.cgColor
-        catButtonContainer?.setTitleColor(catButtonColor, for: .normal)
-        catButtonContainer?.accessibilityTraits |= UIAccessibilityTraitSelected
+//        let catButtonColor = appearance.actionButtonColor
+//        catButtonContainer?.layer.borderColor = catButtonColor.cgColor
+//        catButtonContainer?.setTitleColor(catButtonColor, for: .normal)
+//        catButtonContainer?.accessibilityTraits |= UIAccessibilityTraitSelected
 
         let dogButtonColor = UIColor.lightGray
         dogButtonContainer?.layer.borderColor = dogButtonColor.cgColor
@@ -163,10 +156,10 @@ class PetSelectorBulletinPage: FeedbackPageBulletinItem {
         catButtonContainer?.setTitleColor(catButtonColor, for: .normal)
         catButtonContainer?.accessibilityTraits &= ~UIAccessibilityTraitSelected
 
-        let dogButtonColor = appearance.actionButtonColor
-        dogButtonContainer?.layer.borderColor = dogButtonColor.cgColor
-        dogButtonContainer?.setTitleColor(dogButtonColor, for: .normal)
-        dogButtonContainer?.accessibilityTraits |= UIAccessibilityTraitSelected
+//        let dogButtonColor = appearance.actionButtonColor
+//        dogButtonContainer?.layer.borderColor = dogButtonColor.cgColor
+//        dogButtonContainer?.setTitleColor(dogButtonColor, for: .normal)
+//        dogButtonContainer?.accessibilityTraits |= UIAccessibilityTraitSelected
 
         // Send a notification to inform observers of the change
 
@@ -175,13 +168,13 @@ class PetSelectorBulletinPage: FeedbackPageBulletinItem {
                                         userInfo: ["Index": 1])
     }
 
-    override func actionButtonTapped(sender: UIButton) {
-
-        // Play haptic feedback
-        selectionFeedbackGenerator.prepare()
-        selectionFeedbackGenerator.selectionChanged()
-
-        board?.showNext()
-    }
+//    override func actionButtonTapped(sender: UIButton) {
+//
+//        // Play haptic feedback
+//        selectionFeedbackGenerator.prepare()
+//        selectionFeedbackGenerator.selectionChanged()
+//
+//        board?.showNext()
+//    }
 
 }

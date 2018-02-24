@@ -110,7 +110,7 @@ extension BulletinBoard {
 
 		let oldArrangedSubviews = contentStackView.arrangedSubviews
 
-		let newArrangedSubviews = item.makeArrangedSubviews()
+		let newArrangedSubviews = item.views
 		newArrangedSubviews.forEach { (view) in
 			view.isHidden = true
 			contentStackView.addArrangedSubview(view)

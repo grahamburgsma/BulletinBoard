@@ -48,21 +48,13 @@ import UIKit
 
     // MARK: - Interface
 
-    /**
-     * Creates the list of views to display inside the bulletin card.
-     *
-     * The views will be arranged vertically, in the order they are stored in the return array.
-     */
 
-    func makeArrangedSubviews() -> [UIView]
+	var views: [UIView] { get set }
+}
 
-    /**
-     * Called by the manager when the item was removed from the bulletin.
-     *
-     * Use this function to remove any button target or gesture recognizers from your managed views, and
-     * deallocate any resources created for this item that are no longer needed.
-     */
+extension BulletinItem {
 
-    func tearDown()
-
+	public func showNext() {
+		board?.showNext()
+	}
 }
