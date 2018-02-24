@@ -46,7 +46,7 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 
 		super.init(nibName: "BulletinBoard", bundle: Bundle(for: type(of: self)))
 
-		self.items.forEach({ $0.board = self })
+		self.items.forEach { $0.board = self }
 
 		modalPresentationStyle = .custom
 		transitioningDelegate = self
@@ -73,10 +73,9 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 	override public func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
 
-		/// Animate status bar appearance when hiding
-		UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut, animations: {
+		UIView.animate(withDuration: 0.5) {
 			self.setNeedsStatusBarAppearanceUpdate()
-		})
+		}
 	}
 
 	@available(iOS 11.0, *)
@@ -122,26 +121,29 @@ extension BulletinBoard {
 		let hideSubviewsAnimationPhase = AnimationPhase(relativeDuration: 1 / 3, curve: .linear, animations: {
 			self.hideActivityIndicator(showContentStack: false)
 
-			oldArrangedSubviews.forEach({ $0.alpha = 0 })
-			newArrangedSubviews.forEach({ $0.alpha = 0 })
+			oldArrangedSubviews.forEach {
+				$0.layer.removeAllAnimations()
+				$0.alpha = 0
+			}
+			newArrangedSubviews.forEach { $0.alpha = 0 }
 		}, completion: nil)
 
 		let displayNewItemsAnimationPhase = AnimationPhase(relativeDuration: 1 / 3, curve: .linear, animations: {
-			newArrangedSubviews.forEach({ $0.isHidden = false })
-			oldArrangedSubviews.forEach({ $0.isHidden = true })
+			newArrangedSubviews.forEach { $0.isHidden = false }
+			oldArrangedSubviews.forEach { $0.isHidden = true }
 		}, completion: {
 			self.contentStackView.alpha = 1
-		})
+		 })
 
 		let finalAnimationPhase = AnimationPhase(relativeDuration: 1 / 3, curve: .linear, animations: {
-			newArrangedSubviews.forEach({ $0.alpha = 1 })
+			newArrangedSubviews.forEach { $0.alpha = 1 }
 		}, completion: {
 			self.isDismissable = self.currentItem.isDismissable
 
-			oldArrangedSubviews.forEach({ $0.removeFromSuperview() })
+			oldArrangedSubviews.forEach { $0.removeFromSuperview() }
 
 			UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, newArrangedSubviews.first)
-		})
+		 })
 
 		transitionAnimationChain.add(hideSubviewsAnimationPhase)
 		transitionAnimationChain.add(displayNewItemsAnimationPhase)

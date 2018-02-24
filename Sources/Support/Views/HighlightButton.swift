@@ -32,11 +32,45 @@ public class HighlightButton: UIButton {
 
 	override public var isHighlighted: Bool {
 		didSet {
-			adjustsImageWhenHighlighted = false
 			UIView.transition(with: self, duration: 0.1, animations: {
 				self.alpha = self.isHighlighted ? 0.5 : 1.0
 			})
 		}
+	}
+}
+
+/**
+* A view that wraps a HighlightButton.
+*
+* A wrapper is required to avoid alpha animation issues when unhighlighting the button and performing
+* a bulletin transition.
+*/
+
+public class HighlightButtonWrapper: UIView {
+
+	public let button: UIButton
+
+	public override convenience init(frame: CGRect) {
+		self.init(button: HighlightButton())
+	}
+
+	public required init?(coder aDecoder: NSCoder) {
+		fatalError("init(coder:) is unavailable. Use init(button:) instead.")
+	}
+
+	init(button: HighlightButton) {
+
+		self.button = button
+		super.init(frame: .zero)
+
+		addSubview(button)
+		button.translatesAutoresizingMaskIntoConstraints = false
+		NSLayoutConstraint.activate([
+			button.leadingAnchor.constraint(equalTo: leadingAnchor),
+			button.trailingAnchor.constraint(equalTo: trailingAnchor),
+			button.topAnchor.constraint(equalTo: topAnchor),
+			button.bottomAnchor.constraint(equalTo: bottomAnchor)
+			])
 	}
 }
 

@@ -85,28 +85,22 @@ open class BulletinInterfaceBuilder {
      * - parameter title: The title of the button.
      */
 
-    static func actionButton(title: String?) -> HighlightButton {
+    static func actionButton(title: String?) -> HighlightButtonWrapper {
 
-        let actionButton = HighlightButton(type: .custom)
-        actionButton.setBackgroundColor(appearance.actionButtonColor, forState: .normal)
-        actionButton.setTitleColor(appearance.actionButtonTitleColor, for: .normal)
-        actionButton.contentHorizontalAlignment = .center
+		let actionButton = HighlightButton(type: .custom)
+		actionButton.setBackgroundColor(#colorLiteral(red: 0, green: 0.4784313725, blue: 1, alpha: 1), forState: .normal)
+		actionButton.setTitleColor(.white, for: .normal)
+		actionButton.contentHorizontalAlignment = .center
 
-        actionButton.setTitle(title, for: .normal)
-        actionButton.titleLabel?.font = appearance.makeActionButtonFont()
+		actionButton.setTitle(title, for: .normal)
+		actionButton.titleLabel?.font = .systemFont(ofSize: 17)
 
-        actionButton.layer.cornerRadius = appearance.actionButtonCornerRadius
-        actionButton.clipsToBounds = true
-
-        if let color = appearance.actionButtonBorderColor {
-          actionButton.layer.borderColor = color.cgColor
-          actionButton.layer.borderWidth = appearance.actionButtonBorderWidth
-        }
+		actionButton.layer.cornerRadius = 12
+		actionButton.clipsToBounds = true
 
 		actionButton.heightAnchor.constraint(equalToConstant: 55).isActive = true
 
-        return actionButton
-
+        return HighlightButtonWrapper(button: actionButton)
     }
 
     /**
