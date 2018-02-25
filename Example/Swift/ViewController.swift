@@ -27,7 +27,6 @@ class ViewController: UIViewController {
 
     // MARK: - Customization
 
-    /// The available background styles.
     let backgroundStyles = BackgroundStyles()
 
     /// The current background style.

@@ -34,11 +34,10 @@ extension BulletinBoard {
 				return
 		}
 
-		let animationCurve = UIViewAnimationCurve(rawValue: curveInt) ?? .linear
-		let animationOptions = UIViewAnimationOptions(curve: animationCurve)
+		let animationOptions = UIViewAnimationOptions(rawValue: UInt(curveInt << 16))
 
 		UIView.animate(withDuration: duration, delay: 0, options: animationOptions, animations: {
-			var bottomSpacing = -(keyboardFrameFinal.size.height + self.bottomMargin())
+			var bottomSpacing = -(keyboardFrameFinal.size.height)
 
 			if #available(iOS 11.0, *) {
 
@@ -70,8 +69,7 @@ extension BulletinBoard {
 				return
 		}
 
-		let animationCurve = UIViewAnimationCurve(rawValue: curveInt) ?? .linear
-		let animationOptions = UIViewAnimationOptions(curve: animationCurve)
+		let animationOptions = UIViewAnimationOptions(rawValue: UInt(curveInt << 16))
 
 		UIView.animate(withDuration: duration, delay: 0, options: animationOptions, animations: {
 //			self.minYConstraint.isActive = true

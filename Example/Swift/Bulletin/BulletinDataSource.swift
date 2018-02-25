@@ -189,9 +189,9 @@ enum BulletinDataSource {
 			page.board?.showFirst()
 		})
 
-//        page.imageAccessibilityLabel = "Checkmark"
+		page.imageView?.tintColor = #colorLiteral(red: 0.2980392157, green: 0.8509803922, blue: 0.3921568627, alpha: 1)
+        page.imageView?.accessibilityLabel = "Checkmark"
 //        page.appearance.actionButtonColor = #colorLiteral(red: 0.2980392157, green: 0.8509803922, blue: 0.3921568627, alpha: 1)
-//        page.appearance.imageViewTintColor = #colorLiteral(red: 0.2980392157, green: 0.8509803922, blue: 0.3921568627, alpha: 1)
 //        page.appearance.actionButtonTitleColor = .white
 
         page.isDismissable = true

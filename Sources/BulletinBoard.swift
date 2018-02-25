@@ -15,17 +15,21 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 		}
 	}
 
-	var currentIndex: Int? {
+	private var currentIndex: Int? {
 		return items.index(where: { $0 === currentItem })
 	}
 
-	@objc public var backgroundViewStyle: BulletinBackgroundViewStyle = .dimmed
-	@objc public var statusBarAppearance: BulletinStatusBarAppearance = .automatic
-	@objc public var statusBarAnimation: UIStatusBarAnimation = .fade
-	@objc public var hidesHomeIndicator: Bool = false
-	@objc public var cardPadding: BulletinPadding = .regular
+	public var backgroundViewStyle: BulletinBackgroundViewStyle = .dimmed
+	public var statusBarAppearance: BulletinStatusBarAppearance = .automatic
+	public var statusBarAnimation: UIStatusBarAnimation = .fade
+	public var hidesHomeIndicator: Bool = false
+	public var cornerRadius: CGFloat = 12 {
+		didSet {
+			contentView.layer.cornerRadius = cornerRadius
+		}
+	}
 
-	@objc public var allowsSwipeInteraction: Bool = true
+	public var allowsSwipeInteraction: Bool = true
 
 	@IBOutlet var contentView: UIView!
 	@IBOutlet var contentStackView: UIStackView!
@@ -33,7 +37,6 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 
 	var isDismissable: Bool = false
 
-	var activeSnapshotView: UIView?
 	var swipeInteractionController: BulletinSwipeInteractionController!
 
 	// MARK: - Private Interface Elements
@@ -64,7 +67,7 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 	public override func viewDidLoad() {
 		super.viewDidLoad()
 
-		contentView.layer.cornerRadius = 12
+		contentView.layer.cornerRadius = cornerRadius
 
 		setUpKeyboardLogic()
 		show(item: currentItem, animated: false)
@@ -86,6 +89,12 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 	}
 
 	// MARK: - Gesture Recognizer
+
+	// MARK: - Touch Events
+
+	@IBAction fileprivate func handleTap(recognizer: UITapGestureRecognizer) {
+		dismiss(animated: true, completion: nil)
+	}
 
 	public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
 		if touch.view?.isDescendant(of: contentView) == true {
@@ -167,31 +176,6 @@ extension BulletinBoard {
 	}
 }
 
-// MARK: - Layout
-
-extension BulletinBoard {
-
-	// MARK: - Transition Adaptivity
-
-	func bottomMargin() -> CGFloat {
-
-		var bottomMargin: CGFloat = cardPadding.rawValue
-
-		if hidesHomeIndicator == true {
-			bottomMargin = cardPadding.rawValue == 0 ? 0 : 6
-		}
-
-		return bottomMargin
-
-	}
-
-	// MARK: - Touch Events
-
-	@IBAction fileprivate func handleTap(recognizer: UITapGestureRecognizer) {
-		dismiss(animated: true, completion: nil)
-	}
-}
-
 // MARK: - System Elements
 
 extension BulletinBoard {
@@ -201,7 +185,7 @@ extension BulletinBoard {
 		case .lightContent:
 			return .lightContent
 		case .automatic:
-			return backgroundViewStyle.rawValue.isDark ? .lightContent : .default
+			return .lightContent
 		default:
 			break
 		}
@@ -235,10 +219,10 @@ extension BulletinBoard {
 
 	fileprivate func updateCornerRadius() {
 
-		if cardPadding.rawValue == 0 {
-			contentView.layer.cornerRadius = 0
-			return
-		}
+//		if cardPadding.rawValue == 0 {
+//			contentView.layer.cornerRadius = 0
+//			return
+//		}
 
 		var defaultRadius: CGFloat = 12
 
@@ -257,10 +241,10 @@ extension BulletinBoard {
 	/// Displays the cover view at the bottom of the safe area. Animatable.
 	func showBottomSafeAreaCover() {
 
-		let isDark = backgroundViewStyle.rawValue.isDark
-
-		let blurStyle: UIBlurEffectStyle = isDark ? .dark : .extraLight
-		bottomSafeAreaCoverView.effect = UIBlurEffect(style: blurStyle)
+//		let isDark = backgroundViewStyle.rawValue.isDark
+//
+//		let blurStyle: UIBlurEffectStyle = isDark ? .dark : .extraLight
+//		bottomSafeAreaCoverView.effect = UIBlurEffect(style: blurStyle)
 
 	}
 
@@ -332,25 +316,4 @@ extension BulletinBoard: UIViewControllerTransitioningDelegate {
 		swipeInteractionController = BulletinSwipeInteractionController()
 		swipeInteractionController.wire(to: self)
 	}
-
-	/// Prepares the view controller for dismissal.
-	func prepareForDismissal(displaying snapshot: UIView) {
-		view.bringSubview(toFront: bottomSafeAreaCoverView)
-		activeSnapshotView = snapshot
-	}
-
 }
-
-extension UIViewAnimationOptions {
-	init(curve: UIViewAnimationCurve) {
-		self = UIViewAnimationOptions(rawValue: UInt(curve.rawValue << 16))
-	}
-}
-
-// MARK: - Swift Compatibility
-
-#if swift(>=4.0)
-	let UILayoutPriorityRequired = UILayoutPriority.required
-	let UILayoutPriorityDefaultHigh = UILayoutPriority.defaultHigh
-	let UILayoutPriorityDefaultLow = UILayoutPriority.defaultLow
-#endif

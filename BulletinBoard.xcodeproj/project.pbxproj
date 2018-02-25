@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		550675691F90A0A500874D8B /* BulletinBackgroundViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550675681F90A0A500874D8B /* BulletinBackgroundViewStyle.swift */; };
 		551D2D9C1FC060EA0078DB21 /* BulletinAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551D2D9B1FC060E90078DB21 /* BulletinAppearance.swift */; };
 		5543848B1F91FAC500AFFBCD /* BulletinPresentationAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543848A1F91FAC500AFFBCD /* BulletinPresentationAnimationController.swift */; };
 		5543848D1F92026200AFFBCD /* BulletinBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543848C1F92026200AFFBCD /* BulletinBackgroundView.swift */; };
@@ -21,7 +20,6 @@
 		55B3D1CF1FDADA8E00737791 /* AnimationChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B3D1CE1FDADA8E00737791 /* AnimationChain.swift */; };
 		55BF9C021F962FD700347D45 /* UIView+SafeAnchors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BF9C011F962FD700347D45 /* UIView+SafeAnchors.swift */; };
 		55DADE7A1F7D9428001B11A2 /* BulletinInterfaceBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DADE791F7D9428001B11A2 /* BulletinInterfaceBuilder.swift */; };
-		55FA45CA1FED1DE40084B6A0 /* BulletinPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55FA45C91FED1DE40084B6A0 /* BulletinPadding.swift */; };
 		B93495352008F65800849AE6 /* BulletinBoard+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93495342008F65800849AE6 /* BulletinBoard+Keyboard.swift */; };
 		B93495372008FF3A00849AE6 /* BulletinBoard.xib in Resources */ = {isa = PBXBuildFile; fileRef = B93495362008FF3A00849AE6 /* BulletinBoard.xib */; };
 		B934953920093C0D00849AE6 /* BulletinPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B934953820093C0D00849AE6 /* BulletinPresentationController.swift */; };
@@ -30,7 +28,6 @@
 
 /* Begin PBXFileReference section */
 		52D6D97C1BEFF229002C0205 /* BulletinBoard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BulletinBoard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		550675681F90A0A500874D8B /* BulletinBackgroundViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletinBackgroundViewStyle.swift; sourceTree = "<group>"; };
 		551D2D9B1FC060E90078DB21 /* BulletinAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletinAppearance.swift; sourceTree = "<group>"; };
 		5543848A1F91FAC500AFFBCD /* BulletinPresentationAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletinPresentationAnimationController.swift; sourceTree = "<group>"; };
 		5543848C1F92026200AFFBCD /* BulletinBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletinBackgroundView.swift; sourceTree = "<group>"; };
@@ -44,7 +41,6 @@
 		55B3D1CE1FDADA8E00737791 /* AnimationChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationChain.swift; sourceTree = "<group>"; };
 		55BF9C011F962FD700347D45 /* UIView+SafeAnchors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+SafeAnchors.swift"; sourceTree = "<group>"; };
 		55DADE791F7D9428001B11A2 /* BulletinInterfaceBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletinInterfaceBuilder.swift; sourceTree = "<group>"; };
-		55FA45C91FED1DE40084B6A0 /* BulletinPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletinPadding.swift; sourceTree = "<group>"; };
 		AD2FAA261CD0B6D800659CF4 /* BulletinBoard.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BulletinBoard.plist; sourceTree = "<group>"; };
 		B93495342008F65800849AE6 /* BulletinBoard+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BulletinBoard+Keyboard.swift"; sourceTree = "<group>"; };
 		B93495362008FF3A00849AE6 /* BulletinBoard.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BulletinBoard.xib; sourceTree = "<group>"; };
@@ -93,8 +89,6 @@
 			children = (
 				551D2D9B1FC060E90078DB21 /* BulletinAppearance.swift */,
 				55DADE791F7D9428001B11A2 /* BulletinInterfaceBuilder.swift */,
-				550675681F90A0A500874D8B /* BulletinBackgroundViewStyle.swift */,
-				55FA45C91FED1DE40084B6A0 /* BulletinPadding.swift */,
 			);
 			path = Appearance;
 			sourceTree = "<group>";
@@ -245,9 +239,7 @@
 				5543848D1F92026200AFFBCD /* BulletinBackgroundView.swift in Sources */,
 				B934953920093C0D00849AE6 /* BulletinPresentationController.swift in Sources */,
 				55BF9C021F962FD700347D45 /* UIView+SafeAnchors.swift in Sources */,
-				550675691F90A0A500874D8B /* BulletinBackgroundViewStyle.swift in Sources */,
 				5569CB7F1F920B72000F31EB /* BulletinSwipeInteractionController.swift in Sources */,
-				55FA45CA1FED1DE40084B6A0 /* BulletinPadding.swift in Sources */,
 				551D2D9C1FC060EA0078DB21 /* BulletinAppearance.swift in Sources */,
 				558A12351F7D73CD005EC97C /* PageBulletinItem.swift in Sources */,
 				5568227E1F864B270038E8DD /* ActivityIndicator.swift in Sources */,
@@ -387,7 +379,7 @@
 				PRODUCT_NAME = BulletinBoard;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -409,7 +401,7 @@
 				PRODUCT_NAME = BulletinBoard;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};

@@ -5,6 +5,13 @@
 
 import UIKit
 
+public enum BulletinBackgroundViewStyle {
+
+	case none
+	case dimmed
+	case blurred(style: UIBlurEffectStyle)
+}
+
 /**
  * The view to display behind the bulletin.
  */
@@ -12,26 +19,6 @@ import UIKit
 class BulletinBackgroundView: UIView {
 
     let style: BulletinBackgroundViewStyle
-
-    // MARK: - Content View
-
-    enum ContentView {
-
-        case dim(UIView, CGFloat)
-        case blur(UIVisualEffectView, UIBlurEffect)
-
-        var instance: UIView {
-            switch self {
-            case .dim(let dimmingView, _):
-                return dimmingView
-            case .blur(let blurView, _):
-                return blurView
-            }
-        }
-
-    }
-
-    private(set) var contentView: ContentView!
 
     // MARK: - Initialization
 
@@ -55,80 +42,24 @@ class BulletinBackgroundView: UIView {
 
     private func initialize() {
 
-        translatesAutoresizingMaskIntoConstraints = false
 
-        func makeDimmingView() -> UIView {
+		switch style {
+		case .none: break
+		case .dimmed:
+			alpha = 0
+			backgroundColor = UIColor(white: 0.0, alpha: 0.5)
+		case .blurred(let style):
+			let blurEffect = UIBlurEffect(style: style)
+			let blurEffectView = UIVisualEffectView(effect: blurEffect)
+			blurEffectView.translatesAutoresizingMaskIntoConstraints = false
+			addSubview(blurEffectView)
 
-            let dimmingView = UIView()
-            dimmingView.alpha = 0.0
-            dimmingView.backgroundColor = UIColor(white: 0.0, alpha: 0.5)
-            dimmingView.translatesAutoresizingMaskIntoConstraints = false
-
-            return dimmingView
-
-        }
-
-        switch style.rawValue {
-        case .none:
-
-            let dimmingView = makeDimmingView()
-
-            addSubview(dimmingView)
-            contentView = .dim(dimmingView, 0.0)
-
-        case .dimmed:
-
-            let dimmingView = makeDimmingView()
-
-            addSubview(dimmingView)
-            contentView = .dim(dimmingView, 1.0)
-
-        case .blurred(let blurredBackground):
-
-            let blurEffect = UIBlurEffect(style: blurredBackground.style)
-            let blurEffectView = UIVisualEffectView(effect: nil)
-            blurEffectView.translatesAutoresizingMaskIntoConstraints = false
-
-            addSubview(blurEffectView)
-            contentView = .blur(blurEffectView, blurEffect)
-
-        }
-
-        let contentViewInstance = contentView.instance
-
-        contentViewInstance.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-        contentViewInstance.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        contentViewInstance.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        contentViewInstance.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-
+			NSLayoutConstraint.activate([
+				blurEffectView.leadingAnchor.constraint(equalTo: leadingAnchor),
+				blurEffectView.trailingAnchor.constraint(equalTo: trailingAnchor),
+				blurEffectView.topAnchor.constraint(equalTo: topAnchor),
+				blurEffectView.bottomAnchor.constraint(equalTo: bottomAnchor)
+				])
+		}
     }
-
-    // MARK: - Interactions
-
-    /// Shows the background view. Animatable.
-    func show() {
-
-        switch contentView! {
-        case .dim(let dimmingView, let maxAlpha):
-            dimmingView.alpha = maxAlpha
-
-        case .blur(let blurView, let blurEffect):
-            blurView.effect = blurEffect
-        }
-
-    }
-
-    /// Hides the background view. Animatable.
-    func hide() {
-
-        switch contentView! {
-        case .dim(let dimmingView, _):
-            dimmingView.alpha = 0
-
-        case .blur(let blurView, _):
-            blurView.effect = nil
-        }
-
-    }
-
 }

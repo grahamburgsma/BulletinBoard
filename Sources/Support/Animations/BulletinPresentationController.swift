@@ -23,11 +23,11 @@ class BulletinPresentationController: UIPresentationController {
 
 		backgroundView.frame = containerView.bounds
 		backgroundView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-		backgroundView.translatesAutoresizingMaskIntoConstraints = true
 		containerView.addSubview(backgroundView)
 
+		self.backgroundView.alpha = 0
 		presentingViewController.transitionCoordinator?.animate(alongsideTransition: { _ in
-			self.backgroundView.show()
+			self.backgroundView.alpha = 1
 		}, completion: nil)
 	}
 
@@ -39,7 +39,7 @@ class BulletinPresentationController: UIPresentationController {
 
 	override func dismissalTransitionWillBegin() {
 		presentingViewController.transitionCoordinator?.animate(alongsideTransition: { _ in
-			self.backgroundView.hide()
+			self.backgroundView.alpha = 0
 		}, completion: nil)
 	}
 

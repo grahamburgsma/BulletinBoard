@@ -22,10 +22,6 @@ class BulletinSwipeInteractionController: UIPercentDrivenInteractiveTransition, 
     private var currentPercentage: CGFloat = -1
     private weak var viewController: BulletinBoard!
 
-    private var snapshotView: UIView? {
-        return viewController.activeSnapshotView
-    }
-
     private var contentView: UIView {
         return viewController.contentView
     }
@@ -115,8 +111,6 @@ class BulletinSwipeInteractionController: UIPercentDrivenInteractiveTransition, 
                 updateCardViews(forTranslation: translation)
                 return
             }
-
-            snapshotView?.transform = .identity
 
             let adaptativeTranslation = self.adaptativeTranslation(for: verticalTranslation, elasticThreshold: elasticThreshold)
             let newPercentage = (adaptativeTranslation / dismissThreshold) * trackScreenPercentage
@@ -217,7 +211,6 @@ class BulletinSwipeInteractionController: UIPercentDrivenInteractiveTransition, 
 
         let transform = self.transform(forTranslation: translation)
 
-        snapshotView?.transform = transform
         contentView.transform = transform
         activityIndicatorView.transform = transform
 
@@ -228,7 +221,6 @@ class BulletinSwipeInteractionController: UIPercentDrivenInteractiveTransition, 
         let options: UIViewAnimationOptions = UIViewAnimationOptions(rawValue: 6 << 7)
 
         let animations = {
-            self.snapshotView?.transform = .identity
             self.contentView.transform = .identity
             self.activityIndicatorView.transform = .identity
         }
