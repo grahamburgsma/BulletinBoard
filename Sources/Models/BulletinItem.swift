@@ -9,7 +9,7 @@ import UIKit
  * An item that can be displayed inside a bulletin card.
  */
 
-@objc public protocol BulletinItem: class {
+public protocol BulletinItem: class {
 
 	weak var board: BulletinBoard? { get set }
 

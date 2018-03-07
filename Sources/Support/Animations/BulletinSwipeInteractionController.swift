@@ -59,7 +59,7 @@ class BulletinSwipeInteractionController: UIPercentDrivenInteractiveTransition, 
         return !(touch.view is UIControl)
     }
 
-    @objc func handlePanGesture(gestureRecognizer: UIPanGestureRecognizer) {
+	@objc func handlePanGesture(gestureRecognizer: UIPanGestureRecognizer) {
 
         /// Constants
 
