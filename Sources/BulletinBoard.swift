@@ -20,9 +20,6 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 	}
 
 	public var backgroundViewStyle: BulletinBackgroundViewStyle = .dimmed
-	public var statusBarAppearance: BulletinStatusBarAppearance = .automatic
-	public var statusBarAnimation: UIStatusBarAnimation = .fade
-	public var hidesHomeIndicator: Bool = false
 	public var cornerRadius: CGFloat = 12 {
 		didSet {
 			contentView.layer.cornerRadius = cornerRadius
@@ -35,15 +32,15 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 	@IBOutlet var contentStackView: UIStackView!
 	@IBOutlet var activityIndicator: UIActivityIndicatorView!
 
+	@IBOutlet weak var centerYConstraint: NSLayoutConstraint!
+	@IBOutlet weak var bottomYConstraint: NSLayoutConstraint!
+
 	var isDismissable: Bool = false
 
 	var swipeInteractionController: BulletinSwipeInteractionController!
 
-	// MARK: - Private Interface Elements
-
-	fileprivate let bottomSafeAreaCoverView = UIVisualEffectView()
-
 	public init(items: [BulletinItem]) {
+		precondition(items.isEmpty == false, "Must provide at least 1 item")
 		self.items = items
 		self.currentItem = items.first!
 
@@ -67,28 +64,15 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 	public override func viewDidLoad() {
 		super.viewDidLoad()
 
-		contentView.layer.cornerRadius = cornerRadius
+		if #available(iOSApplicationExtension 11.0, *) {
+			cornerRadius = screenHasRoundedCorners ? 36 : 12
+		} else {
+			cornerRadius = 12
+		}
 
 		setUpKeyboardLogic()
 		show(item: currentItem, animated: false)
 	}
-
-	override public func viewWillDisappear(_ animated: Bool) {
-		super.viewWillDisappear(animated)
-
-		UIView.animate(withDuration: 0.5) {
-			self.setNeedsStatusBarAppearanceUpdate()
-		}
-	}
-
-	@available(iOS 11.0, *)
-	override public func viewSafeAreaInsetsDidChange() {
-		super.viewSafeAreaInsetsDidChange()
-
-		updateCornerRadius()
-	}
-
-	// MARK: - Gesture Recognizer
 
 	// MARK: - Touch Events
 
@@ -108,14 +92,18 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 		print("DEINIT: ", String(describing: self))
 		cleanUpKeyboardLogic()
 	}
+
+	@available(iOSApplicationExtension 11.0, *)
+	public override func viewSafeAreaInsetsDidChange() {
+		super.viewSafeAreaInsetsDidChange()
+
+		cornerRadius = screenHasRoundedCorners ? 36 : 12
+	}
 }
 
 extension BulletinBoard {
 
 	func show(item: BulletinItem, animated: Bool = true) {
-		swipeInteractionController?.cancelIfNeeded()
-		refreshSwipeInteractionController()
-
 		let oldArrangedSubviews = contentStackView.arrangedSubviews
 
 		let newArrangedSubviews = item.views
@@ -128,8 +116,6 @@ extension BulletinBoard {
 		let transitionAnimationChain = AnimationChain(duration: animationDuration)
 
 		let hideSubviewsAnimationPhase = AnimationPhase(relativeDuration: 1 / 3, curve: .linear, animations: {
-			self.hideActivityIndicator(showContentStack: false)
-
 			oldArrangedSubviews.forEach {
 				$0.layer.removeAllAnimations()
 				$0.alpha = 0
@@ -180,38 +166,6 @@ extension BulletinBoard {
 
 extension BulletinBoard {
 
-	override public var preferredStatusBarStyle: UIStatusBarStyle {
-		switch statusBarAppearance {
-		case .lightContent:
-			return .lightContent
-		case .automatic:
-			return .lightContent
-		default:
-			break
-		}
-
-		return .default
-	}
-
-	override public var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
-		return statusBarAnimation
-	}
-
-	override public var prefersStatusBarHidden: Bool {
-		return statusBarAppearance == .hidden
-	}
-
-	@available(iOS 11.0, *)
-	override public func prefersHomeIndicatorAutoHidden() -> Bool {
-		return hidesHomeIndicator
-	}
-
-}
-
-// MARK: - Safe Area
-
-extension BulletinBoard {
-
 	@available(iOS 11.0, *)
 	fileprivate var screenHasRoundedCorners: Bool {
 		return view.safeAreaInsets.bottom > 0
@@ -234,58 +188,6 @@ extension BulletinBoard {
 	}
 }
 
-// MARK: - Background
-
-extension BulletinBoard {
-
-	/// Displays the cover view at the bottom of the safe area. Animatable.
-	func showBottomSafeAreaCover() {
-
-//		let isDark = backgroundViewStyle.rawValue.isDark
-//
-//		let blurStyle: UIBlurEffectStyle = isDark ? .dark : .extraLight
-//		bottomSafeAreaCoverView.effect = UIBlurEffect(style: blurStyle)
-
-	}
-
-	/// Hides the cover view at the bottom of the safe area. Animatable.
-	func hideBottomSafeAreaCover() {
-		bottomSafeAreaCoverView.effect = nil
-	}
-
-}
-
-// MARK: - Activity Indicator
-
-extension BulletinBoard {
-
-	/// Displays the activity indicator.
-	func displayActivityIndicator(color: UIColor) {
-
-		activityIndicator.color = color
-		activityIndicator.startAnimating()
-
-		UIView.animate(withDuration: 0.25, animations: {
-			self.contentStackView.alpha = 0
-		}) { _ in
-			UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, self.activityIndicator)
-		}
-
-	}
-
-	/// Hides the activity indicator.
-	func hideActivityIndicator(showContentStack: Bool) {
-
-		activityIndicator.stopAnimating()
-
-		UIView.animate(withDuration: 0.25) {
-			if showContentStack {
-				self.contentStackView.alpha = 1
-			}
-		}
-	}
-}
-
 // MARK: - Transitions
 
 extension BulletinBoard: UIViewControllerTransitioningDelegate {
@@ -302,18 +204,10 @@ extension BulletinBoard: UIViewControllerTransitioningDelegate {
 		return BulletinDismissalAnimationController()
 	}
 
-	public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-		guard allowsSwipeInteraction else { return nil }
-
-		let isEligible = swipeInteractionController.isInteractionInProgress
-		return isEligible ? swipeInteractionController : nil
-	}
-
-	/// Creates a new view swipe interaction controller and wires it to the content view.
-	func refreshSwipeInteractionController() {
-		guard allowsSwipeInteraction else { return }
-
-		swipeInteractionController = BulletinSwipeInteractionController()
-		swipeInteractionController.wire(to: self)
-	}
+//	public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+//		guard allowsSwipeInteraction else { return nil }
+//
+//		let isEligible = swipeInteractionController.isInteractionInProgress
+//		return isEligible ? swipeInteractionController : nil
+//	}
 }

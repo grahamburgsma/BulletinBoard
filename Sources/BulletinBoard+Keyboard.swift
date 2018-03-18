@@ -10,6 +10,8 @@ import UIKit
 
 extension BulletinBoard {
 
+	
+
 	func setUpKeyboardLogic() {
 		NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardShow), name: .UIKeyboardWillShow, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardHide), name: .UIKeyboardWillHide, object: nil)
@@ -38,14 +40,6 @@ extension BulletinBoard {
 
 		UIView.animate(withDuration: duration, delay: 0, options: animationOptions, animations: {
 			var bottomSpacing = -(keyboardFrameFinal.size.height)
-
-			if #available(iOS 11.0, *) {
-
-				if self.hidesHomeIndicator == false {
-					bottomSpacing += self.view.safeAreaInsets.bottom
-				}
-
-			}
 
 //			self.minYConstraint.isActive = false
 //			self.contentBottomConstraint.constant = bottomSpacing

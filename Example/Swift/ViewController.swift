@@ -144,7 +144,7 @@ class ViewController: UIViewController {
 			])
 
         bulletinBoard.backgroundViewStyle = currentBackground.style
-        bulletinBoard.statusBarAppearance = shouldHideStatusBar ? .hidden : .automatic
+//        bulletinBoard.statusBarAppearance = shouldHideStatusBar ? .hidden : .automatic
 
 		present(bulletinBoard, animated: true, completion: nil)
 

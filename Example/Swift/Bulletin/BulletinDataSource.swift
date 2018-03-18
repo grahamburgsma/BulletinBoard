@@ -32,9 +32,7 @@ enum BulletinDataSource {
 											image: #imageLiteral(resourceName: "RoundedIcon"))
 
 		page.addAction(BulletinItemAction(title: "Configure", style: .main) { (page) in
-			print("action")
-			page.showNext()
-//			page.board?.showNext()
+			page.board?.showNext()
 		})
 
 		page.isDismissable = true
@@ -110,11 +108,11 @@ enum BulletinDataSource {
 
 		page.addAction(BulletinItemAction(title: "Subscribe", style: .main) { (page) in
 			PermissionsManager.shared.requestLocalNotifications()
-			page.showNext()
+			page.board?.showNext()
 		})
 
 		page.addAction(BulletinItemAction(title: "Subscribe", style: .alternate) { (page) in
-			page.showNext()
+			page.board?.showNext()
 		})
 
 		return page
@@ -138,11 +136,11 @@ enum BulletinDataSource {
 
 		page.addAction(BulletinItemAction(title: "Send location data", style: .main) { (page) in
 			PermissionsManager.shared.requestWhenInUseLocation()
-			page.showNext()
+			page.board?.showNext()
 		})
 
 		page.addAction(BulletinItemAction(title: "No thanks", style: .alternate) { (page) in
-			page.showNext()
+			page.board?.showNext()
 		})
 
 		page.descriptionLabel?.font = .systemFont(ofSize: 15)
@@ -242,21 +240,21 @@ enum BulletinDataSource {
 
 extension BulletinDataSource {
 
-    static func makeLightAppearance() -> BulletinAppearance {
-
-        let appearance = BulletinAppearance()
-
-        if useAvenirFont {
-
-            appearance.titleFontDescriptor = UIFontDescriptor(name: "AvenirNext-Medium", matrix: .identity)
-            appearance.descriptionFontDescriptor = UIFontDescriptor(name: "AvenirNext-Regular", matrix: .identity)
-            appearance.buttonFontDescriptor = UIFontDescriptor(name: "AvenirNext-DemiBold", matrix: .identity)
-
-        }
-
-        return appearance
-
-    }
+//    static func makeLightAppearance() -> BulletinAppearance {
+//
+//        let appearance = BulletinAppearance()
+//
+//        if useAvenirFont {
+//
+//            appearance.titleFontDescriptor = UIFontDescriptor(name: "AvenirNext-Medium", matrix: .identity)
+//            appearance.descriptionFontDescriptor = UIFontDescriptor(name: "AvenirNext-Regular", matrix: .identity)
+//            appearance.buttonFontDescriptor = UIFontDescriptor(name: "AvenirNext-DemiBold", matrix: .identity)
+//
+//        }
+//
+//        return appearance
+//
+//    }
 
     static func currentFontName() -> String {
         return useAvenirFont ? "Avenir Next" : "San Francisco"

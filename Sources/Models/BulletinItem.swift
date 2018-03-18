@@ -51,10 +51,3 @@ public protocol BulletinItem: class {
 
 	var views: [UIView] { get set }
 }
-
-extension BulletinItem {
-
-	public func showNext() {
-		board?.showNext()
-	}
-}

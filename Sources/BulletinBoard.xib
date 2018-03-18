@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
+    <device id="ipad9_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -14,6 +14,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BulletinBoard" customModule="BulletinBoard" customModuleProvider="target">
             <connections>
                 <outlet property="activityIndicator" destination="gcr-BY-SJX" id="LZD-gw-gOQ"/>
+                <outlet property="bottomYConstraint" destination="dso-wr-LTW" id="SRh-dY-hdn"/>
+                <outlet property="centerYConstraint" destination="91I-LC-vev" id="05z-aw-mSN"/>
                 <outlet property="contentStackView" destination="BgX-jg-QK4" id="6PA-Tr-hlH"/>
                 <outlet property="contentView" destination="ZwM-bG-OYm" id="61Q-CD-Raq"/>
                 <outlet property="view" destination="iN0-l3-epB" id="8pS-fW-cp8"/>
@@ -21,19 +23,19 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <activityIndicatorView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="gcr-BY-SJX">
-                    <rect key="frame" x="169" y="562.5" width="37" height="37"/>
+                    <rect key="frame" x="365.5" y="503.5" width="37" height="37"/>
                     <color key="color" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </activityIndicatorView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZwM-bG-OYm">
-                    <rect key="frame" x="12" y="507" width="351" height="148"/>
+                    <rect key="frame" x="162" y="448" width="444" height="148"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="100" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="BgX-jg-QK4">
-                            <rect key="frame" x="24" y="24" width="303" height="100"/>
-                            <variation key="heightClass=regular-widthClass=regular" spacing="32"/>
+                            <rect key="frame" x="24" y="24" width="396" height="100"/>
+                            <variation key="heightClass=regular-widthClass=regular" spacing="28"/>
                         </stackView>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -61,6 +63,7 @@
             <constraints>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="ZwM-bG-OYm" secondAttribute="trailing" constant="12" id="1jE-mX-4kT"/>
                 <constraint firstItem="gcr-BY-SJX" firstAttribute="centerX" secondItem="ZwM-bG-OYm" secondAttribute="centerX" id="7el-kA-Mvp"/>
+                <constraint firstItem="ZwM-bG-OYm" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="91I-LC-vev"/>
                 <constraint firstItem="ZwM-bG-OYm" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="12" id="GJ7-OA-Jy5"/>
                 <constraint firstItem="ZwM-bG-OYm" firstAttribute="top" relation="greaterThanOrEqual" secondItem="vUN-kp-3ea" secondAttribute="top" constant="12" id="Mru-cN-h9S"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="ZwM-bG-OYm" secondAttribute="bottom" constant="12" id="dso-wr-LTW"/>
@@ -68,9 +71,23 @@
                 <constraint firstItem="ZwM-bG-OYm" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="yQY-lS-Y6J"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="dso-wr-LTW"/>
+                    <exclude reference="91I-LC-vev"/>
+                    <exclude reference="Mru-cN-h9S"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=regular-widthClass=compact">
+                <mask key="constraints">
+                    <include reference="dso-wr-LTW"/>
+                    <include reference="Mru-cN-h9S"/>
+                </mask>
+            </variation>
             <variation key="heightClass=regular-widthClass=regular">
                 <mask key="constraints">
                     <exclude reference="1jE-mX-4kT"/>
+                    <include reference="91I-LC-vev"/>
                     <exclude reference="GJ7-OA-Jy5"/>
                 </mask>
             </variation>

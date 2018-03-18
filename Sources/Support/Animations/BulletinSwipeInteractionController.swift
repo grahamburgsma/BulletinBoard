@@ -77,9 +77,7 @@ class BulletinSwipeInteractionController: UIPercentDrivenInteractiveTransition, 
 
             gestureRecognizer.setTranslation(.zero, in: contentView)
 
-            let isCompactWidth = viewController.traitCollection.horizontalSizeClass == .compact
-
-            guard viewController.isDismissable && isCompactWidth else {
+            guard viewController.isDismissable else {
                 isInteractionInProgress = false
                 return
             }
@@ -224,8 +222,6 @@ class BulletinSwipeInteractionController: UIPercentDrivenInteractiveTransition, 
             self.contentView.transform = .identity
             self.activityIndicatorView.transform = .identity
         }
-
-        viewController.showBottomSafeAreaCover()
 
         UIView.animate(withDuration: 0.15, delay: 0, options: options, animations: animations) { _ in
             self.update(0)
