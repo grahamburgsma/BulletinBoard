@@ -51,3 +51,15 @@ public protocol BulletinItem: class {
 
 	var views: [UIView] { get set }
 }
+
+public extension BulletinItem {
+
+	var isLoading: Bool {
+		set {
+			board?.isLoading = newValue
+		}
+		get {
+			return board?.isLoading == true
+		}
+	}
+}

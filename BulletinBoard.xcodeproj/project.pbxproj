@@ -21,6 +21,7 @@
 		B93495352008F65800849AE6 /* BulletinBoard+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93495342008F65800849AE6 /* BulletinBoard+Keyboard.swift */; };
 		B93495372008FF3A00849AE6 /* BulletinBoard.xib in Resources */ = {isa = PBXBuildFile; fileRef = B93495362008FF3A00849AE6 /* BulletinBoard.xib */; };
 		B934953920093C0D00849AE6 /* BulletinPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B934953820093C0D00849AE6 /* BulletinPresentationController.swift */; };
+		C01DE89B205DEE9300A9204A /* BulletinBoard.podspec in Resources */ = {isa = PBXBuildFile; fileRef = C01DE89A205DEE9300A9204A /* BulletinBoard.podspec */; };
 		C0741822200A9F6400891D2B /* BulletinItemAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0741821200A9F6400891D2B /* BulletinItemAction.swift */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +42,7 @@
 		B93495342008F65800849AE6 /* BulletinBoard+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BulletinBoard+Keyboard.swift"; sourceTree = "<group>"; };
 		B93495362008FF3A00849AE6 /* BulletinBoard.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BulletinBoard.xib; sourceTree = "<group>"; };
 		B934953820093C0D00849AE6 /* BulletinPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletinPresentationController.swift; sourceTree = "<group>"; };
+		C01DE89A205DEE9300A9204A /* BulletinBoard.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = BulletinBoard.podspec; sourceTree = "<group>"; };
 		C0741821200A9F6400891D2B /* BulletinItemAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletinItemAction.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -58,6 +60,7 @@
 		52D6D9721BEFF229002C0205 = {
 			isa = PBXGroup;
 			children = (
+				C01DE89A205DEE9300A9204A /* BulletinBoard.podspec */,
 				8933C7811EB5B7E0000D00A4 /* Sources */,
 				52D6D99C1BEFF38C002C0205 /* Configs */,
 				52D6D97D1BEFF229002C0205 /* Products */,
@@ -211,6 +214,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C01DE89B205DEE9300A9204A /* BulletinBoard.podspec in Resources */,
 				B93495372008FF3A00849AE6 /* BulletinBoard.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

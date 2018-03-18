@@ -77,7 +77,7 @@ class BulletinSwipeInteractionController: UIPercentDrivenInteractiveTransition, 
 
             gestureRecognizer.setTranslation(.zero, in: contentView)
 
-            guard viewController.isDismissable else {
+            guard viewController.currentItem.isDismissable else {
                 isInteractionInProgress = false
                 return
             }

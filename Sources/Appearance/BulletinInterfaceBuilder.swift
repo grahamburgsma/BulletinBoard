@@ -88,7 +88,7 @@ open class BulletinInterfaceBuilder {
     static func actionButton(title: String?) -> HighlightButtonWrapper {
 
 		let actionButton = HighlightButton(type: .custom)
-		actionButton.setBackgroundColor(#colorLiteral(red: 0, green: 0.4784313725, blue: 1, alpha: 1), forState: .normal)
+		actionButton.backgroundColor = #colorLiteral(red: 0, green: 0.4784313725, blue: 1, alpha: 1)
 		actionButton.setTitleColor(.white, for: .normal)
 		actionButton.contentHorizontalAlignment = .center
 

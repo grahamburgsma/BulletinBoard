@@ -26,10 +26,6 @@
             <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <activityIndicatorView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="gcr-BY-SJX">
-                    <rect key="frame" x="365.5" y="503.5" width="37" height="37"/>
-                    <color key="color" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                </activityIndicatorView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZwM-bG-OYm">
                     <rect key="frame" x="162" y="448" width="444" height="148"/>
                     <subviews>
@@ -37,11 +33,17 @@
                             <rect key="frame" x="24" y="24" width="396" height="100"/>
                             <variation key="heightClass=regular-widthClass=regular" spacing="28"/>
                         </stackView>
+                        <activityIndicatorView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="gcr-BY-SJX">
+                            <rect key="frame" x="203" y="55" width="37" height="37"/>
+                            <color key="color" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </activityIndicatorView>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="trailingMargin" secondItem="BgX-jg-QK4" secondAttribute="trailing" id="17L-jB-3CL"/>
                         <constraint firstItem="BgX-jg-QK4" firstAttribute="leading" secondItem="ZwM-bG-OYm" secondAttribute="leadingMargin" id="1TM-oc-U7Z"/>
+                        <constraint firstItem="gcr-BY-SJX" firstAttribute="centerY" secondItem="ZwM-bG-OYm" secondAttribute="centerY" id="E0W-kj-ZM3"/>
+                        <constraint firstItem="gcr-BY-SJX" firstAttribute="centerX" secondItem="ZwM-bG-OYm" secondAttribute="centerX" id="hgt-mH-Y2W"/>
                         <constraint firstAttribute="width" constant="444" id="jH5-iM-p4n"/>
                         <constraint firstAttribute="bottomMargin" secondItem="BgX-jg-QK4" secondAttribute="bottom" id="oaH-TR-RwC"/>
                         <constraint firstItem="BgX-jg-QK4" firstAttribute="top" secondItem="ZwM-bG-OYm" secondAttribute="topMargin" id="sa5-xA-xz4"/>
@@ -62,12 +64,10 @@
             <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="ZwM-bG-OYm" secondAttribute="trailing" constant="12" id="1jE-mX-4kT"/>
-                <constraint firstItem="gcr-BY-SJX" firstAttribute="centerX" secondItem="ZwM-bG-OYm" secondAttribute="centerX" id="7el-kA-Mvp"/>
                 <constraint firstItem="ZwM-bG-OYm" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="91I-LC-vev"/>
                 <constraint firstItem="ZwM-bG-OYm" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="12" id="GJ7-OA-Jy5"/>
                 <constraint firstItem="ZwM-bG-OYm" firstAttribute="top" relation="greaterThanOrEqual" secondItem="vUN-kp-3ea" secondAttribute="top" constant="12" id="Mru-cN-h9S"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="ZwM-bG-OYm" secondAttribute="bottom" constant="12" id="dso-wr-LTW"/>
-                <constraint firstItem="gcr-BY-SJX" firstAttribute="centerY" secondItem="ZwM-bG-OYm" secondAttribute="centerY" id="en2-9v-SO4"/>
                 <constraint firstItem="ZwM-bG-OYm" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="yQY-lS-Y6J"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>

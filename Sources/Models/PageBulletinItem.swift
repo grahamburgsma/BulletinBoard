@@ -36,17 +36,25 @@ open class PageBulletinItem: NSObject, BulletinItem {
 	public private(set) var descriptionLabel: UILabel?
 	public private(set) var imageView: UIImageView?
 
-	private var actions = [UIButton: BulletinItemAction]()
+	public var actions = [UIButton: BulletinItemAction]()
 
 	public init(title: String?, description: String?, image: UIImage?) {
 		if let title = title {
-			views.append(BulletinInterfaceBuilder.titleLabel(text: title))
+			let label = BulletinInterfaceBuilder.titleLabel(text: title)
+			titleLabel = label
+			views.append(label)
 		}
+
 		if let description = description {
-			views.append(BulletinInterfaceBuilder.descriptionLabel(text: description))
+			let label = BulletinInterfaceBuilder.descriptionLabel(text: description)
+			descriptionLabel = label
+			views.append(label)
 		}
+
 		if let image = image {
-			views.append(BulletinInterfaceBuilder.imageView(image: image))
+			let imageView = BulletinInterfaceBuilder.imageView(image: image)
+			self.imageView = imageView
+			views.append(imageView)
 		}
     }
 
@@ -57,6 +65,7 @@ open class PageBulletinItem: NSObject, BulletinItem {
 			view.button.addTarget(self, action: #selector(buttonTouchUpInside(_:)), for: .touchUpInside)
 			actions[view.button] = action
 			views.append(view)
+			self
 		case .alternate:
 			let button = BulletinInterfaceBuilder.alternativeButton(title: action.title)
 			button.addTarget(self, action: #selector(buttonTouchUpInside(_:)), for: .touchUpInside)

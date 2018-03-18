@@ -15,14 +15,21 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 		}
 	}
 
-	private var currentIndex: Int? {
-		return items.index(where: { $0 === currentItem })
+	private var currentIndex: Int {
+		return items.index(where: { $0 === currentItem }) ?? 0
 	}
 
 	public var backgroundViewStyle: BulletinBackgroundViewStyle = .dimmed
 	public var cornerRadius: CGFloat = 12 {
 		didSet {
 			contentView.layer.cornerRadius = cornerRadius
+		}
+	}
+
+	var isLoading: Bool = false {
+		didSet {
+			activityIndicator.isHidden = !isLoading
+			contentView.isHidden = isLoading
 		}
 	}
 
@@ -35,7 +42,7 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 	@IBOutlet weak var centerYConstraint: NSLayoutConstraint!
 	@IBOutlet weak var bottomYConstraint: NSLayoutConstraint!
 
-	var isDismissable: Bool = false
+	public var dismissalHandler: (() -> Void)?
 
 	var swipeInteractionController: BulletinSwipeInteractionController!
 
@@ -64,19 +71,22 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 	public override func viewDidLoad() {
 		super.viewDidLoad()
 
-		if #available(iOSApplicationExtension 11.0, *) {
-			cornerRadius = screenHasRoundedCorners ? 36 : 12
-		} else {
-			cornerRadius = 12
-		}
+		setCornerRadius()
 
 		setUpKeyboardLogic()
 		show(item: currentItem, animated: false)
 	}
 
+	public override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+		dismissalHandler?()
+		super.dismiss(animated: flag, completion: completion)
+	}
+
 	// MARK: - Touch Events
 
 	@IBAction fileprivate func handleTap(recognizer: UITapGestureRecognizer) {
+		guard currentItem.isDismissable else { return }
+		
 		dismiss(animated: true, completion: nil)
 	}
 
@@ -90,14 +100,13 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 
 	deinit {
 		print("DEINIT: ", String(describing: self))
-		cleanUpKeyboardLogic()
 	}
 
-	@available(iOSApplicationExtension 11.0, *)
+	@available(iOS 11.0, *)
 	public override func viewSafeAreaInsetsDidChange() {
 		super.viewSafeAreaInsetsDidChange()
 
-		cornerRadius = screenHasRoundedCorners ? 36 : 12
+		setCornerRadius()
 	}
 }
 
@@ -133,8 +142,6 @@ extension BulletinBoard {
 		let finalAnimationPhase = AnimationPhase(relativeDuration: 1 / 3, curve: .linear, animations: {
 			newArrangedSubviews.forEach { $0.alpha = 1 }
 		}, completion: {
-			self.isDismissable = self.currentItem.isDismissable
-
 			oldArrangedSubviews.forEach { $0.removeFromSuperview() }
 
 			UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, newArrangedSubviews.first)
@@ -152,9 +159,21 @@ extension BulletinBoard {
 	}
 
 	public func showNext() {
-		if let index = currentIndex, items.count > index {
-			currentItem = items[index + 1]
+		if hasNext {
+			currentItem = items[currentIndex + 1]
 		}
+	}
+
+	public func showNextOrDismiss() {
+		if hasNext {
+			currentItem = items[currentIndex + 1]
+		} else {
+			dismiss(animated: true, completion: nil)
+		}
+	}
+
+	public var hasNext: Bool {
+		return currentIndex + 1 < items.count
 	}
 
 	public func showLast() {
@@ -171,20 +190,14 @@ extension BulletinBoard {
 		return view.safeAreaInsets.bottom > 0
 	}
 
-	fileprivate func updateCornerRadius() {
-
-//		if cardPadding.rawValue == 0 {
-//			contentView.layer.cornerRadius = 0
-//			return
-//		}
-
-		var defaultRadius: CGFloat = 12
-
-		if #available(iOS 11.0, *) {
-			defaultRadius = screenHasRoundedCorners ? 36 : 12
+	func setCornerRadius() {
+		if traitCollection.horizontalSizeClass == .regular {
+			cornerRadius = 36
+		} else if #available(iOS 11.0, *) {
+			cornerRadius = screenHasRoundedCorners ? 36 : 12
+		} else {
+			cornerRadius = 12
 		}
-
-		contentView.layer.cornerRadius = defaultRadius
 	}
 }
 

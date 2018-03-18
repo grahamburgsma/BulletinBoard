@@ -10,16 +10,9 @@ import UIKit
 
 extension BulletinBoard {
 
-	
-
 	func setUpKeyboardLogic() {
 		NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardShow), name: .UIKeyboardWillShow, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardHide), name: .UIKeyboardWillHide, object: nil)
-	}
-
-	func cleanUpKeyboardLogic() {
-		NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
-		NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
 	}
 
 	@objc func onKeyboardShow(_ notification: Notification) {
@@ -38,16 +31,18 @@ extension BulletinBoard {
 
 		let animationOptions = UIViewAnimationOptions(rawValue: UInt(curveInt << 16))
 
+		if centerYConstraint.isActive { // iPad
+			let offset = keyboardFrameFinal.minY - contentView.frame.maxY - 10
+			if offset < 0 {
+				centerYConstraint.constant = offset
+			}
+		} else if bottomYConstraint.isActive { //iPhone
+			bottomYConstraint.constant = -keyboardFrameFinal.size.height
+		}
+
 		UIView.animate(withDuration: duration, delay: 0, options: animationOptions, animations: {
-			var bottomSpacing = -(keyboardFrameFinal.size.height)
-
-//			self.minYConstraint.isActive = false
-//			self.contentBottomConstraint.constant = bottomSpacing
-//			self.centerYConstraint.constant = -(keyboardFrameFinal.size.height + 12) / 2
-//			self.contentView.superview?.layoutIfNeeded()
-
+			self.view.layoutIfNeeded()
 		}, completion: nil)
-
 	}
 
 	@objc func onKeyboardHide(_ notification: Notification) {
@@ -65,12 +60,11 @@ extension BulletinBoard {
 
 		let animationOptions = UIViewAnimationOptions(rawValue: UInt(curveInt << 16))
 
-		UIView.animate(withDuration: duration, delay: 0, options: animationOptions, animations: {
-//			self.minYConstraint.isActive = true
-//			self.contentBottomConstraint.constant = -self.bottomMargin()
-//			self.centerYConstraint.constant = 0
-//			self.contentView.superview?.layoutIfNeeded()
-		}, completion: nil)
+		centerYConstraint.constant = 0
+		bottomYConstraint.constant = 0
 
+		UIView.animate(withDuration: duration, delay: 0, options: animationOptions, animations: {
+			self.view.layoutIfNeeded()
+		}, completion: nil)
 	}
 }
