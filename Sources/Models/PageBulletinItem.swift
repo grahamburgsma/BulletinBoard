@@ -32,14 +32,15 @@ open class PageBulletinItem: NSObject, BulletinItem {
 
 	public var views: [UIView] = [UIView]()
 
-	public var actions = [UIButton: BulletinItemAction]()
-
 	public private(set) var titleLabel: UILabel?
 	public private(set) var imageView: UIImageView?
 	public private(set) var descriptionLabel: UILabel?
 
 	public private(set) var mainButton: UIButton?
 	public private(set) var alternateButton: UIButton?
+
+	public private(set) var mainAction: BulletinItemAction?
+	public private(set) var alternateAction: BulletinItemAction?
 
 	public init(title: String?, image: UIImage? = nil, description: String?, mainAction: BulletinItemAction?, alternateAction: BulletinItemAction? = nil) {
 		super.init()
@@ -67,7 +68,7 @@ open class PageBulletinItem: NSObject, BulletinItem {
 		if let action = mainAction {
 			let view = BulletinInterfaceBuilder.actionButton(title: action.title)
 			mainButton = view.button
-			actions[view.button] = action
+			self.mainAction = action
 			view.button.addTarget(self, action: #selector(buttonTouchUpInside(_:)), for: .touchUpInside)
 			buttons.append(view)
 		}
@@ -75,7 +76,7 @@ open class PageBulletinItem: NSObject, BulletinItem {
 		if let action = alternateAction {
 			let button = BulletinInterfaceBuilder.alternativeButton(title: action.title)
 			alternateButton = button
-			actions[button] = action
+			self.alternateAction = action
 			button.addTarget(self, action: #selector(buttonTouchUpInside(_:)), for: .touchUpInside)
 			buttons.append(button)
 		}
@@ -89,7 +90,11 @@ open class PageBulletinItem: NSObject, BulletinItem {
     }
 
 	@objc private func buttonTouchUpInside(_ sender: UIButton) {
-		actions[sender]?.handler?(self)
+		if sender == mainButton {
+			mainAction?.handler?(self)
+		} else if sender == alternateButton {
+			alternateAction?.handler?(self)
+		}
 	}
 
 	deinit {
