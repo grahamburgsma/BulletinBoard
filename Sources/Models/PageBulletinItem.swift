@@ -32,22 +32,21 @@ open class PageBulletinItem: NSObject, BulletinItem {
 
 	public var views: [UIView] = [UIView]()
 
-	public private(set) var titleLabel: UILabel?
-	public private(set) var descriptionLabel: UILabel?
-	public private(set) var imageView: UIImageView?
-
 	public var actions = [UIButton: BulletinItemAction]()
 
-	public init(title: String?, description: String?, image: UIImage?) {
+	public private(set) var titleLabel: UILabel?
+	public private(set) var imageView: UIImageView?
+	public private(set) var descriptionLabel: UILabel?
+
+	public private(set) var mainButton: UIButton?
+	public private(set) var alternateButton: UIButton?
+
+	public init(title: String?, image: UIImage? = nil, description: String?, mainAction: BulletinItemAction?, alternateAction: BulletinItemAction? = nil) {
+		super.init()
+
 		if let title = title {
 			let label = BulletinInterfaceBuilder.titleLabel(text: title)
 			titleLabel = label
-			views.append(label)
-		}
-
-		if let description = description {
-			let label = BulletinInterfaceBuilder.descriptionLabel(text: description)
-			descriptionLabel = label
 			views.append(label)
 		}
 
@@ -56,23 +55,38 @@ open class PageBulletinItem: NSObject, BulletinItem {
 			self.imageView = imageView
 			views.append(imageView)
 		}
-    }
 
-	public func addAction(_ action: BulletinItemAction) {
-		switch action.style {
-		case .main:
-			let view = BulletinInterfaceBuilder.actionButton(title: action.title)
-			view.button.addTarget(self, action: #selector(buttonTouchUpInside(_:)), for: .touchUpInside)
-			actions[view.button] = action
-			views.append(view)
-			self
-		case .alternate:
-			let button = BulletinInterfaceBuilder.alternativeButton(title: action.title)
-			button.addTarget(self, action: #selector(buttonTouchUpInside(_:)), for: .touchUpInside)
-			actions[button] = action
-			views.append(button)
+		if let description = description {
+			let label = BulletinInterfaceBuilder.descriptionLabel(text: description)
+			descriptionLabel = label
+			views.append(label)
 		}
-	}
+
+		var buttons = [UIView]()
+
+		if let action = mainAction {
+			let view = BulletinInterfaceBuilder.actionButton(title: action.title)
+			mainButton = view.button
+			actions[view.button] = action
+			view.button.addTarget(self, action: #selector(buttonTouchUpInside(_:)), for: .touchUpInside)
+			buttons.append(view)
+		}
+
+		if let action = alternateAction {
+			let button = BulletinInterfaceBuilder.alternativeButton(title: action.title)
+			alternateButton = button
+			actions[button] = action
+			button.addTarget(self, action: #selector(buttonTouchUpInside(_:)), for: .touchUpInside)
+			buttons.append(button)
+		}
+
+		if buttons.isEmpty == false {
+			let buttonStackView = UIStackView(arrangedSubviews: buttons)
+			buttonStackView.axis = .vertical
+			buttonStackView.spacing = 10
+			views.append(buttonStackView)
+		}
+    }
 
 	@objc private func buttonTouchUpInside(_ sender: UIButton) {
 		actions[sender]?.handler?(self)

@@ -8,19 +8,13 @@
 
 import Foundation
 
-public enum BulletinItemActionStyle {
-	case main, alternate
-}
-
 public class BulletinItemAction: NSObject {
 
 	public let title: String?
-	public let style: BulletinItemActionStyle
 	public var handler: ((BulletinItem) -> Void)?
 
-	public init(title: String?, style: BulletinItemActionStyle, handler: ((BulletinItem) -> Void)?) {
+	public init(title: String?, handler: ((BulletinItem) -> Void)?) {
 		self.title = title
-		self.style = style
 		self.handler = handler
 	}
 }

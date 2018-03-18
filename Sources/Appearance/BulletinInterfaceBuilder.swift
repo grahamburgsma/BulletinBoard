@@ -26,7 +26,7 @@ open class BulletinInterfaceBuilder {
         titleLabel.adjustsFontSizeToFitWidth = true
 		titleLabel.text = text
 
-		titleLabel.font = .systemFont(ofSize: 30)
+		titleLabel.font = .systemFont(ofSize: 30, weight: .medium)
 
         return titleLabel
     }
@@ -93,7 +93,7 @@ open class BulletinInterfaceBuilder {
 		actionButton.contentHorizontalAlignment = .center
 
 		actionButton.setTitle(title, for: .normal)
-		actionButton.titleLabel?.font = .systemFont(ofSize: 17)
+		actionButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
 
 		actionButton.layer.cornerRadius = 12
 		actionButton.clipsToBounds = true
@@ -116,7 +116,7 @@ open class BulletinInterfaceBuilder {
         let alternativeButton = UIButton(type: .system)
         alternativeButton.setTitle(title, for: .normal)
         alternativeButton.setTitleColor(#colorLiteral(red: 0, green: 0.4784313725, blue: 1, alpha: 1), for: .normal)
-        alternativeButton.titleLabel?.font = .systemFont(ofSize: 15)
+        alternativeButton.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold)
 
         return alternativeButton
     }
