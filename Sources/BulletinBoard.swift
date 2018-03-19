@@ -7,7 +7,11 @@ import UIKit
 
 final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate {
 
-	public var items: [BulletinItem]
+	public var items: [BulletinItem] {
+		didSet {
+			items.forEach { $0.board = self }
+		}
+	}
 
 	public var currentItem: BulletinItem {
 		didSet {
@@ -46,14 +50,19 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 
 	var swipeInteractionController: BulletinSwipeInteractionController!
 
+	public convenience init(_ item: BulletinItem) {
+		self.init(items: [item])
+	}
+
 	public init(items: [BulletinItem]) {
 		precondition(items.isEmpty == false, "Must provide at least 1 item")
+
 		self.items = items
 		self.currentItem = items.first!
 
 		super.init(nibName: "BulletinBoard", bundle: Bundle(for: type(of: self)))
 
-		self.items.forEach { $0.board = self }
+		items.forEach { $0.board = self }
 
 		modalPresentationStyle = .custom
 		transitioningDelegate = self
