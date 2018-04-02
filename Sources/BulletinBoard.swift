@@ -87,8 +87,10 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 	}
 
 	public override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
-		dismissalHandler?(self)
-		super.dismiss(animated: flag, completion: completion)
+		super.dismiss(animated: flag) {
+			self.dismissalHandler?(self)
+			completion?()
+		}
 	}
 
 	// MARK: - Touch Events
