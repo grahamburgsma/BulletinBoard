@@ -46,7 +46,7 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 	@IBOutlet weak var centerYConstraint: NSLayoutConstraint!
 	@IBOutlet weak var bottomYConstraint: NSLayoutConstraint!
 
-	public var dismissalHandler: (() -> Void)?
+	public var dismissalHandler: ((BulletinBoard) -> Void)?
 
 	var swipeInteractionController: BulletinSwipeInteractionController!
 
@@ -87,7 +87,7 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 	}
 
 	public override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
-		dismissalHandler?()
+		dismissalHandler?(self)
 		super.dismiss(animated: flag, completion: completion)
 	}
 
@@ -105,10 +105,6 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 		}
 
 		return true
-	}
-
-	deinit {
-		print("DEINIT: ", String(describing: self))
 	}
 
 	@available(iOS 11.0, *)
