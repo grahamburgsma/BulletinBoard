@@ -10,13 +10,69 @@ import UIKit
 
 class BulletinPresentationController: UIPresentationController {
 
-	let backgroundView: BulletinBackgroundView
+    /// Dismiss the presented view controller when dimming view is tapped.
+    /// Defaults to `true`.
+    open var dimissOnTap: Bool = true
+
+    /// Presented view should be placed within these insets.
+    /// Defaults to (16, 16, 16, 16)
+    open var contentMargins: UIEdgeInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+
+    let backgroundView: BulletinBackgroundView
 
 	init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?, backgroundStyle: BulletinBackgroundViewStyle) {
 		backgroundView = BulletinBackgroundView(style: backgroundStyle)
 
 		super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
+
+        if dimissOnTap {
+            let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture))
+            backgroundView.addGestureRecognizer(tapRecognizer)
+        }
 	}
+
+    @objc func handleTapGesture() {
+        presentedViewController.dismiss(animated: true)
+    }
+
+    open override var frameOfPresentedViewInContainerView: CGRect {
+        var margins = contentMargins
+
+        if #available(iOS 11.0, *), let insets = containerView?.safeAreaInsets {
+            margins += insets
+        }
+
+        let parentFrame = containerView!.bounds
+        let availableSize = UIEdgeInsetsInsetRect(parentFrame, margins).size
+        let preferredSize = size(forChildContentContainer: presentedViewController,
+                                 withParentContainerSize: availableSize)
+
+        let width = min(preferredSize.width, availableSize.width)
+        let height = min(preferredSize.height, availableSize.height)
+
+        let newSize = CGSize(width: width, height: height)
+        let origin = CGPoint(x: (parentFrame.width - width) / 2,
+                             y: parentFrame.height - height - margins.bottom)
+
+        return CGRect(origin: origin, size: newSize)
+    }
+
+    open override func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
+        super.preferredContentSizeDidChange(forChildContentContainer: container)
+
+        if container === presentedViewController {
+            containerView?.setNeedsLayout()
+            containerView?.layoutIfNeeded()
+        }
+    }
+
+    open override func size(forChildContentContainer container: UIContentContainer, withParentContainerSize parentSize: CGSize) -> CGSize {
+        return container.preferredContentSize
+    }
+
+    open override func containerViewWillLayoutSubviews() {
+        presentedView?.frame = frameOfPresentedViewInContainerView
+    }
 
     open override func presentationTransitionWillBegin() {
         super.presentationTransitionWillBegin()

@@ -79,20 +79,24 @@ public class AnimationChain {
         }
 
         let animation = animations.removeFirst()
-
         let duration = animation.relativeDuration * self.duration
-        let options = UIViewAnimationOptions(rawValue: UInt(animation.curve.rawValue << 16))
         let delay: TimeInterval = didFinishFirstAnimation ? 0 : initialDelay
 
-        UIView.animate(withDuration: duration, delay: delay, options: options, animations: animation.animations) { _ in
-
+        let completion: (UIViewAnimatingPosition) -> Void = { _ in
             self.didFinishFirstAnimation = true
 
             animation.completion?()
             self.performNextAnimation()
-
         }
 
+        if self.duration == 0 {
+            animation.animations()
+            completion(.end)
+        } else {
+            let animator = UIViewPropertyAnimator(duration: duration, curve: animation.curve, animations: animation.animations)
+            animator.addCompletion(completion)
+            animator.startAnimation(afterDelay: delay)
+        }
     }
 
     private func completeGroup() {

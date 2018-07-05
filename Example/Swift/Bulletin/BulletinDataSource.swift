@@ -134,18 +134,20 @@ enum BulletinDataSource {
 
 	static func makeLocationPage() -> FeedbackPageBulletinItem {
 
-		let page = FeedbackPageBulletinItem(title: "Customize Feed",
-                                            image:#imageLiteral(resourceName: "LocationPrompt"), description: "We can use your location to customize the feed. This data will be sent to our servers anonymously. You can update your choice later in the app settings.",
-                                            mainAction: nil)
+        let main = BulletinItemAction(title: "Send location data") { (page) in
+            PermissionsManager.shared.requestWhenInUseLocation()
+            page.board?.showNext()
+        }
 
-//        page.addAction(BulletinItemAction(title: "Send location data") { (page) in
-//            PermissionsManager.shared.requestWhenInUseLocation()
-//            page.board?.showNext()
-//        })
-//
-//        page.addAction(BulletinItemAction(title: "No thanks") { (page) in
-//            page.board?.showNext()
-//        })
+        let alternate = BulletinItemAction(title: "No thanks") { (page) in
+            page.board?.showNext()
+        }
+
+        let page = FeedbackPageBulletinItem(title: "Customize Feed",
+                                            image:#imageLiteral(resourceName: "LocationPrompt"), description: "We can use your location to customize the feed. This data will be sent to our servers anonymously. You can update your choice later in the app settings.",
+                                            mainAction: main,
+                                            alternateAction: alternate)
+
 
 		page.descriptionLabel?.font = .systemFont(ofSize: 15)
 

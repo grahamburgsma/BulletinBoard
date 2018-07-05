@@ -33,14 +33,14 @@ extension BulletinBoard {
 
 		let animationOptions = UIViewAnimationOptions(rawValue: UInt(curveInt << 16))
 
-		if centerYConstraint.isActive { // iPad
-			let offset = keyboardFrameFinal.minY - contentView.frame.maxY - spacing
-			if offset < 0 {
-				centerYConstraint.constant = offset
-			}
-		} else if bottomYConstraint.isActive { //iPhone
-			bottomYConstraint.constant = keyboardFrameFinal.height
-		}
+//        if centerYConstraint.isActive { // iPad
+//            let offset = keyboardFrameFinal.minY - contentView.frame.maxY - spacing
+//            if offset < 0 {
+//                centerYConstraint.constant = offset
+//            }
+//        } else if bottomYConstraint.isActive { //iPhone
+//            bottomYConstraint.constant = keyboardFrameFinal.height
+//        }
 
 		UIView.animate(withDuration: duration, delay: 0, options: animationOptions, animations: {
 			self.view.layoutIfNeeded()
@@ -62,8 +62,8 @@ extension BulletinBoard {
 
 		let animationOptions = UIViewAnimationOptions(rawValue: UInt(curveInt << 16))
 
-		centerYConstraint.constant = 0
-		bottomYConstraint.constant = spacing
+//        centerYConstraint.constant = 0
+//        bottomYConstraint.constant = spacing
 
 		UIView.animate(withDuration: duration, delay: 0, options: animationOptions, animations: {
 			self.view.layoutIfNeeded()

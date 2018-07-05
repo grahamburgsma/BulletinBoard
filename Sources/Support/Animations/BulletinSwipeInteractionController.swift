@@ -99,7 +99,7 @@ class BulletinSwipeInteractionController: UIPercentDrivenInteractiveTransition {
                 animator.isReversed = false
             }
 
-            let percentComplete = animator.fractionComplete + (translation.y / context.containerView.frame.height)
+            let percentComplete = animator.fractionComplete + (translation.y / distance())
 
             animator.fractionComplete = min(percentComplete, 1.0)
 
@@ -113,6 +113,23 @@ class BulletinSwipeInteractionController: UIPercentDrivenInteractiveTransition {
         }
     }
 
+    private func distance() -> CGFloat {
+        guard
+            let context = transitionContext,
+            let viewController = context.viewController(forKey: animationController.operation.contextViewControllerKey)
+            else { return 0.0 }
+
+        let frame: CGRect
+        switch animationController.operation {
+        case .present:
+            frame = context.finalFrame(for: viewController)
+        case .dismiss:
+            frame = context.initialFrame(for: viewController)
+        }
+
+        return context.containerView.frame.height - frame.minY
+    }
+
     private func interactionEnded() {
         guard
             let animator = animationController.animator,
@@ -123,7 +140,7 @@ class BulletinSwipeInteractionController: UIPercentDrivenInteractiveTransition {
         let fractionComplete = animator.fractionComplete
         let totalDuration = animator.duration
 
-        let distance = context.containerView.frame.height
+        let distance = self.distance()
         let velocity = panGestureRecognizer.velocity(in: context.containerView)
         let directionalVelocity = velocity.y
         let magnitude = abs(directionalVelocity)

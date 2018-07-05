@@ -22,6 +22,7 @@
 		B934953920093C0D00849AE6 /* BulletinPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B934953820093C0D00849AE6 /* BulletinPresentationController.swift */; };
 		C01DE89B205DEE9300A9204A /* BulletinBoard.podspec in Resources */ = {isa = PBXBuildFile; fileRef = C01DE89A205DEE9300A9204A /* BulletinBoard.podspec */; };
 		C069757E20EE461300B85BBC /* TransitionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C069757D20EE461200B85BBC /* TransitionOperation.swift */; };
+		C069758020EE58E700B85BBC /* UIEdgeInsetsExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C069757F20EE58E700B85BBC /* UIEdgeInsetsExtensions.swift */; };
 		C0741822200A9F6400891D2B /* BulletinItemAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0741821200A9F6400891D2B /* BulletinItemAction.swift */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 		B934953820093C0D00849AE6 /* BulletinPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletinPresentationController.swift; sourceTree = "<group>"; };
 		C01DE89A205DEE9300A9204A /* BulletinBoard.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = BulletinBoard.podspec; sourceTree = "<group>"; };
 		C069757D20EE461200B85BBC /* TransitionOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionOperation.swift; sourceTree = "<group>"; };
+		C069757F20EE58E700B85BBC /* UIEdgeInsetsExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIEdgeInsetsExtensions.swift; sourceTree = "<group>"; };
 		C0741821200A9F6400891D2B /* BulletinItemAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletinItemAction.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -126,6 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				55BF9C011F962FD700347D45 /* UIView+SafeAnchors.swift */,
+				C069757F20EE58E700B85BBC /* UIEdgeInsetsExtensions.swift */,
 				55B3D1D21FDD645900737791 /* Views */,
 				55B3D1D31FDD646400737791 /* Animations */,
 			);
@@ -234,6 +237,7 @@
 				558A12371F7D73E6005EC97C /* BulletinItem.swift in Sources */,
 				C0741822200A9F6400891D2B /* BulletinItemAction.swift in Sources */,
 				5543848B1F91FAC500AFFBCD /* BulletinAnimationController.swift in Sources */,
+				C069758020EE58E700B85BBC /* UIEdgeInsetsExtensions.swift in Sources */,
 				5543848D1F92026200AFFBCD /* BulletinBackgroundView.swift in Sources */,
 				B934953920093C0D00849AE6 /* BulletinPresentationController.swift in Sources */,
 				55BF9C021F962FD700347D45 /* UIView+SafeAnchors.swift in Sources */,

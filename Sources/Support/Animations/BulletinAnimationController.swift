@@ -53,14 +53,15 @@ class BulletinAnimationController: NSObject, UIViewControllerAnimatedTransitioni
         case .present:
             transitionContext.containerView.addSubview(view)
 
-            view.frame.origin.y = finalFrame.height
+            view.frame = finalFrame
+            view.frame.origin.y = transitionContext.containerView.frame.height
 
             changes = {
                 view.frame = transitionContext.finalFrame(for: viewController)
             }
         case .dismiss:
             changes = {
-                view.frame.origin.y = finalFrame.height
+                view.frame.origin.y = transitionContext.containerView.frame.height
             }
         }
 

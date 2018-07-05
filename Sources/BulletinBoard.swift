@@ -26,29 +26,26 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 	public var backgroundViewStyle: BulletinBackgroundViewStyle = .dimmed
 	public var cornerRadius: CGFloat = 12 {
 		didSet {
-			contentView.layer.cornerRadius = cornerRadius
+			view.layer.cornerRadius = cornerRadius
 		}
 	}
 
 	var isLoading: Bool = false {
 		didSet {
 			activityIndicator.isHidden = !isLoading
-			contentView.isHidden = isLoading
+			contentStackView.isHidden = isLoading
 		}
 	}
 
-	public var allowsSwipeInteraction: Bool = true
+    public var allowDismissal: Bool = true
+	public var allowSwipeInteraction: Bool = true
 
-	@IBOutlet var contentView: UIView!
 	@IBOutlet var contentStackView: UIStackView!
 	@IBOutlet var activityIndicator: UIActivityIndicatorView!
 
-	@IBOutlet weak var centerYConstraint: NSLayoutConstraint!
-	@IBOutlet weak var bottomYConstraint: NSLayoutConstraint!
-
-	public var dismissalHandler: ((BulletinBoard) -> Void)?
-
     var panGestureRecognizer: UIPanGestureRecognizer!
+
+    public var dismissalHandler: ((BulletinBoard) -> Void)?
 
 	public convenience init(_ item: BulletinItem) {
 		self.init(items: [item])
@@ -62,26 +59,27 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 
 		super.init(nibName: "BulletinBoard", bundle: Bundle(for: type(of: self)))
 
-		items.forEach { $0.board = self }
+        panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
+        
+        items.forEach { $0.board = self }
 
-		modalPresentationStyle = .custom
-		transitioningDelegate = self
-		setNeedsStatusBarAppearanceUpdate()
+        modalPresentationStyle = .custom
+        transitioningDelegate = self
+        setNeedsStatusBarAppearanceUpdate()
 
-		if #available(iOS 11.0, *) {
-			setNeedsUpdateOfHomeIndicatorAutoHidden()
-		}
-	}
+        if #available(iOS 11.0, *) {
+            setNeedsUpdateOfHomeIndicatorAutoHidden()
+        }
+    }
 
-	required public init?(coder aDecoder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
-	}
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
-	public override func viewDidLoad() {
-		super.viewDidLoad()
+    public override func viewDidLoad() {
+        super.viewDidLoad()
 
-        panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
-        contentView.addGestureRecognizer(panGestureRecognizer)
+        view.addGestureRecognizer(panGestureRecognizer)
 
 		setCornerRadius()
 
@@ -97,26 +95,11 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 	}
 
 	// MARK: - Touch Events
-
-    @objc func handlePan(_ recognizer: UIPanGestureRecognizer) {
+    @objc private func handlePan(_ recognizer: UIPanGestureRecognizer) {
         if recognizer.state == .began, isBeingDismissed == false, isBeingPresented == false {
             dismiss(animated: true)
         }
     }
-
-	@IBAction fileprivate func handleTap(recognizer: UITapGestureRecognizer) {
-		guard currentItem.isDismissable else { return }
-		
-		dismiss(animated: true, completion: nil)
-	}
-
-	public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-		if touch.view?.isDescendant(of: contentView) == true {
-			return false
-		}
-
-		return true
-	}
 
 	@available(iOS 11.0, *)
 	public override func viewSafeAreaInsetsDidChange() {
@@ -127,6 +110,13 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 }
 
 extension BulletinBoard {
+
+    func updatePreferredContentSize() {
+        preferredContentSize = view.systemLayoutSizeFitting(
+            CGSize(width: 343, height: UILayoutFittingCompressedSize.height),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel)
+    }
 
 	func show(item: BulletinItem, animated: Bool = true) {
 		let oldArrangedSubviews = contentStackView.arrangedSubviews
@@ -146,11 +136,13 @@ extension BulletinBoard {
 				$0.alpha = 0
 			}
 			newArrangedSubviews.forEach { $0.alpha = 0 }
-		}, completion: nil)
+		}, completion: {
+            newArrangedSubviews.forEach { $0.isHidden = false }
+            oldArrangedSubviews.forEach { $0.isHidden = true }
+        })
 
 		let displayNewItemsAnimationPhase = AnimationPhase(relativeDuration: 1 / 3, curve: .linear, animations: {
-			newArrangedSubviews.forEach { $0.isHidden = false }
-			oldArrangedSubviews.forEach { $0.isHidden = true }
+            self.updatePreferredContentSize()
 		}, completion: {
 			self.contentStackView.alpha = 1
 		 })
@@ -203,7 +195,7 @@ extension BulletinBoard {
 
 	@available(iOS 11.0, *)
 	fileprivate var screenHasRoundedCorners: Bool {
-		return view.safeAreaInsets.bottom > 0
+		return (view.window ?? view).safeAreaInsets.bottom > 0
 	}
 
 	func setCornerRadius() {
@@ -218,11 +210,12 @@ extension BulletinBoard {
 }
 
 // MARK: - Transitions
-
 extension BulletinBoard: UIViewControllerTransitioningDelegate {
 
 	public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-		return BulletinPresentationController(presentedViewController: presented, presenting: presenting, backgroundStyle: backgroundViewStyle)
+        let presentationController: BulletinPresentationController = BulletinPresentationController(presentedViewController: presented, presenting: presenting, backgroundStyle: backgroundViewStyle)
+        presentationController.dimissOnTap = allowDismissal
+        return presentationController
 	}
 
 	public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
@@ -233,9 +226,18 @@ extension BulletinBoard: UIViewControllerTransitioningDelegate {
 		return BulletinAnimationController(operation: .dismiss)
 	}
 
+    public func interactionControllerForPresentation(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        guard
+            allowSwipeInteraction,
+            let animator = animator as? BulletinAnimationController
+            else { return nil }
+
+        return BulletinSwipeInteractionController(animationController: animator, panGestureRecognizer: panGestureRecognizer)
+    }
+
     public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
         guard
-            allowsSwipeInteraction,
+            allowSwipeInteraction,
             let animator = animator as? BulletinAnimationController
             else { return nil }
 
