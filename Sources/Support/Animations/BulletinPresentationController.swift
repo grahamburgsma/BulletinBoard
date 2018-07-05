@@ -18,34 +18,36 @@ class BulletinPresentationController: UIPresentationController {
 		super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
 	}
 
-	override func presentationTransitionWillBegin() {
-		guard let containerView = containerView else { return }
+    open override func presentationTransitionWillBegin() {
+        super.presentationTransitionWillBegin()
 
-		backgroundView.frame = containerView.bounds
-		backgroundView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-		containerView.addSubview(backgroundView)
+        guard let containerView = containerView else { return }
 
-		self.backgroundView.alpha = 0
-		presentingViewController.transitionCoordinator?.animate(alongsideTransition: { _ in
-			self.backgroundView.alpha = 1
-		}, completion: nil)
-	}
+        containerView.addSubview(backgroundView)
+        backgroundView.frame = containerView.bounds
+        backgroundView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 
-	override func presentationTransitionDidEnd(_ completed: Bool) {
-		if !completed {
-			backgroundView.removeFromSuperview()
-		}
-	}
+        backgroundView.alpha = 0.0
+        presentedViewController.transitionCoordinator?.animate(alongsideTransition: { _ in
+            self.backgroundView.alpha = 1.0
+        })
+    }
 
-	override func dismissalTransitionWillBegin() {
-		presentingViewController.transitionCoordinator?.animate(alongsideTransition: { _ in
-			self.backgroundView.alpha = 0
-		}, completion: nil)
-	}
+    open override func presentationTransitionDidEnd(_ completed: Bool) {
+        if !completed {
+            backgroundView.removeFromSuperview()
+        }
+    }
 
-	override func dismissalTransitionDidEnd(_ completed: Bool) {
-		if completed {
-			backgroundView.removeFromSuperview()
-		}
-	}
+    open override func dismissalTransitionWillBegin() {
+        presentedViewController.transitionCoordinator?.animate(alongsideTransition: { _ in
+            self.backgroundView.alpha = 0.0
+        })
+    }
+
+    open override func dismissalTransitionDidEnd(_ completed: Bool) {
+        if completed {
+            backgroundView.removeFromSuperview()
+        }
+    }
 }

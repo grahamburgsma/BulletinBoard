@@ -27,13 +27,14 @@ enum BulletinDataSource {
 
 	static func makeIntroPage() -> FeedbackPageBulletinItem {
 
-		let page = FeedbackPageBulletinItem(title: "Welcome to PetBoard",
-											description: "Discover curated images of the best pets in the world.",
-											image: #imageLiteral(resourceName: "RoundedIcon"))
+        let mainAction = BulletinItemAction(title: "Configure") { (page) in
+            page.board?.showNext()
+        }
 
-		page.addAction(BulletinItemAction(title: "Configure", style: .main) { (page) in
-			page.board?.showNext()
-		})
+		let page = FeedbackPageBulletinItem(title: "Welcome to PetBoard",
+                                            image: #imageLiteral(resourceName: "RoundedIcon"),
+                                            description: "Discover curated images of the best pets in the world.",
+                                            mainAction: mainAction)
 
 		page.isDismissable = true
 
@@ -53,7 +54,7 @@ enum BulletinDataSource {
 //										 description: "To create your profile, please tell us your name. We will use it to customize your feed.",
 //										 image: nil)
 //
-//		page.addAction(BulletinItemAction(title: "Done", style: .main, handler: { (action) in
+//		page.addAction(BulletinItemAction(title: "Done", handler: { (action) in
 //			page.board?.showNext()
 //		}))
 //
@@ -102,18 +103,21 @@ enum BulletinDataSource {
 
 	static func makeNotitificationsPage() -> FeedbackPageBulletinItem {
 
-		let page = FeedbackPageBulletinItem(title: "Push Notifications",
-											description: "Receive push notifications when new photos of pets are available.",
-											image: #imageLiteral(resourceName: "NotificationPrompt"))
+        let mainAction = BulletinItemAction(title: "Subscribe") { (page) in
+            PermissionsManager.shared.requestLocalNotifications()
+            page.board?.showNext()
+        }
 
-		page.addAction(BulletinItemAction(title: "Subscribe", style: .main) { (page) in
-			PermissionsManager.shared.requestLocalNotifications()
-			page.board?.showNext()
-		})
+        let alternateAction = BulletinItemAction(title: "Not now") { (page) in
+            page.board?.showNext()
+        }
 
-		page.addAction(BulletinItemAction(title: "Subscribe", style: .alternate) { (page) in
-			page.board?.showNext()
-		})
+        let page = FeedbackPageBulletinItem(title: "Push Notifications",
+                                            image: #imageLiteral(resourceName: "NotificationPrompt"),
+                                            description: "Receive push notifications when new photos of pets are available.",
+                                            mainAction: mainAction,
+                                            alternateAction: alternateAction)
+
 
 		return page
 	}
@@ -131,17 +135,17 @@ enum BulletinDataSource {
 	static func makeLocationPage() -> FeedbackPageBulletinItem {
 
 		let page = FeedbackPageBulletinItem(title: "Customize Feed",
-											description: "We can use your location to customize the feed. This data will be sent to our servers anonymously. You can update your choice later in the app settings.",
-											image:#imageLiteral(resourceName: "LocationPrompt"))
+                                            image:#imageLiteral(resourceName: "LocationPrompt"), description: "We can use your location to customize the feed. This data will be sent to our servers anonymously. You can update your choice later in the app settings.",
+                                            mainAction: nil)
 
-		page.addAction(BulletinItemAction(title: "Send location data", style: .main) { (page) in
-			PermissionsManager.shared.requestWhenInUseLocation()
-			page.board?.showNext()
-		})
-
-		page.addAction(BulletinItemAction(title: "No thanks", style: .alternate) { (page) in
-			page.board?.showNext()
-		})
+//        page.addAction(BulletinItemAction(title: "Send location data") { (page) in
+//            PermissionsManager.shared.requestWhenInUseLocation()
+//            page.board?.showNext()
+//        })
+//
+//        page.addAction(BulletinItemAction(title: "No thanks") { (page) in
+//            page.board?.showNext()
+//        })
 
 		page.descriptionLabel?.font = .systemFont(ofSize: 15)
 
@@ -176,16 +180,16 @@ enum BulletinDataSource {
 
     static func makeCompletionPage() -> PageBulletinItem {
 		let page = FeedbackPageBulletinItem(title: "Setup Completed",
-											description: "PetBoard is ready for you to use. Happy browsing!",
-											image:#imageLiteral(resourceName: "IntroCompletion"))
+                                            image:#imageLiteral(resourceName: "IntroCompletion"), description: "PetBoard is ready for you to use. Happy browsing!",
+                                            mainAction: nil)
 
-		page.addAction(BulletinItemAction(title: "Get started", style: .main) { (page) in
-			page.board?.dismiss(animated: true, completion: nil)
-		})
-
-		page.addAction(BulletinItemAction(title: "Replay", style: .alternate) { (page) in
-			page.board?.showFirst()
-		})
+//        page.addAction(BulletinItemAction(title: "Get started") { (page) in
+//            page.board?.dismiss(animated: true, completion: nil)
+//        })
+//
+//        page.addAction(BulletinItemAction(title: "Replay") { (page) in
+//            page.board?.showFirst()
+//        })
 
 		page.imageView?.tintColor = #colorLiteral(red: 0.2980392157, green: 0.8509803922, blue: 0.3921568627, alpha: 1)
         page.imageView?.accessibilityLabel = "Checkmark"

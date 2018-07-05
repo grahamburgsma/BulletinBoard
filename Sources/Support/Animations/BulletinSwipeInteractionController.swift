@@ -9,239 +9,242 @@ import UIKit
  * An interaction controller that handles swipe-to-dismiss for bulletins.
  */
 
-class BulletinSwipeInteractionController: UIPercentDrivenInteractiveTransition, UIGestureRecognizerDelegate {
+class BulletinSwipeInteractionController: UIPercentDrivenInteractiveTransition {
 
-    /// Whether a panning interaction is in progress.
-    var isInteractionInProgress = false
+    private weak var transitionContext: UIViewControllerContextTransitioning?
 
-    var panGestureRecognizer: UIPanGestureRecognizer?
+    let panGestureRecognizer: UIPanGestureRecognizer
 
-    // MARK: - State
+    lazy var longPressGestureRecognizer: UILongPressGestureRecognizer = {
+        let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+        recognizer.minimumPressDuration = 0.0
+        recognizer.delegate = self
+        return recognizer
+    }()
 
-    private var isFinished = false
-    private var currentPercentage: CGFloat = -1
-    private weak var viewController: BulletinBoard!
+    let animationController: BulletinAnimationController
 
-    private var contentView: UIView {
-        return viewController.contentView
+    public init(animationController: BulletinAnimationController, panGestureRecognizer: UIPanGestureRecognizer) {
+        self.panGestureRecognizer = panGestureRecognizer
+        self.animationController = animationController
+
+        super.init()
+
+        panGestureRecognizer.delegate = self
+        if panGestureRecognizer.state == .possible {
+            wantsInteractiveStart = false
+        }
     }
 
-    private var activityIndicatorView: UIView {
-        return viewController.activityIndicator
+    deinit {
+        longPressGestureRecognizer.view.map { $0.removeGestureRecognizer(longPressGestureRecognizer) }
+        panGestureRecognizer.removeTarget(self, action: #selector(handleInteraction))
     }
 
-    // MARK: - Preparation
+    override open func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
+        self.transitionContext = transitionContext
 
-    /**
-     * Sets up the interaction recognizer for the given view controller and content view.
-     */
+        animationController.setupAnimator(using: transitionContext)
 
-    func wire(to viewController: BulletinBoard) {
-        self.viewController = viewController
-        prepareGestureRecognizer()
+        if panGestureRecognizer.state == .possible, !wantsInteractiveStart {
+            animationController.animateTransition(using: transitionContext)
+        }
+
+        switch animationController.operation {
+        case .present:
+            transitionContext.view(forKey: .to)?.addGestureRecognizer(longPressGestureRecognizer)
+        case .dismiss:
+            transitionContext.view(forKey: .from)?.addGestureRecognizer(longPressGestureRecognizer)
+        }
+
+        panGestureRecognizer.addTarget(self, action: #selector(handleInteraction))
+        panGestureRecognizer.setTranslation(.zero, in: transitionContext.containerView)
+
+        super.startInteractiveTransition(transitionContext)
     }
 
-    private func prepareGestureRecognizer() {
+    @objc private func handleLongPress(_ recognizer: UILongPressGestureRecognizer) {
+        let animator = animationController.animator!
 
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
-        panGesture.maximumNumberOfTouches = 1
-        panGesture.cancelsTouchesInView = false
-        panGesture.delegate = self
-
-        self.panGestureRecognizer = panGesture
-        contentView.addGestureRecognizer(panGesture)
-
-    }
-
-    // MARK: - Gesture Recognizer
-
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        return !(touch.view is UIControl)
-    }
-
-	@objc func handlePanGesture(gestureRecognizer: UIPanGestureRecognizer) {
-
-        /// Constants
-
-        let screenHeight = viewController.view.bounds.height
-        let distanceFactor: CGFloat = screenHeight >= 500 ? 3/4 : 2/3
-
-        let dismissThreshold: CGFloat = 256 * distanceFactor
-        let elasticThreshold: CGFloat = 128 * distanceFactor
-        let trackScreenPercentage = dismissThreshold / contentView.bounds.height
-
-        switch gestureRecognizer.state {
-        case .began:
-
-            isFinished = false
-
-            gestureRecognizer.setTranslation(.zero, in: contentView)
-
-            guard viewController.currentItem.isDismissable else {
-                isInteractionInProgress = false
-                return
+        switch recognizer.state {
+        case .began, .changed:
+            if animator.isRunning {
+                pause()
             }
+        default:
+            animator.startAnimation()
+            update(animator.fractionComplete)
+        }
+    }
 
-            isInteractionInProgress = true
+    @objc private func handleInteraction(_ recognizer: UIPanGestureRecognizer) {
+        guard
+            let context = transitionContext,
+            let animator = animationController.animator
+            else { return }
 
-            viewController.dismiss(animated: true) {
-
-                guard self.isFinished else {
-                    return
-                }
-
-//                self.viewController.manager?.completeDismissal()
-
+        switch recognizer.state {
+        case .began:
+            if animator.isRunning {
+                pause()
             }
 
         case .changed:
+            let translation = recognizer.translation(in: context.containerView)
 
-            guard !isFinished else {
-                return
+            switch animationController.operation {
+            case .present:
+                animator.isReversed = true
+            case .dismiss:
+                animator.isReversed = false
             }
 
-            let translation = gestureRecognizer.translation(in: contentView)
-            let verticalTranslation = translation.y
-            isFinished = false
+            let percentComplete = animator.fractionComplete + (translation.y / context.containerView.frame.height)
 
-            guard (verticalTranslation > 0) && isInteractionInProgress else {
-                update(0)
-                updateCardViews(forTranslation: translation)
-                return
-            }
+            animator.fractionComplete = min(percentComplete, 1.0)
 
-            let adaptativeTranslation = self.adaptativeTranslation(for: verticalTranslation, elasticThreshold: elasticThreshold)
-            let newPercentage = (adaptativeTranslation / dismissThreshold) * trackScreenPercentage
+            update(animator.fractionComplete)
 
-            guard currentPercentage != newPercentage else {
-                return
-            }
-
-            currentPercentage = newPercentage
-            update(currentPercentage)
-
-        case .cancelled, .failed:
-
-            isInteractionInProgress = false
-
-            if !isFinished {
-                resetCardViews()
-            }
-
-            panGestureRecognizer?.isEnabled = true
-
+            panGestureRecognizer.setTranslation(.zero, in: context.containerView)
         case .ended:
+            interactionEnded()
 
-            guard isInteractionInProgress else {
-                resetCardViews()
-                isFinished = false
-                return
+        default: break
+        }
+    }
+
+    private func interactionEnded() {
+        guard
+            let animator = animationController.animator,
+            let context = transitionContext
+            else { return }
+
+        let operation = animationController.operation
+        let fractionComplete = animator.fractionComplete
+        let totalDuration = animator.duration
+
+        let distance = context.containerView.frame.height
+        let velocity = panGestureRecognizer.velocity(in: context.containerView)
+        let directionalVelocity = velocity.y
+        let magnitude = abs(directionalVelocity)
+
+        let shouldFinish = directionalVelocity > 0
+
+        switch operation {
+        case .present:
+
+            if shouldFinish {
+                completionSpeed = completionSpeedPositive(duration: totalDuration, velocity: magnitude, distance: distance)
+
+                cancel()
+            } else {
+                completionSpeed = completionSpeedNegative(duration: totalDuration, velocity: magnitude, distance: distance, fractionComplete: fractionComplete)
+
+                finish()
             }
+        case .dismiss:
 
-            let translation = gestureRecognizer.translation(in: contentView).y
+            if shouldFinish {
+                completionSpeed = completionSpeedPositive(duration: totalDuration, velocity: magnitude, distance: distance)
 
-            if translation >= dismissThreshold {
-                isFinished = true
-                isInteractionInProgress = false
                 finish()
             } else {
-                resetCardViews()
+                completionSpeed = completionSpeedNegative(duration: totalDuration, velocity: magnitude, distance: distance, fractionComplete: fractionComplete)
+
                 cancel()
-                isFinished = false
             }
-
-        default:
-            break
         }
-
     }
+
+    /**
+     Multiplier to slow down all completions to give a more natual feel.
+     Timing curve can distort time making the animation seem too fast.
+     */
+    private let completionSpeedMultiplier: CGFloat = 0.95
+
+    /**
+     Calculates the completion speed for the animation taking velocity and distance into consideration.
+
+     ```1/x ((1 - fractionComplete) duration) = ((1 - fractionComplete) distance) / velocity```
+
+     - x: The completion speed, we are solving for this.
+     - ((1 - f) t): Is how completionSpeed is calculated by UIPercentDrivenInteractiveTransition.
+     - ((1 - f) d) / v: Calculates the number of seconds the animation should take.
+
+     - Note: (completionSpeed = x), (duration = t), (fractionComplete = f), (distance = d), (velocity = v)
+
+     Simplifies to `x = (t v) / d`
+     */
+    private func completionSpeedPositive(duration: TimeInterval, velocity: CGFloat, distance: CGFloat) -> CGFloat {
+        let speed = (CGFloat(duration) * velocity) / distance
+        return speed * completionSpeedMultiplier
+    }
+
+    /**
+     Similar to `completionSpeedPositive`, difference is (1 - f) on the RHS is now just (f).
+
+     ```1/x ((1 - fractionComplete) duration) = (fractionComplete distance) / velocity```
+
+     - Note: (completionSpeed = x), (duration = t), (fractionComplete = f), (distance = d), (velocity = v)
+
+     Simplifies to `x = -(t (f - 1) v) / (f d)`
+     */
+    private func completionSpeedNegative(duration: TimeInterval, velocity: CGFloat, distance: CGFloat, fractionComplete: CGFloat) -> CGFloat {
+        let speed = -((CGFloat(duration) * (fractionComplete - 1) * velocity) / (fractionComplete * distance))
+        return speed * completionSpeedMultiplier
+    }
+}
+
+extension BulletinSwipeInteractionController: UIGestureRecognizerDelegate {
+
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+}
 
     // MARK: - Math
 
-    // Source: https://github.com/HarshilShah/DeckTransition
-    let elasticTranslationCurve = { (translation: CGFloat, translationFactor: CGFloat) -> CGFloat in
-        return 30 * atan(translation/120) + translation/10
-    }
-
-    private func adaptativeTranslation(for translation: CGFloat, elasticThreshold: CGFloat) -> CGFloat {
-
-        let translationFactor: CGFloat = 2/3
-
-        if translation >= elasticThreshold {
-            let frictionLength = translation - elasticThreshold
-            let frictionTranslation = elasticTranslationCurve(frictionLength, translationFactor)
-            return frictionTranslation + (elasticThreshold * translationFactor)
-        } else {
-            return translation * translationFactor
-        }
-
-    }
-
-    private func transform(forTranslation translation: CGPoint) -> CGAffineTransform {
-
-        let translationFactor: CGFloat = 1/3
-        var adaptedTranslation = translation
-
-        // Vertical
-
-        if translation.y < 0 || !(isInteractionInProgress) {
-            adaptedTranslation.y = elasticTranslationCurve(translation.y, translationFactor)
-        }
-
-        let yTransform = adaptedTranslation.y * translationFactor
-
-        if viewController.traitCollection.horizontalSizeClass == .compact {
-            return CGAffineTransform(translationX: 0, y: yTransform)
-        }
-
-        // Horizontal
-
-        adaptedTranslation.x = elasticTranslationCurve(translation.x, translationFactor)
-        let xTransform = adaptedTranslation.x * translationFactor
-
-        return CGAffineTransform(translationX: xTransform, y: yTransform)
-
-    }
-
-    // MARK: - Position Management
-
-    private func updateCardViews(forTranslation translation: CGPoint) {
-
-        let transform = self.transform(forTranslation: translation)
-
-        contentView.transform = transform
-        activityIndicatorView.transform = transform
-
-    }
-
-    private func resetCardViews() {
-
-        let options: UIViewAnimationOptions = UIViewAnimationOptions(rawValue: 6 << 7)
-
-        let animations = {
-            self.contentView.transform = .identity
-            self.activityIndicatorView.transform = .identity
-        }
-
-        UIView.animate(withDuration: 0.15, delay: 0, options: options, animations: animations) { _ in
-            self.update(0)
-            self.cancel()
-        }
-
-    }
-
-    // MARK: - Cancellation
-
-    /**
-     * Resets the view if needed.
-     */
-
-    func cancelIfNeeded() {
-
-        if panGestureRecognizer?.state == .changed {
-            panGestureRecognizer?.isEnabled = false
-        }
-
-    }
-
-}
+//    // Source: https://github.com/HarshilShah/DeckTransition
+//    let elasticTranslationCurve = { (translation: CGFloat, translationFactor: CGFloat) -> CGFloat in
+//        return 30 * atan(translation/120) + translation/10
+//    }
+//
+//    private func adaptativeTranslation(for translation: CGFloat, elasticThreshold: CGFloat) -> CGFloat {
+//
+//        let translationFactor: CGFloat = 2/3
+//
+//        if translation >= elasticThreshold {
+//            let frictionLength = translation - elasticThreshold
+//            let frictionTranslation = elasticTranslationCurve(frictionLength, translationFactor)
+//            return frictionTranslation + (elasticThreshold * translationFactor)
+//        } else {
+//            return translation * translationFactor
+//        }
+//
+//    }
+//
+//    private func transform(forTranslation translation: CGPoint) -> CGAffineTransform {
+//
+//        let translationFactor: CGFloat = 1/3
+//        var adaptedTranslation = translation
+//
+//        // Vertical
+//
+//        if translation.y < 0 || !(isInteractionInProgress) {
+//            adaptedTranslation.y = elasticTranslationCurve(translation.y, translationFactor)
+//        }
+//
+//        let yTransform = adaptedTranslation.y * translationFactor
+//
+//        if viewController.traitCollection.horizontalSizeClass == .compact {
+//            return CGAffineTransform(translationX: 0, y: yTransform)
+//        }
+//
+//        // Horizontal
+//
+//        adaptedTranslation.x = elasticTranslationCurve(translation.x, translationFactor)
+//        let xTransform = adaptedTranslation.x * translationFactor
+//
+//        return CGAffineTransform(translationX: xTransform, y: yTransform)
+//
+//    }

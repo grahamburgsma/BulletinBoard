@@ -7,9 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5543848B1F91FAC500AFFBCD /* BulletinPresentationAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543848A1F91FAC500AFFBCD /* BulletinPresentationAnimationController.swift */; };
+		5543848B1F91FAC500AFFBCD /* BulletinAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543848A1F91FAC500AFFBCD /* BulletinAnimationController.swift */; };
 		5543848D1F92026200AFFBCD /* BulletinBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543848C1F92026200AFFBCD /* BulletinBackgroundView.swift */; };
-		5543848F1F92050300AFFBCD /* BulletinDismissalAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543848E1F92050300AFFBCD /* BulletinDismissalAnimationController.swift */; };
 		5569CB7F1F920B72000F31EB /* BulletinSwipeInteractionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5569CB7E1F920B72000F31EB /* BulletinSwipeInteractionController.swift */; };
 		558A12321F7D73CD005EC97C /* BulletinBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558A122C1F7D73CD005EC97C /* BulletinBoard.swift */; };
 		558A12331F7D73CD005EC97C /* HighlightButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558A122D1F7D73CD005EC97C /* HighlightButton.swift */; };
@@ -22,14 +21,14 @@
 		B93495372008FF3A00849AE6 /* BulletinBoard.xib in Resources */ = {isa = PBXBuildFile; fileRef = B93495362008FF3A00849AE6 /* BulletinBoard.xib */; };
 		B934953920093C0D00849AE6 /* BulletinPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B934953820093C0D00849AE6 /* BulletinPresentationController.swift */; };
 		C01DE89B205DEE9300A9204A /* BulletinBoard.podspec in Resources */ = {isa = PBXBuildFile; fileRef = C01DE89A205DEE9300A9204A /* BulletinBoard.podspec */; };
+		C069757E20EE461300B85BBC /* TransitionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C069757D20EE461200B85BBC /* TransitionOperation.swift */; };
 		C0741822200A9F6400891D2B /* BulletinItemAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0741821200A9F6400891D2B /* BulletinItemAction.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		52D6D97C1BEFF229002C0205 /* BulletinBoard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BulletinBoard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5543848A1F91FAC500AFFBCD /* BulletinPresentationAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletinPresentationAnimationController.swift; sourceTree = "<group>"; };
+		5543848A1F91FAC500AFFBCD /* BulletinAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletinAnimationController.swift; sourceTree = "<group>"; };
 		5543848C1F92026200AFFBCD /* BulletinBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletinBackgroundView.swift; sourceTree = "<group>"; };
-		5543848E1F92050300AFFBCD /* BulletinDismissalAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletinDismissalAnimationController.swift; sourceTree = "<group>"; };
 		5569CB7E1F920B72000F31EB /* BulletinSwipeInteractionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletinSwipeInteractionController.swift; sourceTree = "<group>"; };
 		558A122C1F7D73CD005EC97C /* BulletinBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BulletinBoard.swift; sourceTree = "<group>"; };
 		558A122D1F7D73CD005EC97C /* HighlightButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HighlightButton.swift; sourceTree = "<group>"; };
@@ -43,6 +42,7 @@
 		B93495362008FF3A00849AE6 /* BulletinBoard.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BulletinBoard.xib; sourceTree = "<group>"; };
 		B934953820093C0D00849AE6 /* BulletinPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletinPresentationController.swift; sourceTree = "<group>"; };
 		C01DE89A205DEE9300A9204A /* BulletinBoard.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = BulletinBoard.podspec; sourceTree = "<group>"; };
+		C069757D20EE461200B85BBC /* TransitionOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionOperation.swift; sourceTree = "<group>"; };
 		C0741821200A9F6400891D2B /* BulletinItemAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletinItemAction.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -115,8 +115,8 @@
 			children = (
 				55B3D1CE1FDADA8E00737791 /* AnimationChain.swift */,
 				B934953820093C0D00849AE6 /* BulletinPresentationController.swift */,
-				5543848A1F91FAC500AFFBCD /* BulletinPresentationAnimationController.swift */,
-				5543848E1F92050300AFFBCD /* BulletinDismissalAnimationController.swift */,
+				C069757D20EE461200B85BBC /* TransitionOperation.swift */,
+				5543848A1F91FAC500AFFBCD /* BulletinAnimationController.swift */,
 				5569CB7E1F920B72000F31EB /* BulletinSwipeInteractionController.swift */,
 			);
 			path = Animations;
@@ -227,13 +227,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				B93495352008F65800849AE6 /* BulletinBoard+Keyboard.swift in Sources */,
+				C069757E20EE461300B85BBC /* TransitionOperation.swift in Sources */,
 				558A12331F7D73CD005EC97C /* HighlightButton.swift in Sources */,
 				55DADE7A1F7D9428001B11A2 /* BulletinInterfaceBuilder.swift in Sources */,
 				55B3D1CF1FDADA8E00737791 /* AnimationChain.swift in Sources */,
 				558A12371F7D73E6005EC97C /* BulletinItem.swift in Sources */,
-				5543848F1F92050300AFFBCD /* BulletinDismissalAnimationController.swift in Sources */,
 				C0741822200A9F6400891D2B /* BulletinItemAction.swift in Sources */,
-				5543848B1F91FAC500AFFBCD /* BulletinPresentationAnimationController.swift in Sources */,
+				5543848B1F91FAC500AFFBCD /* BulletinAnimationController.swift in Sources */,
 				5543848D1F92026200AFFBCD /* BulletinBackgroundView.swift in Sources */,
 				B934953920093C0D00849AE6 /* BulletinPresentationController.swift in Sources */,
 				55BF9C021F962FD700347D45 /* UIView+SafeAnchors.swift in Sources */,
@@ -291,7 +291,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -343,7 +343,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -368,7 +368,6 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = Configs/BulletinBoard.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.BulletinBoard.BulletinBoard-iOS";
@@ -391,7 +390,6 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = Configs/BulletinBoard.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.BulletinBoard.BulletinBoard-iOS";
 				PRODUCT_NAME = BulletinBoard;

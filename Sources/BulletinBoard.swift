@@ -48,7 +48,7 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 
 	public var dismissalHandler: ((BulletinBoard) -> Void)?
 
-	var swipeInteractionController: BulletinSwipeInteractionController!
+    var panGestureRecognizer: UIPanGestureRecognizer!
 
 	public convenience init(_ item: BulletinItem) {
 		self.init(items: [item])
@@ -80,6 +80,9 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 	public override func viewDidLoad() {
 		super.viewDidLoad()
 
+        panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+        contentView.addGestureRecognizer(panGestureRecognizer)
+
 		setCornerRadius()
 
 		setUpKeyboardLogic()
@@ -94,6 +97,12 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 	}
 
 	// MARK: - Touch Events
+
+    @objc func handlePan(_ recognizer: UIPanGestureRecognizer) {
+        if recognizer.state == .began, isBeingDismissed == false, isBeingPresented == false {
+            dismiss(animated: true)
+        }
+    }
 
 	@IBAction fileprivate func handleTap(recognizer: UITapGestureRecognizer) {
 		guard currentItem.isDismissable else { return }
@@ -217,17 +226,19 @@ extension BulletinBoard: UIViewControllerTransitioningDelegate {
 	}
 
 	public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-		return BulletinPresentationAnimationController(style: backgroundViewStyle)
+        return BulletinAnimationController(operation: .present)
 	}
 
 	public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-		return BulletinDismissalAnimationController()
+		return BulletinAnimationController(operation: .dismiss)
 	}
 
-//	public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-//		guard allowsSwipeInteraction else { return nil }
-//
-//		let isEligible = swipeInteractionController.isInteractionInProgress
-//		return isEligible ? swipeInteractionController : nil
-//	}
+    public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        guard
+            allowsSwipeInteraction,
+            let animator = animator as? BulletinAnimationController
+            else { return nil }
+
+        return BulletinSwipeInteractionController(animationController: animator, panGestureRecognizer: panGestureRecognizer)
+    }
 }
