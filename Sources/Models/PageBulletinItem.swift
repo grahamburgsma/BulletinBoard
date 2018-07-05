@@ -89,7 +89,7 @@ open class PageBulletinItem: NSObject, BulletinItem {
 		}
     }
 
-	@objc private func buttonTouchUpInside(_ sender: UIButton) {
+	@objc open func buttonTouchUpInside(_ sender: UIButton) {
 		if sender == mainButton {
 			mainAction?.handler?(self)
 		} else if sender == alternateButton {

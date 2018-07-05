@@ -49,10 +49,16 @@ class BulletinPresentationController: UIPresentationController {
 
         let width = min(preferredSize.width, availableSize.width)
         let height = min(preferredSize.height, availableSize.height)
-
         let newSize = CGSize(width: width, height: height)
-        let origin = CGPoint(x: (parentFrame.width - width) / 2,
+        let origin: CGPoint
+
+        if traitCollection.horizontalSizeClass == .regular {
+            origin = CGPoint(x: (parentFrame.width - width) / 2,
+                             y: (parentFrame.height - height) / 2)
+        } else {
+            origin = CGPoint(x: (parentFrame.width - width) / 2,
                              y: parentFrame.height - height - margins.bottom)
+        }
 
         return CGRect(origin: origin, size: newSize)
     }

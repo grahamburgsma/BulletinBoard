@@ -87,6 +87,12 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 		show(item: currentItem, animated: false)
 	}
 
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        updatePreferredContentSize()
+    }
+
 	public override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
 		super.dismiss(animated: flag) {
 			self.dismissalHandler?(self)
@@ -112,10 +118,17 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 extension BulletinBoard {
 
     func updatePreferredContentSize() {
-        preferredContentSize = view.systemLayoutSizeFitting(
-            CGSize(width: 343, height: UILayoutFittingCompressedSize.height),
-            withHorizontalFittingPriority: .required,
-            verticalFittingPriority: .fittingSizeLevel)
+        if traitCollection.horizontalSizeClass == .regular {
+            preferredContentSize = view.systemLayoutSizeFitting(
+                CGSize(width: 450, height: UILayoutFittingCompressedSize.height),
+                withHorizontalFittingPriority: .required,
+                verticalFittingPriority: .fittingSizeLevel)
+        } else {
+            preferredContentSize = view.systemLayoutSizeFitting(
+                CGSize(width: view.frame.width, height: UILayoutFittingCompressedSize.height),
+                withHorizontalFittingPriority: .required,
+                verticalFittingPriority: .fittingSizeLevel)
+        }
     }
 
 	func show(item: BulletinItem, animated: Bool = true) {
