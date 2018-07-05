@@ -85,7 +85,7 @@ open class BulletinInterfaceBuilder {
      * - parameter title: The title of the button.
      */
 
-    static func actionButton(title: String?) -> HighlightButtonWrapper {
+    static func actionButton(title: String?) -> HighlightButton {
 
 		let actionButton = HighlightButton(type: .custom)
 		actionButton.backgroundColor = #colorLiteral(red: 0, green: 0.4784313725, blue: 1, alpha: 1)
@@ -100,7 +100,7 @@ open class BulletinInterfaceBuilder {
 
 		actionButton.heightAnchor.constraint(equalToConstant: 55).isActive = true
 
-        return HighlightButtonWrapper(button: actionButton)
+        return actionButton
     }
 
     /**

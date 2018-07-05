@@ -66,11 +66,11 @@ open class PageBulletinItem: NSObject, BulletinItem {
 		var buttons = [UIView]()
 
 		if let action = mainAction {
-			let view = BulletinInterfaceBuilder.actionButton(title: action.title)
-			mainButton = view.button
+			let button = BulletinInterfaceBuilder.actionButton(title: action.title)
+			mainButton = button
 			self.mainAction = action
-			view.button.addTarget(self, action: #selector(buttonTouchUpInside(_:)), for: .touchUpInside)
-			buttons.append(view)
+			button.addTarget(self, action: #selector(buttonTouchUpInside(_:)), for: .touchUpInside)
+			buttons.append(button)
 		}
 
 		if let action = alternateAction {
