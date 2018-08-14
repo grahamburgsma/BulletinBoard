@@ -15,8 +15,8 @@ class BulletinPresentationController: UIPresentationController {
     open var dimissOnTap: Bool = true
 
     /// Presented view should be placed within these insets.
-    /// Defaults to (16, 16, 16, 16)
-    open var contentMargins: UIEdgeInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+    /// Defaults to (12, 12, 12, 12)
+    open var contentMargins: UIEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
 
     let backgroundView: BulletinBackgroundView
 
