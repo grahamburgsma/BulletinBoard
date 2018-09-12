@@ -13,8 +13,8 @@ extension BulletinBoard {
 	private var spacing: CGFloat { return 12 }
 
 	func setUpKeyboardLogic() {
-		NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardShow), name: .UIKeyboardWillShow, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardHide), name: .UIKeyboardWillHide, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
 	}
 
 	@objc func onKeyboardShow(_ notification: Notification) {
@@ -24,14 +24,14 @@ extension BulletinBoard {
 		}
 
 		guard let userInfo = notification.userInfo,
-			let keyboardFrameFinal = userInfo[UIKeyboardFrameEndUserInfoKey] as? CGRect,
-			let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double,
-			let curveInt = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? Int
+			let keyboardFrameFinal = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
+			let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double,
+			let curveInt = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? Int
 			else {
 				return
 		}
 
-		let animationOptions = UIViewAnimationOptions(rawValue: UInt(curveInt << 16))
+		let animationOptions = UIView.AnimationOptions(rawValue: UInt(curveInt << 16))
 
 //        if centerYConstraint.isActive { // iPad
 //            let offset = keyboardFrameFinal.minY - contentView.frame.maxY - spacing
@@ -54,13 +54,13 @@ extension BulletinBoard {
 		}
 
 		guard let userInfo = notification.userInfo,
-			let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double,
-			let curveInt = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? Int
+			let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double,
+			let curveInt = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? Int
 			else {
 				return
 		}
 
-		let animationOptions = UIViewAnimationOptions(rawValue: UInt(curveInt << 16))
+		let animationOptions = UIView.AnimationOptions(rawValue: UInt(curveInt << 16))
 
 //        centerYConstraint.constant = 0
 //        bottomYConstraint.constant = spacing

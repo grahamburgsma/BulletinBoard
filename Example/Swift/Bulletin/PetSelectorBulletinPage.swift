@@ -88,12 +88,6 @@ class PetSelectorBulletinPage: FeedbackPageBulletinItem {
         button.contentHorizontalAlignment = .center
         button.accessibilityLabel = animalType
 
-        if isSelected {
-            button.accessibilityTraits |= UIAccessibilityTraitSelected
-        } else {
-            button.accessibilityTraits &= ~UIAccessibilityTraitSelected
-        }
-
         button.layer.cornerRadius = 12
         button.layer.borderWidth = 2
 
@@ -132,7 +126,7 @@ class PetSelectorBulletinPage: FeedbackPageBulletinItem {
         let dogButtonColor = UIColor.lightGray
         dogButtonContainer?.layer.borderColor = dogButtonColor.cgColor
         dogButtonContainer?.setTitleColor(dogButtonColor, for: .normal)
-        dogButtonContainer?.accessibilityTraits &= ~UIAccessibilityTraitSelected
+        dogButtonContainer?.accessibilityTraits &= ~UIAccessibilityTraits.selected
 
         // Send a notification to inform observers of the change
 
@@ -154,7 +148,7 @@ class PetSelectorBulletinPage: FeedbackPageBulletinItem {
         let catButtonColor = UIColor.lightGray
         catButtonContainer?.layer.borderColor = catButtonColor.cgColor
         catButtonContainer?.setTitleColor(catButtonColor, for: .normal)
-        catButtonContainer?.accessibilityTraits &= ~UIAccessibilityTraitSelected
+        catButtonContainer?.accessibilityTraits &= ~UIAccessibilityTraits.selected
 
 //        let dogButtonColor = appearance.actionButtonColor
 //        dogButtonContainer?.layer.borderColor = dogButtonColor.cgColor

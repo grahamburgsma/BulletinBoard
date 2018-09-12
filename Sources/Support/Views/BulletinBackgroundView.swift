@@ -9,7 +9,7 @@ public enum BulletinBackgroundViewStyle {
 
 	case none
 	case dimmed
-	case blurred(style: UIBlurEffectStyle)
+	case blurred(style: UIBlurEffect.Style)
 }
 
 /**

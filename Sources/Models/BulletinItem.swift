@@ -11,7 +11,8 @@ import UIKit
 
 public protocol BulletinItem: class {
 
-	weak var board: BulletinBoard? { get set }
+    /// - note: Should be declared `weak`
+    var board: BulletinBoard? { get set }
 
     /**
      * Whether the page can be dismissed.

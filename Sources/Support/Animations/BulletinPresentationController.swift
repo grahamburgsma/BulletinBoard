@@ -43,7 +43,7 @@ class BulletinPresentationController: UIPresentationController {
         }
 
         let parentFrame = containerView!.bounds
-        let availableSize = UIEdgeInsetsInsetRect(parentFrame, margins).size
+        let availableSize = parentFrame.inset(by: margins).size
         let preferredSize = size(forChildContentContainer: presentedViewController,
                                  withParentContainerSize: availableSize)
 

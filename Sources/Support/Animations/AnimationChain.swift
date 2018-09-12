@@ -129,7 +129,7 @@ public class AnimationPhase {
      * The animation curve.
      */
 
-    public let curve: UIViewAnimationCurve
+    public let curve: UIView.AnimationCurve
 
     /**
      * The animation code.
@@ -153,7 +153,7 @@ public class AnimationPhase {
      * - parameter curve: The animation curve
      */
 
-	public init(relativeDuration: TimeInterval, curve: UIViewAnimationCurve, animations: @escaping () -> Void, completion: (() -> Void)? = nil) {
+	public init(relativeDuration: TimeInterval, curve: UIView.AnimationCurve, animations: @escaping () -> Void, completion: (() -> Void)? = nil) {
 
         self.relativeDuration = relativeDuration
         self.curve = curve

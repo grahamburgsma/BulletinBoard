@@ -120,12 +120,12 @@ extension BulletinBoard {
     func updatePreferredContentSize() {
         if traitCollection.horizontalSizeClass == .regular {
             preferredContentSize = view.systemLayoutSizeFitting(
-                CGSize(width: 450, height: UILayoutFittingCompressedSize.height),
+                CGSize(width: 450, height: UIView.layoutFittingCompressedSize.height),
                 withHorizontalFittingPriority: .required,
                 verticalFittingPriority: .fittingSizeLevel)
         } else {
             preferredContentSize = view.systemLayoutSizeFitting(
-                CGSize(width: view.frame.width, height: UILayoutFittingCompressedSize.height),
+                CGSize(width: view.frame.width, height: UIView.layoutFittingCompressedSize.height),
                 withHorizontalFittingPriority: .required,
                 verticalFittingPriority: .fittingSizeLevel)
         }
@@ -165,7 +165,7 @@ extension BulletinBoard {
 		}, completion: {
 			oldArrangedSubviews.forEach { $0.removeFromSuperview() }
 
-			UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, newArrangedSubviews.first)
+			UIAccessibility.post(notification: UIAccessibility.Notification.screenChanged, argument: newArrangedSubviews.first)
 		 })
 
 		transitionAnimationChain.add(hideSubviewsAnimationPhase)
