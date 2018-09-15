@@ -40,7 +40,9 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
     public var allowDismissal: Bool = true
 	public var allowSwipeInteraction: Bool = true
 
-	@IBOutlet var contentStackView: UIStackView!
+    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet private weak var contentView: UIView!
+    @IBOutlet var contentStackView: UIStackView!
 	@IBOutlet var activityIndicator: UIActivityIndicatorView!
 
     var panGestureRecognizer: UIPanGestureRecognizer!
@@ -120,12 +122,12 @@ extension BulletinBoard {
 
     func updatePreferredContentSize() {
         if traitCollection.horizontalSizeClass == .regular {
-            preferredContentSize = view.systemLayoutSizeFitting(
+            preferredContentSize = contentView.systemLayoutSizeFitting(
                 CGSize(width: 450, height: UIView.layoutFittingCompressedSize.height),
                 withHorizontalFittingPriority: .required,
                 verticalFittingPriority: .fittingSizeLevel)
         } else {
-            preferredContentSize = view.systemLayoutSizeFitting(
+            preferredContentSize = contentView.systemLayoutSizeFitting(
                 CGSize(width: view.frame.width, height: UIView.layoutFittingCompressedSize.height),
                 withHorizontalFittingPriority: .required,
                 verticalFittingPriority: .fittingSizeLevel)
@@ -220,6 +222,8 @@ extension BulletinBoard {
 		} else {
 			cornerRadius = 12
 		}
+
+        scrollView.scrollIndicatorInsets = UIEdgeInsets(top: cornerRadius, left: 0, bottom: cornerRadius, right: 0)
 	}
 }
 
