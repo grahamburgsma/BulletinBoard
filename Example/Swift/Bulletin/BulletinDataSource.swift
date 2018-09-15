@@ -48,19 +48,20 @@ enum BulletinDataSource {
      *
      * The keyboard return button presents the next item (the notification page).
      */
-//    static func makeTextFieldPage() -> TextFieldBulletinPage {
-//
-//        let page = TextFieldBulletinPage(title: "Enter your Name",
-//										 description: "To create your profile, please tell us your name. We will use it to customize your feed.",
-//										 image: nil)
-//
-//		page.addAction(BulletinItemAction(title: "Done", handler: { (action) in
-//			page.board?.showNext()
-//		}))
-//
-//        return page
-//
-//    }
+    static func makeTextFieldPage() -> TextFieldBulletinPage {
+
+        let mainAction = BulletinItemAction(title: "Done") { (page) in
+            page.board?.showNext()
+        }
+
+        let page = TextFieldBulletinPage(title: "Enter your Name",
+                                         image: nil,
+                                         description: "To create your profile, please tell us your name. We will use it to customize your feed.",
+                                         mainAction: mainAction, alternateAction: nil)
+
+        return page
+
+    }
 
 //    static func makeDatePage(userName: String?) -> BulletinItem {
 //

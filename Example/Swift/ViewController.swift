@@ -136,7 +136,7 @@ class ViewController: UIViewController {
 
 		let bulletinBoard = BulletinBoard(items: [
 			BulletinDataSource.makeIntroPage(),
-//			BulletinDataSource.makeTextFieldPage(),
+            BulletinDataSource.makeTextFieldPage(),
 			BulletinDataSource.makeNotitificationsPage(),
 			BulletinDataSource.makeLocationPage(),
 //			BulletinDataSource.makeChoicePage(),

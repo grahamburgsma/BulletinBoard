@@ -18,6 +18,8 @@ class BulletinPresentationController: UIPresentationController {
     /// Defaults to (12, 12, 12, 12)
     open var contentMargins: UIEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
 
+    private var keyboardHeight: CGFloat = 0
+
     let backgroundView: BulletinBackgroundView
 
 	init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?, backgroundStyle: BulletinBackgroundViewStyle) {
@@ -29,6 +31,9 @@ class BulletinPresentationController: UIPresentationController {
             let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture))
             backgroundView.addGestureRecognizer(tapRecognizer)
         }
+
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardChanged(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardChanged(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 	}
 
     @objc func handleTapGesture() {
@@ -38,7 +43,9 @@ class BulletinPresentationController: UIPresentationController {
     open override var frameOfPresentedViewInContainerView: CGRect {
         var margins = contentMargins
 
-        if #available(iOS 11.0, *), let insets = containerView?.safeAreaInsets {
+        if keyboardHeight > 0 {
+            margins.bottom += keyboardHeight
+        } else if #available(iOS 11.0, *), let insets = containerView?.safeAreaInsets {
             margins += insets
         }
 
@@ -111,5 +118,22 @@ class BulletinPresentationController: UIPresentationController {
         if completed {
             backgroundView.removeFromSuperview()
         }
+    }
+
+    // MARK: Keyboard avoidance
+
+    @objc private func keyboardChanged(_ notification: Notification) {
+        guard
+            let userInfo = notification.userInfo,
+            let keyboardFrameFinal = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
+            let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
+            else { return }
+
+        keyboardHeight = keyboardFrameFinal.height
+
+        UIViewPropertyAnimator(duration: duration, curve: .easeOut) {
+            self.containerView?.setNeedsLayout()
+            self.containerView?.layoutIfNeeded()
+        }.startAnimation()
     }
 }

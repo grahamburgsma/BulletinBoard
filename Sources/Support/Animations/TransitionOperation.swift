@@ -7,7 +7,7 @@
 import UIKit
 
 /// Used to designate a transition as a presentation or dismissal.
-public enum TransitionOperation {
+enum TransitionOperation {
     case present, dismiss
 
     var contextViewControllerKey: UITransitionContextViewControllerKey {

@@ -13,27 +13,17 @@ import BulletinBoard
  * when the keyboard is visible.
  */
 
-//class TextFieldBulletinPage: FeedbackPageBulletinItem {
-//
-//    @objc public var textField: UITextField!
-//
-//    @objc public var textInputHandler: ((ActionBulletinItem, String?) -> Void)?
-//
-//    override func viewsUnderDescription(_ interfaceBuilder: BulletinInterfaceBuilder) -> [UIView]? {
-//        textField = interfaceBuilder.makeTextField(placeholder: "First and Last Name", returnKey: .done, delegate: self)
-//        return [textField]
-//    }
-//
-//    override func actionButtonTapped(sender: UIButton) {
-//
-//        if textFieldShouldReturn(self.textField) {
-//            textInputHandler?(self, textField.text)
-//            super.actionButtonTapped(sender: sender)
-//        }
-//
-//    }
-//
-//}
+class TextFieldBulletinPage: FeedbackPageBulletinItem {
+
+    let textField = UITextField()
+
+    override init(title: String?, image: UIImage?, description: String?, mainAction: BulletinItemAction?, alternateAction: BulletinItemAction?) {
+        super.init(title: title, image: image, description: description, mainAction: mainAction, alternateAction: alternateAction)
+
+        views.insert(textField, at: 1)
+    }
+
+}
 //
 //// MARK: - UITextFieldDelegate
 //

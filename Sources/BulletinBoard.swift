@@ -83,7 +83,6 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 
 		setCornerRadius()
 
-		setUpKeyboardLogic()
 		show(item: currentItem, animated: false)
 	}
 
@@ -94,6 +93,8 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
     }
 
 	public override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+        view.endEditing(true)
+        
 		super.dismiss(animated: flag) {
 			self.dismissalHandler?(self)
 			completion?()
