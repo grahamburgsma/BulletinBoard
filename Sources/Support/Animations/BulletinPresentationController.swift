@@ -32,8 +32,8 @@ class BulletinPresentationController: UIPresentationController {
             backgroundView.addGestureRecognizer(tapRecognizer)
         }
 
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardChanged(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardChanged(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 	}
 
     @objc func handleTapGesture() {
@@ -122,7 +122,7 @@ class BulletinPresentationController: UIPresentationController {
 
     // MARK: Keyboard avoidance
 
-    @objc private func keyboardChanged(_ notification: Notification) {
+    @objc private func keyboardWillShow(_ notification: Notification) {
         guard
             let userInfo = notification.userInfo,
             let keyboardFrameFinal = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
@@ -135,5 +135,19 @@ class BulletinPresentationController: UIPresentationController {
             self.containerView?.setNeedsLayout()
             self.containerView?.layoutIfNeeded()
         }.startAnimation()
+    }
+
+    @objc private func keyboardWillHide(_ notification: Notification) {
+        guard
+            let userInfo = notification.userInfo,
+            let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
+            else { return }
+
+        keyboardHeight = 0
+
+        UIViewPropertyAnimator(duration: duration, curve: .easeOut) {
+            self.containerView?.setNeedsLayout()
+            self.containerView?.layoutIfNeeded()
+            }.startAnimation()
     }
 }

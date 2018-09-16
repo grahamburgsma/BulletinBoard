@@ -51,6 +51,7 @@ enum BulletinDataSource {
     static func makeTextFieldPage() -> TextFieldBulletinPage {
 
         let mainAction = BulletinItemAction(title: "Done") { (page) in
+            page.board?.view.endEditing(true)
             page.board?.showNext()
         }
 
