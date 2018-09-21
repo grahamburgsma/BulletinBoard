@@ -14,9 +14,9 @@ open class PageBulletinItem: BulletinItem {
 
 	public weak var board: BulletinBoard?
 
-	public var isDismissable: Bool = false
+	open var isDismissable: Bool = false
 
-	public var shouldRespondToKeyboardChanges: Bool = true
+	open var shouldRespondToKeyboardChanges: Bool = true
 
 	public var dismissalHandler: ((BulletinItem) -> Void)?
 
