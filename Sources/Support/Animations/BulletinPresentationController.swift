@@ -27,11 +27,6 @@ class BulletinPresentationController: UIPresentationController {
 
 		super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
 
-        if dimissOnTap {
-            let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture))
-            backgroundView.addGestureRecognizer(tapRecognizer)
-        }
-
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 	}
@@ -89,6 +84,11 @@ class BulletinPresentationController: UIPresentationController {
 
     open override func presentationTransitionWillBegin() {
         super.presentationTransitionWillBegin()
+
+        if dimissOnTap {
+            let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture))
+            backgroundView.addGestureRecognizer(tapRecognizer)
+        }
 
         guard let containerView = containerView else { return }
 

@@ -39,6 +39,10 @@ final class BulletinSwipeInteractionController: UIPercentDrivenInteractiveTransi
         panGestureRecognizer.setTranslation(.zero, in: transitionContext.containerView)
 
         super.startInteractiveTransition(transitionContext)
+
+        if panGestureRecognizer.state == .possible || panGestureRecognizer.state == .failed {
+            finish()
+        }
     }
 
     @objc private func handleInteraction(_ recognizer: UIPanGestureRecognizer) {
