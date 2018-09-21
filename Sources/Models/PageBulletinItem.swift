@@ -8,16 +8,6 @@ import UIKit
 /**
  * A standard bulletin item with a title and optional additional informations. It can display a large
  * action button and a smaller button for alternative options.
- *
-* - If you need to display custom elements with the standard butvars, subclass `PageBulletinItem` and
- * implement the `makeArrangedSubviews` method to return the elements to display above the buttons.
- *
- * You can also override this class to customize button tap handling. Override the `actionButtonTapped(sender:)`
- * and `alternativeButtonTapped(sender:)` methods to handle tap events. Make sure to call `super` in your
- * implementations if you do.
- *
- * Use the `appearance` property to customize the appearance of the page. If you want to use a different interface
- * builder type, change the `InterfaceBuilderType` property.
  */
 
 open class PageBulletinItem: NSObject, BulletinItem {
@@ -95,9 +85,5 @@ open class PageBulletinItem: NSObject, BulletinItem {
 		} else if sender == alternateButton {
 			alternateAction?.handler?(self)
 		}
-	}
-
-	deinit {
-		print(String(describing: self))
 	}
 }

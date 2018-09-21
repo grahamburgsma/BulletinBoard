@@ -37,8 +37,9 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 		}
 	}
 
-    public var allowDismissal: Bool = true
-	public var allowSwipeInteraction: Bool = true
+    public var currentItemIsDismissable: Bool {
+        return currentItem.isDismissable
+    }
 
     @IBOutlet private weak var scrollView: UIScrollView!
     @IBOutlet private weak var contentView: UIView!
@@ -68,10 +69,6 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
         modalPresentationStyle = .custom
         transitioningDelegate = self
         setNeedsStatusBarAppearanceUpdate()
-
-        if #available(iOS 11.0, *) {
-            setNeedsUpdateOfHomeIndicatorAutoHidden()
-        }
     }
 
     required public init?(coder aDecoder: NSCoder) {
@@ -105,7 +102,7 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 
 	// MARK: - Touch Events
     @objc private func handlePan(_ recognizer: UIPanGestureRecognizer) {
-        if recognizer.state == .began, isBeingDismissed == false, isBeingPresented == false {
+        if recognizer.state == .began, !isBeingDismissed, !isBeingPresented {
             dismiss(animated: true)
         }
     }
@@ -232,7 +229,7 @@ extension BulletinBoard: UIViewControllerTransitioningDelegate {
 
 	public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         let presentationController: BulletinPresentationController = BulletinPresentationController(presentedViewController: presented, presenting: presenting, backgroundStyle: backgroundViewStyle)
-        presentationController.dimissOnTap = allowDismissal
+        presentationController.dimissOnTap = currentItemIsDismissable
         return presentationController
 	}
 
@@ -244,21 +241,9 @@ extension BulletinBoard: UIViewControllerTransitioningDelegate {
 		return BulletinAnimationController(operation: .dismiss)
 	}
 
-    public func interactionControllerForPresentation(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        guard
-            allowSwipeInteraction,
-            let animator = animator as? BulletinAnimationController
-            else { return nil }
-
-        return BulletinSwipeInteractionController(animationController: animator, panGestureRecognizer: panGestureRecognizer)
-    }
-
     public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        guard
-            allowSwipeInteraction,
-            let animator = animator as? BulletinAnimationController
-            else { return nil }
-
-        return BulletinSwipeInteractionController(animationController: animator, panGestureRecognizer: panGestureRecognizer)
+        let interactionController = BulletinSwipeInteractionController(panGestureRecognizer: panGestureRecognizer)
+        interactionController.canDismiss = currentItemIsDismissable
+        return interactionController
     }
 }

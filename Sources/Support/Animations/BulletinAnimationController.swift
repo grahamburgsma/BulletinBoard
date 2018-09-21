@@ -18,7 +18,7 @@ class BulletinAnimationController: NSObject, UIViewControllerAnimatedTransitioni
     /// Duration for the total animation
     public var duration: TimeInterval = 0.4
 
-    public var animator: UIViewPropertyAnimator!
+    public var animator: UIViewPropertyAnimator?
 
     public init(operation: TransitionOperation) {
         self.operation = operation
@@ -36,7 +36,7 @@ class BulletinAnimationController: NSObject, UIViewControllerAnimatedTransitioni
         if animator == nil {
             setupAnimator(using: transitionContext)
         }
-        return animator
+        return animator!
     }
 
     public func setupAnimator(using transitionContext: UIViewControllerContextTransitioning) {
@@ -67,7 +67,7 @@ class BulletinAnimationController: NSObject, UIViewControllerAnimatedTransitioni
 
         animator = UIViewPropertyAnimator(duration: duration, dampingRatio: 1.0, animations: changes)
 
-        animator.addCompletion { position in
+        animator?.addCompletion { position in
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
         }
     }
