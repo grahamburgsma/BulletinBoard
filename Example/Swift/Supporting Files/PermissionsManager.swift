@@ -24,5 +24,4 @@ class PermissionsManager {
     func requestWhenInUseLocation() {
         locationManager.requestWhenInUseAuthorization()
     }
-
 }

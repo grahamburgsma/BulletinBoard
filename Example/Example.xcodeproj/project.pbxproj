@@ -16,7 +16,6 @@
 		55D7022C1FBCCADC00835D8A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55D7021A1FBCCA1A00835D8A /* LaunchScreen.storyboard */; };
 		55DADE761F7D7AEA001B11A2 /* BulletinDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DADE751F7D7AEA001B11A2 /* BulletinDataSource.swift */; };
 		55DADE781F7D8B29001B11A2 /* PetSelectorBulletinPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DADE771F7D8B29001B11A2 /* PetSelectorBulletinPage.swift */; };
-		55DADE7C1F7E3A53001B11A2 /* FeedbackGenerators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DADE7B1F7E3A53001B11A2 /* FeedbackGenerators.swift */; };
 		55DADE811F7E3C0B001B11A2 /* FeedbackPageBulletinItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DADE801F7E3C0B001B11A2 /* FeedbackPageBulletinItem.swift */; };
 		55DADE831F7E4204001B11A2 /* PermissionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DADE821F7E4204001B11A2 /* PermissionsManager.swift */; };
 		55DADE851F7E592F001B11A2 /* CollectionUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DADE841F7E592F001B11A2 /* CollectionUtilities.swift */; };
@@ -44,7 +43,7 @@
 		551837CC1FD6F40500B69CAE /* CollectionViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewWrapper.swift; sourceTree = "<group>"; };
 		551CF5FE1FBF86F2007DFEEA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		553CDD4C1FD6F44B00E18C82 /* PetValidationBulletinItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetValidationBulletinItem.swift; sourceTree = "<group>"; };
-		558A12411F7D7865005EC97C /* BB-Swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BB-Swift.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		558A12411F7D7865005EC97C /* PetBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PetBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		558A12441F7D7865005EC97C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		558A12461F7D7865005EC97C /* MainCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewController.swift; sourceTree = "<group>"; };
 		55D7021B1FBCCA1A00835D8A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -52,7 +51,6 @@
 		55D7021E1FBCCA1A00835D8A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		55DADE751F7D7AEA001B11A2 /* BulletinDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletinDataSource.swift; sourceTree = "<group>"; };
 		55DADE771F7D8B29001B11A2 /* PetSelectorBulletinPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetSelectorBulletinPage.swift; sourceTree = "<group>"; };
-		55DADE7B1F7E3A53001B11A2 /* FeedbackGenerators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackGenerators.swift; sourceTree = "<group>"; };
 		55DADE801F7E3C0B001B11A2 /* FeedbackPageBulletinItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackPageBulletinItem.swift; sourceTree = "<group>"; };
 		55DADE821F7E4204001B11A2 /* PermissionsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsManager.swift; sourceTree = "<group>"; };
 		55DADE841F7E592F001B11A2 /* CollectionUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionUtilities.swift; sourceTree = "<group>"; };
@@ -96,7 +94,7 @@
 		558A12421F7D7865005EC97C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				558A12411F7D7865005EC97C /* BB-Swift.app */,
+				558A12411F7D7865005EC97C /* PetBoard.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -138,7 +136,6 @@
 			isa = PBXGroup;
 			children = (
 				55DADE841F7E592F001B11A2 /* CollectionUtilities.swift */,
-				55DADE7B1F7E3A53001B11A2 /* FeedbackGenerators.swift */,
 				55DADE821F7E4204001B11A2 /* PermissionsManager.swift */,
 				551837CC1FD6F40500B69CAE /* CollectionViewWrapper.swift */,
 			);
@@ -156,9 +153,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		558A12401F7D7865005EC97C /* BB-Swift */ = {
+		558A12401F7D7865005EC97C /* PetBoard */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 558A12531F7D7865005EC97C /* Build configuration list for PBXNativeTarget "BB-Swift" */;
+			buildConfigurationList = 558A12531F7D7865005EC97C /* Build configuration list for PBXNativeTarget "PetBoard" */;
 			buildPhases = (
 				558A123D1F7D7865005EC97C /* Sources */,
 				558A123E1F7D7865005EC97C /* Frameworks */,
@@ -169,9 +166,9 @@
 			);
 			dependencies = (
 			);
-			name = "BB-Swift";
+			name = PetBoard;
 			productName = Example;
-			productReference = 558A12411F7D7865005EC97C /* BB-Swift.app */;
+			productReference = 558A12411F7D7865005EC97C /* PetBoard.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -204,7 +201,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				558A12401F7D7865005EC97C /* BB-Swift */,
+				558A12401F7D7865005EC97C /* PetBoard */,
 			);
 		};
 /* End PBXProject section */
@@ -231,7 +228,6 @@
 				55DADE851F7E592F001B11A2 /* CollectionUtilities.swift in Sources */,
 				55DADE831F7E4204001B11A2 /* PermissionsManager.swift in Sources */,
 				C09569ED20422D2800D140EC /* BackgroundStyles.swift in Sources */,
-				55DADE7C1F7E3A53001B11A2 /* FeedbackGenerators.swift in Sources */,
 				55DADE781F7D8B29001B11A2 /* PetSelectorBulletinPage.swift in Sources */,
 				551837CD1FD6F40500B69CAE /* CollectionViewWrapper.swift in Sources */,
 				558A12451F7D7865005EC97C /* AppDelegate.swift in Sources */,
@@ -383,7 +379,7 @@
 				DEVELOPMENT_TEAM = CLWT6DPD6Q;
 				INFOPLIST_FILE = "$(SRCROOT)/Configs/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "ca.grahamburgsma.BulletinBoard.BB-Swift";
+				PRODUCT_BUNDLE_IDENTIFIER = ca.grahamburgsma.BulletinBoard.PetBoard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -398,7 +394,7 @@
 				DEVELOPMENT_TEAM = CLWT6DPD6Q;
 				INFOPLIST_FILE = "$(SRCROOT)/Configs/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "ca.grahamburgsma.BulletinBoard.BB-Swift";
+				PRODUCT_BUNDLE_IDENTIFIER = ca.grahamburgsma.BulletinBoard.PetBoard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -417,7 +413,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		558A12531F7D7865005EC97C /* Build configuration list for PBXNativeTarget "BB-Swift" */ = {
+		558A12531F7D7865005EC97C /* Build configuration list for PBXNativeTarget "PetBoard" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				558A12541F7D7865005EC97C /* Debug */,

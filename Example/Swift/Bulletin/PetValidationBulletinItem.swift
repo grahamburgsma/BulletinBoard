@@ -19,8 +19,8 @@ class PetValidationBulletinItem: FeedbackPageBulletinItem {
     var collectionView: UICollectionView?
 
     init(dataSource: CollectionDataSource) {
-        let selectionFeedbackGenerator = SelectionFeedbackGenerator()
-        let successFeedbackGenerator = SuccessFeedbackGenerator()
+        let selectionFeedbackGenerator = UISelectionFeedbackGenerator()
+        let successFeedbackGenerator = UINotificationFeedbackGenerator()
 
         self.dataSource = dataSource
 
@@ -39,7 +39,7 @@ class PetValidationBulletinItem: FeedbackPageBulletinItem {
 
                 // Play success haptic feedback
 
-                successFeedbackGenerator.success()
+                successFeedbackGenerator.notificationOccurred(.success)
 
                 item.board?.showNext()
             }

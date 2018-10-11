@@ -14,7 +14,7 @@ import BulletinBoard
 
 class FeedbackPageBulletinItem: PageBulletinItem {
 
-    private let feedbackGenerator = SelectionFeedbackGenerator()
+    private let feedbackGenerator = UISelectionFeedbackGenerator()
 
     override func buttonTouchUpInside(_ sender: UIButton) {
         super.buttonTouchUpInside(sender)
