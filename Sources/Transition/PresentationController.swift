@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PresentationController: UIPresentationController {
+open class PresentationController: UIPresentationController {
 
     /// Dismiss the presented view controller when dimming view is tapped.
     /// Defaults to `true`.
@@ -55,8 +55,11 @@ class PresentationController: UIPresentationController {
         let origin: CGPoint
 
         if traitCollection.horizontalSizeClass == .regular {
+            let avoidingOriginY = parentFrame.height - height - margins.bottom
+            let centeredOriginY = (parentFrame.height - height) / 2
+
             origin = CGPoint(x: (parentFrame.width - width) / 2,
-                             y: (parentFrame.height - height) / 2)
+                             y: avoidingOriginY < centeredOriginY ? avoidingOriginY : centeredOriginY)
         } else {
             origin = CGPoint(x: (parentFrame.width - width) / 2,
                              y: parentFrame.height - height - margins.bottom)
@@ -79,6 +82,8 @@ class PresentationController: UIPresentationController {
     }
 
     open override func containerViewWillLayoutSubviews() {
+        super.containerViewWillLayoutSubviews()
+
         presentedView?.frame = frameOfPresentedViewInContainerView
     }
 
@@ -103,18 +108,24 @@ class PresentationController: UIPresentationController {
     }
 
     open override func presentationTransitionDidEnd(_ completed: Bool) {
+        super.presentationTransitionDidEnd(completed)
+
         if !completed {
             backgroundView.removeFromSuperview()
         }
     }
 
     open override func dismissalTransitionWillBegin() {
+        super.dismissalTransitionWillBegin()
+
         presentedViewController.transitionCoordinator?.animate(alongsideTransition: { _ in
             self.backgroundView.alpha = 0.0
         })
     }
 
     open override func dismissalTransitionDidEnd(_ completed: Bool) {
+        super.dismissalTransitionDidEnd(completed)
+
         if completed {
             backgroundView.removeFromSuperview()
         }

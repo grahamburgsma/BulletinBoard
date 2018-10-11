@@ -35,7 +35,9 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 	var isLoading: Bool = false {
 		didSet {
             isLoading ? activityIndicator.startAnimating() : activityIndicator.stopAnimating()
-			contentStackView.isHidden = isLoading
+            UIView.animate(withDuration: 0.1) {
+                self.contentStackView.alpha = self.isLoading ? 0 : 1
+            }
 		}
 	}
 

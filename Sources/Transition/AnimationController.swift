@@ -61,7 +61,7 @@ class AnimationController: NSObject, UIViewControllerAnimatedTransitioning {
             }
         case .dismiss:
             changes = {
-                view.frame.origin.y = transitionContext.containerView.frame.height
+                view.frame.origin.y = transitionContext.containerView.frame.height + 50
             }
         }
 
