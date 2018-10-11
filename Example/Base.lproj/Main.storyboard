@@ -41,30 +41,7 @@
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="10"/>
                         </collectionViewFlowLayout>
-                        <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cell" id="IFJ-ad-Gso" customClass="ImageCollectionViewCell" customModule="BB_Swift" customModuleProvider="target">
-                                <rect key="frame" x="27.666666666666668" y="10" width="320" height="150"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="krb-pp-6k7">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
-                                        </imageView>
-                                    </subviews>
-                                </view>
-                                <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="krb-pp-6k7" secondAttribute="bottom" id="1R5-PQ-9ji"/>
-                                    <constraint firstItem="krb-pp-6k7" firstAttribute="top" secondItem="IFJ-ad-Gso" secondAttribute="top" id="iy3-bT-GxZ"/>
-                                    <constraint firstAttribute="trailing" secondItem="krb-pp-6k7" secondAttribute="trailing" id="jWu-Wz-HNf"/>
-                                    <constraint firstItem="krb-pp-6k7" firstAttribute="leading" secondItem="IFJ-ad-Gso" secondAttribute="leading" id="kbW-BU-Ewg"/>
-                                </constraints>
-                                <connections>
-                                    <outlet property="imageView" destination="krb-pp-6k7" id="Tc4-uS-tBT"/>
-                                </connections>
-                            </collectionViewCell>
-                        </cells>
+                        <cells/>
                         <connections>
                             <outlet property="dataSource" destination="0TR-hn-Yvu" id="sch-uP-vK5"/>
                             <outlet property="delegate" destination="0TR-hn-Yvu" id="1X4-dr-zZ4"/>

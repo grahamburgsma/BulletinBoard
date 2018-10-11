@@ -51,6 +51,8 @@ final class MainCollectionViewController: UICollectionViewController {
         segmentedControl.selectedSegmentIndex = BulletinDataSource.favoriteTabIndex
 
         styleButtonItem.title = currentBackground.name
+
+        collectionView.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: "ImageCollectionViewCell")
     }
 
     deinit {
@@ -94,9 +96,10 @@ final class MainCollectionViewController: UICollectionViewController {
 			BulletinDataSource.makeIntroPage(),
             BulletinDataSource.makeTextFieldPage(),
             BulletinDataSource.makeDatePage(),
-			BulletinDataSource.makeNotitificationsPage(),
-			BulletinDataSource.makeLocationPage(),
+            BulletinDataSource.makeNotitificationsPage(),
+            BulletinDataSource.makeLocationPage(),
             BulletinDataSource.makeChoicePage(),
+            PetValidationBulletinItem(dataSource: dataSource),
 			BulletinDataSource.makeCompletionPage()
 			])
 
@@ -189,7 +192,7 @@ extension MainCollectionViewController: UICollectionViewDelegateFlowLayout {
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ImageCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCollectionViewCell", for: indexPath) as! ImageCollectionViewCell
         cell.imageView.image = dataSource.image(at: indexPath.row)
         return cell
     }

@@ -99,7 +99,6 @@ class PetSelectorBulletinPage: FeedbackPageBulletinItem {
 
         // Play haptic feedback
 
-        selectionFeedbackGenerator.prepare()
         selectionFeedbackGenerator.selectionChanged()
 
         // Update UI
@@ -124,7 +123,6 @@ class PetSelectorBulletinPage: FeedbackPageBulletinItem {
 
         // Play haptic feedback
 
-        selectionFeedbackGenerator.prepare()
         selectionFeedbackGenerator.selectionChanged()
 
         // Update UI

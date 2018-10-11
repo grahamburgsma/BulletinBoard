@@ -64,7 +64,7 @@ enum BulletinDataSource {
 
     }
 
-    static func makeDatePage(userName: String?) -> BulletinItem {
+    static func makeDatePage() -> BulletinItem {
 
         let mainAction = BulletinItemAction(title: "Done") { (item) in
             item.board?.showNext()

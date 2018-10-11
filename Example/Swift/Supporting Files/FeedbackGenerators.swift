@@ -23,14 +23,6 @@ class SelectionFeedbackGenerator {
 
     }
 
-    func prepare() {
-
-        if #available(iOS 10, *) {
-            (anyObject as! UISelectionFeedbackGenerator).prepare()
-        }
-
-    }
-
     func selectionChanged() {
 
         if #available(iOS 10, *) {

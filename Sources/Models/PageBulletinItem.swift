@@ -10,7 +10,7 @@ import UIKit
  * action button and a smaller button for alternative options.
  */
 
-open class PageBulletinItem: BulletinItem {
+open class PageBulletinItem: NSObject, BulletinItem {
 
 	public weak var board: BulletinBoard?
 
@@ -32,7 +32,11 @@ open class PageBulletinItem: BulletinItem {
 	public private(set) var mainAction: BulletinItemAction?
 	public private(set) var alternateAction: BulletinItemAction?
 
+    private override init() { }
+
 	public init(title: String?, image: UIImage? = nil, description: String?, mainAction: BulletinItemAction?, alternateAction: BulletinItemAction? = nil) {
+        super.init()
+
 		if let title = title {
 			let label = BulletinInterfaceBuilder.titleLabel(text: title)
 			titleLabel = label

@@ -12,126 +12,100 @@ import BulletinBoard
  * This item demonstrates popping to the previous item, and including a collection view inside the page.
  */
 
-//class PetValidationBulletinItem: FeedbackPageBulletinItem {
-//
-//    let dataSource: CollectionDataSource
-//    let animalType: String
-//
-//    let selectionFeedbackGenerator = SelectionFeedbackGenerator()
-//    let successFeedbackGenerator = SuccessFeedbackGenerator()
-//
-//    init(dataSource: CollectionDataSource, animalType: String) {
-//
-//        self.dataSource = dataSource
-//        self.animalType = animalType
-//        super.init(title: "Choose your Favorite")
-//
-//        descriptionText = "You chose \(animalType) as your favorite animal type. Here are a few examples of posts in this category."
-//        actionButtonTitle = "Validate"
-//        alternativeButtonTitle = "Change"
-//
-//    }
-//
-//    // MARK: - Interface
-//
-//    var collectionView: UICollectionView?
-//
-//    override func viewsUnderDescription(_ interfaceBuilder: BulletinInterfaceBuilder) -> [UIView]? {
-//
-//        let flowLayout = UICollectionViewFlowLayout()
-//        flowLayout.scrollDirection = .vertical
-//        flowLayout.minimumInteritemSpacing = 1
-//
-//        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-//        collectionView.backgroundColor = .white
-//
-//        let collectionWrapper = CollectionViewWrapper(collectionView: collectionView)
-//
-//        self.collectionView = collectionView
-//        collectionView.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-//        collectionView.dataSource = self
-//        collectionView.delegate = self
-//
-//        return [collectionWrapper]
-//
-//    }
-//
-//
-//    // MARK: - Touch Events
-//
-//    override func actionButtonTapped(sender: UIButton) {
-//
-//        // > Play Haptic Feedback
-//
-//        selectionFeedbackGenerator.prepare()
-//        selectionFeedbackGenerator.selectionChanged()
-//
-//        // > Display the loading indicator
-//
-////        manager?.displayActivityIndicator()
-//
-//        // > Wait for a "task" to complete before displaying the next item
-//
-//        let delay = DispatchTime.now() + .seconds(2)
-//
-//        DispatchQueue.main.asyncAfter(deadline: delay) {
-//
-//            // Play success haptic feedback
-//
-//            self.successFeedbackGenerator.prepare()
-//            self.successFeedbackGenerator.success()
-//
-//            // Display next item
-//
-//			self.board?.showNext()
-//        }
-//
-//    }
-//
-//    override func alternativeButtonTapped(sender: UIButton) {
-//
-//        // Play selection haptic feedback
-//
-//        selectionFeedbackGenerator.prepare()
-//        selectionFeedbackGenerator.selectionChanged()
-//
-//        // Display previous item
-//
-////        manager?.popItem()
-//
-//    }
-//
-//}
-//
-// MARK: - Collection View
-//
-//extension PetValidationBulletinItem: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-//
-//    func numberOfSections(in collectionView: UICollectionView) -> Int {
-//        return 1
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return 9
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ImageCollectionViewCell
-//        cell.imageView.image = dataSource.image(at: indexPath.row)
-//        cell.imageView.contentMode = .scaleAspectFill
-//        cell.imageView.clipsToBounds = true
-//
-//        return cell
-//
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//
-//        let squareSideLength = (collectionView.frame.width / 3) - 3
-//        return CGSize(width: squareSideLength, height: squareSideLength)
-//
-//    }
-//
-//}
+class PetValidationBulletinItem: FeedbackPageBulletinItem {
+
+    let dataSource: CollectionDataSource
+
+    init(dataSource: CollectionDataSource) {
+        let selectionFeedbackGenerator = SelectionFeedbackGenerator()
+        let successFeedbackGenerator = SuccessFeedbackGenerator()
+
+        self.dataSource = dataSource
+
+        let main = BulletinItemAction(title: "Validate") { (item) in
+            // > Play Haptic Feedback
+
+            selectionFeedbackGenerator.selectionChanged()
+
+            // > Display the loading indicator
+
+            item.isLoading = true
+
+            // > Wait for a "task" to complete before displaying the next item
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+
+                // Play success haptic feedback
+
+                successFeedbackGenerator.success()
+
+                item.board?.showNext()
+            }
+        }
+
+        let alternate = BulletinItemAction(title: "Change") { (item) in
+            // Play selection haptic feedback
+
+            selectionFeedbackGenerator.selectionChanged()
+
+            // Display previous item
+
+            item.board?.showPrevious()
+        }
+
+        let animalType = dataSource.rawValue.capitalized
+        super.init(title: "Choose your Favorite",
+                   description: "You chose \(animalType) as your favorite animal type. Here are a few examples of posts in this category.",
+                   mainAction: main,
+                   alternateAction: alternate)
+
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.scrollDirection = .vertical
+        flowLayout.minimumInteritemSpacing = 1
+
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        collectionView.backgroundColor = .white
+
+        let collectionWrapper = CollectionViewWrapper(collectionView: collectionView)
+
+        self.collectionView = collectionView
+        collectionView.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: "ImageCollectionViewCell")
+        collectionView.dataSource = self
+        collectionView.delegate = self
+
+        views.insert(collectionWrapper, at: 2)
+    }
+
+    // MARK: - Interface
+
+    var collectionView: UICollectionView?
+
+}
+
+ // MARK: - Collection View
+
+extension PetValidationBulletinItem: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return min(9, dataSource.numberOfImages)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCollectionViewCell", for: indexPath) as! ImageCollectionViewCell
+        cell.imageView.image = dataSource.image(at: indexPath.item)
+        cell.imageView.contentMode = .scaleAspectFill
+        cell.imageView.clipsToBounds = true
+
+        return cell
+
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+
+        let squareSideLength = (collectionView.frame.width / 3) - 3
+        return CGSize(width: squareSideLength, height: squareSideLength)
+
+    }
+}
 

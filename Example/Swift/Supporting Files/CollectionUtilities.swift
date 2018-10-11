@@ -33,5 +33,17 @@ enum CollectionDataSource: String {
 
 class ImageCollectionViewCell: UICollectionViewCell {
 
-    @IBOutlet weak var imageView: UIImageView!
+    let imageView = UIImageView()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        imageView.frame = bounds
+        imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        addSubview(imageView)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }

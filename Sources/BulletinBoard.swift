@@ -154,6 +154,7 @@ extension BulletinBoard {
 		}, completion: {
             newArrangedSubviews.forEach { $0.isHidden = false }
             oldArrangedSubviews.forEach { $0.isHidden = true }
+            self.isLoading = false
         })
 
 		let displayNewItemsAnimationPhase = AnimationPhase(relativeDuration: 1 / 3, curve: .linear, animations: {
@@ -181,6 +182,12 @@ extension BulletinBoard {
 		currentItem = items.first!
 	}
 
+    public func showPrevious() {
+        if hasPrevious {
+            currentItem = items[currentIndex - 1]
+        }
+    }
+
 	public func showNext() {
 		if hasNext {
 			currentItem = items[currentIndex + 1]
@@ -198,6 +205,10 @@ extension BulletinBoard {
 	public var hasNext: Bool {
 		return currentIndex + 1 < items.count
 	}
+
+    public var hasPrevious: Bool {
+        return currentIndex - 1 < items.count && currentIndex - 1 >= 0
+    }
 
 	public func showLast() {
 		currentItem = items.last!
