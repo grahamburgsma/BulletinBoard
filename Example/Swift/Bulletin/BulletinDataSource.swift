@@ -64,34 +64,22 @@ enum BulletinDataSource {
 
     }
 
-//    static func makeDatePage(userName: String?) -> BulletinItem {
-//
-//        var greeting = userName ?? "Lone Ranger"
-//
-//        if let name = userName {
-//
-//            let formatter = PersonNameComponentsFormatter()
-//
-//            if #available(iOS 10.0, *) {
-//                if let components = formatter.personNameComponents(from: name) {
-//                    greeting = components.givenName ?? name
-//                }
-//            }
-//
-//        }
-//
-//        let page = DatePickerBulletinItem(title: "Enter Birth Date")
-//        page.descriptionText = "When were you born, \(greeting)?"
-//        page.isDismissable = false
-//        page.actionButtonTitle = "Done"
-//
-//        page.actionHandler = { item in
-//            print(page.datePicker.date)
-//item.board?.showNext()        }
-//
-//        return page
-//
-//    }
+    static func makeDatePage(userName: String?) -> BulletinItem {
+
+        let mainAction = BulletinItemAction(title: "Done") { (item) in
+            item.board?.showNext()
+        }
+
+        let page = FeedbackPageBulletinItem(title: "Enter Birth Date",
+                                    description: "When were you born?",
+                                    mainAction: mainAction)
+
+        let datePicker = UIDatePicker()
+        datePicker.datePickerMode = .date
+        page.views.insert(datePicker, at: 2)
+
+        return page
+    }
 
     /**
      * Create the notifications page.
@@ -162,16 +150,9 @@ enum BulletinDataSource {
      * The next item is managed by the item itself. See `PetSelectorBulletinPage` for more info.
      */
 
-//    static func makeChoicePage() -> PetSelectorBulletinPage {
-//
-//        let page = PetSelectorBulletinPage(title: "Choose your Favorite")
-//        page.isDismissable = false
-//        page.descriptionText = "Your favorite pets will appear when you open the app."
-//        page.actionButtonTitle = "Select"
-//
-//        return page
-//
-//    }
+    static func makeChoicePage() -> PetSelectorBulletinPage {
+        return PetSelectorBulletinPage()
+    }
 
     /**
      * Create the location page.
@@ -183,22 +164,23 @@ enum BulletinDataSource {
      */
 
     static func makeCompletionPage() -> PageBulletinItem {
-		let page = FeedbackPageBulletinItem(title: "Setup Completed",
-                                            image:#imageLiteral(resourceName: "IntroCompletion"), description: "PetBoard is ready for you to use. Happy browsing!",
-                                            mainAction: nil)
+        let main = BulletinItemAction(title: "Get started") { (page) in
+            page.board?.dismiss(animated: true, completion: nil)
+        }
 
-//        page.addAction(BulletinItemAction(title: "Get started") { (page) in
-//            page.board?.dismiss(animated: true, completion: nil)
-//        })
-//
-//        page.addAction(BulletinItemAction(title: "Replay") { (page) in
-//            page.board?.showFirst()
-//        })
+        let alternate = BulletinItemAction(title: "Replay") { (page) in
+            page.board?.showFirst()
+        }
+
+        let page = FeedbackPageBulletinItem(title: "Setup Completed",
+                                            image:#imageLiteral(resourceName: "IntroCompletion"),
+                                            description: "PetBoard is ready for you to use. Happy browsing!",
+                                            mainAction: main,
+                                            alternateAction: alternate)
 
 		page.imageView?.tintColor = #colorLiteral(red: 0.2980392157, green: 0.8509803922, blue: 0.3921568627, alpha: 1)
-        page.imageView?.accessibilityLabel = "Checkmark"
-//        page.appearance.actionButtonColor = #colorLiteral(red: 0.2980392157, green: 0.8509803922, blue: 0.3921568627, alpha: 1)
-//        page.appearance.actionButtonTitleColor = .white
+        page.mainButton?.backgroundColor = #colorLiteral(red: 0.2980392157, green: 0.8509803922, blue: 0.3921568627, alpha: 1)
+        page.mainButton?.setTitleColor(.white, for: .normal)
 
         page.isDismissable = true
 
@@ -231,43 +213,6 @@ enum BulletinDataSource {
             UserDefaults.standard.set(newValue, forKey: "PetBoardUserDidCompleteSetup")
         }
     }
-
-    /// Whether to use the Avenir font instead of San Francisco.
-    static var useAvenirFont: Bool {
-        get {
-            return UserDefaults.standard.bool(forKey: "UseAvenirFont")
-        }
-        set {
-            UserDefaults.standard.setValue(newValue, forKey: "UseAvenirFont")
-        }
-    }
-
-}
-
-// MARK: - Appearance
-
-extension BulletinDataSource {
-
-//    static func makeLightAppearance() -> BulletinAppearance {
-//
-//        let appearance = BulletinAppearance()
-//
-//        if useAvenirFont {
-//
-//            appearance.titleFontDescriptor = UIFontDescriptor(name: "AvenirNext-Medium", matrix: .identity)
-//            appearance.descriptionFontDescriptor = UIFontDescriptor(name: "AvenirNext-Regular", matrix: .identity)
-//            appearance.buttonFontDescriptor = UIFontDescriptor(name: "AvenirNext-DemiBold", matrix: .identity)
-//
-//        }
-//
-//        return appearance
-//
-//    }
-
-    static func currentFontName() -> String {
-        return useAvenirFont ? "Avenir Next" : "San Francisco"
-    }
-
 }
 
 // MARK: - Notifications

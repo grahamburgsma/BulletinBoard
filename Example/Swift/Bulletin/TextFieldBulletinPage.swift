@@ -24,8 +24,8 @@ class TextFieldBulletinPage: FeedbackPageBulletinItem {
     }
 
 }
-//
-//// MARK: - UITextFieldDelegate
+
+// MARK: - UITextFieldDelegate
 //
 //extension TextFieldBulletinPage: UITextFieldDelegate {
 //
@@ -57,6 +57,4 @@ class TextFieldBulletinPage: FeedbackPageBulletinItem {
 //        }
 //
 //    }
-//
 //}
-

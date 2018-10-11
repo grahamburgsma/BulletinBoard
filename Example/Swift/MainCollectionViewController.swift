@@ -93,9 +93,10 @@ final class MainCollectionViewController: UICollectionViewController {
 		let bulletinBoard = BulletinBoard(items: [
 			BulletinDataSource.makeIntroPage(),
             BulletinDataSource.makeTextFieldPage(),
+            BulletinDataSource.makeDatePage(),
 			BulletinDataSource.makeNotitificationsPage(),
 			BulletinDataSource.makeLocationPage(),
-//			BulletinDataSource.makeChoicePage(),
+            BulletinDataSource.makeChoicePage(),
 			BulletinDataSource.makeCompletionPage()
 			])
 
@@ -140,11 +141,6 @@ final class MainCollectionViewController: UICollectionViewController {
 
     @IBAction func tabIndexChanged(_ sender: UISegmentedControl) {
         updateTab(sender.selectedSegmentIndex)
-    }
-
-    @objc func fontButtonItemTapped(sender: UIBarButtonItem) {
-        BulletinDataSource.useAvenirFont = !BulletinDataSource.useAvenirFont
-        sender.title = BulletinDataSource.currentFontName()
     }
 
     @objc func fullScreenButtonTapped(sender: UIBarButtonItem) {

@@ -99,33 +99,13 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		55B3D1D21FDD645900737791 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				558A122D1F7D73CD005EC97C /* HighlightButton.swift */,
-				5543848C1F92026200AFFBCD /* BackgroundView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		55B3D1D31FDD646400737791 /* Animations */ = {
-			isa = PBXGroup;
-			children = (
-				55B3D1CE1FDADA8E00737791 /* AnimationChain.swift */,
-				B934953820093C0D00849AE6 /* PresentationController.swift */,
-				C069757D20EE461200B85BBC /* TransitionOperation.swift */,
-				5543848A1F91FAC500AFFBCD /* AnimationController.swift */,
-				5569CB7E1F920B72000F31EB /* InteractionController.swift */,
-			);
-			path = Animations;
-			sourceTree = "<group>";
-		};
 		55DADEB81F8153B3001B11A2 /* Support */ = {
 			isa = PBXGroup;
 			children = (
 				C069757F20EE58E700B85BBC /* UIEdgeInsetsExtensions.swift */,
-				55B3D1D21FDD645900737791 /* Views */,
-				55B3D1D31FDD646400737791 /* Animations */,
+				55B3D1CE1FDADA8E00737791 /* AnimationChain.swift */,
+				558A122D1F7D73CD005EC97C /* HighlightButton.swift */,
+				5543848C1F92026200AFFBCD /* BackgroundView.swift */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -137,9 +117,21 @@
 				B93495362008FF3A00849AE6 /* BulletinBoard.xib */,
 				55B3D1D11FDD644300737791 /* Models */,
 				55B3D1D01FDD643B00737791 /* Appearance */,
+				C0872928216F705600796807 /* Transition */,
 				55DADEB81F8153B3001B11A2 /* Support */,
 			);
 			path = Sources;
+			sourceTree = "<group>";
+		};
+		C0872928216F705600796807 /* Transition */ = {
+			isa = PBXGroup;
+			children = (
+				B934953820093C0D00849AE6 /* PresentationController.swift */,
+				C069757D20EE461200B85BBC /* TransitionOperation.swift */,
+				5543848A1F91FAC500AFFBCD /* AnimationController.swift */,
+				5569CB7E1F920B72000F31EB /* InteractionController.swift */,
+			);
+			path = Transition;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
