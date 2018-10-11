@@ -14,7 +14,9 @@ import BulletinBoard
 
 class PetValidationBulletinItem: FeedbackPageBulletinItem {
 
-    let dataSource: CollectionDataSource
+    var dataSource: CollectionDataSource
+
+    var collectionView: UICollectionView?
 
     init(dataSource: CollectionDataSource) {
         let selectionFeedbackGenerator = SelectionFeedbackGenerator()
@@ -75,11 +77,6 @@ class PetValidationBulletinItem: FeedbackPageBulletinItem {
 
         views.insert(collectionWrapper, at: 2)
     }
-
-    // MARK: - Interface
-
-    var collectionView: UICollectionView?
-
 }
 
  // MARK: - Collection View

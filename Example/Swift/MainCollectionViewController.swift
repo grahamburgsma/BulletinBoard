@@ -44,8 +44,8 @@ final class MainCollectionViewController: UICollectionViewController {
     // MARK: - View
 
     override func viewDidLoad() {
-
         super.viewDidLoad()
+
         prepareForBulletin()
 
         segmentedControl.selectedSegmentIndex = BulletinDataSource.favoriteTabIndex
@@ -92,14 +92,25 @@ final class MainCollectionViewController: UICollectionViewController {
 
     func showBulletin() {
 
+        let validationPage = PetValidationBulletinItem(dataSource: dataSource)
+
+        let choicePage = BulletinDataSource.makeChoicePage()
+        choicePage.dismissalHandler = { [weak self] (item) in
+            guard let self = self else { return }
+
+            validationPage.dataSource = self.dataSource
+            validationPage.collectionView?.reloadData()
+        }
+
+
 		let bulletinBoard = BulletinBoard(items: [
 			BulletinDataSource.makeIntroPage(),
             BulletinDataSource.makeTextFieldPage(),
             BulletinDataSource.makeDatePage(),
             BulletinDataSource.makeNotitificationsPage(),
             BulletinDataSource.makeLocationPage(),
-            BulletinDataSource.makeChoicePage(),
-            PetValidationBulletinItem(dataSource: dataSource),
+            choicePage,
+            validationPage,
 			BulletinDataSource.makeCompletionPage()
 			])
 

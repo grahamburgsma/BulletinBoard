@@ -49,17 +49,17 @@
                     </collectionView>
                     <navigationItem key="navigationItem" id="GPB-8e-L3u">
                         <nil key="title"/>
-                        <barButtonItem key="leftBarButtonItem" title="%@STYLE%@" id="cYW-lS-lF0">
+                        <barButtonItem key="leftBarButtonItem" title="STYLE" id="cYW-lS-lF0">
                             <connections>
                                 <action selector="styleButtonTapped:" destination="0TR-hn-Yvu" id="yhG-Sl-S3S"/>
                             </connections>
                         </barButtonItem>
-                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="kX7-SO-gCR">
-                            <rect key="frame" x="141" y="7.6666666666666679" width="93" height="29.000000000000004"/>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="kX7-SO-gCR">
+                            <rect key="frame" x="141" y="7.6666666666666679" width="93" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <segments>
-                                <segment title="Cats"/>
-                                <segment title="Dogs"/>
+                                <segment title="Cats" width="50"/>
+                                <segment title="Dogs" width="50"/>
                             </segments>
                             <connections>
                                 <action selector="tabIndexChanged:" destination="0TR-hn-Yvu" eventType="valueChanged" id="RP3-nc-i6P"/>
