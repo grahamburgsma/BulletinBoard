@@ -15,6 +15,8 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 
 	public var currentItem: BulletinItem {
 		didSet {
+            oldValue.dismissalHandler?(oldValue)
+
 			show(item: currentItem)
 		}
 	}
@@ -23,7 +25,7 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 		return items.index(where: { $0 === currentItem }) ?? 0
 	}
 
-	public var backgroundViewStyle: BulletinBackgroundViewStyle = .dimmed
+	public var backgroundViewStyle: BackgroundView.Style = .dimmed
 	public var cornerRadius: CGFloat = 12 {
 		didSet {
 			view.layer.cornerRadius = cornerRadius
@@ -228,21 +230,21 @@ extension BulletinBoard {
 extension BulletinBoard: UIViewControllerTransitioningDelegate {
 
 	public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        let presentationController: BulletinPresentationController = BulletinPresentationController(presentedViewController: presented, presenting: presenting, backgroundStyle: backgroundViewStyle)
+        let presentationController: PresentationController = PresentationController(presentedViewController: presented, presenting: presenting, backgroundStyle: backgroundViewStyle)
         presentationController.dimissOnTap = currentItemIsDismissable
         return presentationController
 	}
 
 	public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return BulletinAnimationController(operation: .present)
+        return AnimationController(operation: .present)
 	}
 
 	public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-		return BulletinAnimationController(operation: .dismiss)
+		return AnimationController(operation: .dismiss)
 	}
 
     public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        let interactionController = BulletinSwipeInteractionController(panGestureRecognizer: panGestureRecognizer)
+        let interactionController = InteractionController(panGestureRecognizer: panGestureRecognizer)
         interactionController.canDismiss = currentItemIsDismissable
         return interactionController
     }

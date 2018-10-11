@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BulletinPresentationController: UIPresentationController {
+class PresentationController: UIPresentationController {
 
     /// Dismiss the presented view controller when dimming view is tapped.
     /// Defaults to `true`.
@@ -20,10 +20,10 @@ class BulletinPresentationController: UIPresentationController {
 
     private var keyboardHeight: CGFloat = 0
 
-    let backgroundView: BulletinBackgroundView
+    let backgroundView: BackgroundView
 
-	init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?, backgroundStyle: BulletinBackgroundViewStyle) {
-		backgroundView = BulletinBackgroundView(style: backgroundStyle)
+	init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?, backgroundStyle: BackgroundView.Style) {
+		backgroundView = BackgroundView(style: backgroundStyle)
 
 		super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
 

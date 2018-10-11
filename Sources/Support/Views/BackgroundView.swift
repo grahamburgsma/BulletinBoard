@@ -5,24 +5,23 @@
 
 import UIKit
 
-public enum BulletinBackgroundViewStyle {
-
-	case none
-	case dimmed
-	case blurred(style: UIBlurEffect.Style)
-}
-
 /**
- * The view to display behind the bulletin.
+ * The view to display behind the bulletin board.
  */
 
-class BulletinBackgroundView: UIView {
+public class BackgroundView: UIView {
 
-    let style: BulletinBackgroundViewStyle
+    public enum Style {
+        case none
+        case dimmed
+        case blurred(style: UIBlurEffect.Style)
+    }
+
+    let style: Style
 
     // MARK: - Initialization
 
-    init(style: BulletinBackgroundViewStyle) {
+    init(style: Style) {
         self.style = style
         super.init(frame: .zero)
         initialize()
@@ -41,25 +40,21 @@ class BulletinBackgroundView: UIView {
     }
 
     private func initialize() {
-
-
 		switch style {
-		case .none: break
+		case .none:
+            break
+
 		case .dimmed:
 			alpha = 0
 			backgroundColor = UIColor(white: 0.0, alpha: 0.5)
-		case .blurred(let style):
+
+        case .blurred(let style):
 			let blurEffect = UIBlurEffect(style: style)
 			let blurEffectView = UIVisualEffectView(effect: blurEffect)
-			blurEffectView.translatesAutoresizingMaskIntoConstraints = false
-			addSubview(blurEffectView)
 
-			NSLayoutConstraint.activate([
-				blurEffectView.leadingAnchor.constraint(equalTo: leadingAnchor),
-				blurEffectView.trailingAnchor.constraint(equalTo: trailingAnchor),
-				blurEffectView.topAnchor.constraint(equalTo: topAnchor),
-				blurEffectView.bottomAnchor.constraint(equalTo: bottomAnchor)
-				])
+            blurEffectView.frame = bounds
+            blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            addSubview(blurEffectView)
 		}
     }
 }

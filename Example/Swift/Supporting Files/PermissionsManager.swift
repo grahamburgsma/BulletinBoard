@@ -17,8 +17,8 @@ class PermissionsManager {
     let locationManager = CLLocationManager()
 
     func requestLocalNotifications() {
-        let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
-        UIApplication.shared.registerUserNotificationSettings(settings)
+//        let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+//        UIApplication.shared.registerUserNotificationSettings(settings)
     }
 
     func requestWhenInUseLocation() {

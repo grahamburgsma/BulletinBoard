@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5543848B1F91FAC500AFFBCD /* BulletinAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543848A1F91FAC500AFFBCD /* BulletinAnimationController.swift */; };
-		5543848D1F92026200AFFBCD /* BulletinBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543848C1F92026200AFFBCD /* BulletinBackgroundView.swift */; };
-		5569CB7F1F920B72000F31EB /* BulletinSwipeInteractionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5569CB7E1F920B72000F31EB /* BulletinSwipeInteractionController.swift */; };
+		5543848B1F91FAC500AFFBCD /* AnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543848A1F91FAC500AFFBCD /* AnimationController.swift */; };
+		5543848D1F92026200AFFBCD /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5543848C1F92026200AFFBCD /* BackgroundView.swift */; };
+		5569CB7F1F920B72000F31EB /* InteractionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5569CB7E1F920B72000F31EB /* InteractionController.swift */; };
 		558A12321F7D73CD005EC97C /* BulletinBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558A122C1F7D73CD005EC97C /* BulletinBoard.swift */; };
 		558A12331F7D73CD005EC97C /* HighlightButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558A122D1F7D73CD005EC97C /* HighlightButton.swift */; };
 		558A12351F7D73CD005EC97C /* PageBulletinItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558A122F1F7D73CD005EC97C /* PageBulletinItem.swift */; };
@@ -17,7 +17,7 @@
 		55B3D1CF1FDADA8E00737791 /* AnimationChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B3D1CE1FDADA8E00737791 /* AnimationChain.swift */; };
 		55DADE7A1F7D9428001B11A2 /* BulletinInterfaceBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DADE791F7D9428001B11A2 /* BulletinInterfaceBuilder.swift */; };
 		B93495372008FF3A00849AE6 /* BulletinBoard.xib in Resources */ = {isa = PBXBuildFile; fileRef = B93495362008FF3A00849AE6 /* BulletinBoard.xib */; };
-		B934953920093C0D00849AE6 /* BulletinPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B934953820093C0D00849AE6 /* BulletinPresentationController.swift */; };
+		B934953920093C0D00849AE6 /* PresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B934953820093C0D00849AE6 /* PresentationController.swift */; };
 		C01DE89B205DEE9300A9204A /* BulletinBoard.podspec in Resources */ = {isa = PBXBuildFile; fileRef = C01DE89A205DEE9300A9204A /* BulletinBoard.podspec */; };
 		C069757E20EE461300B85BBC /* TransitionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C069757D20EE461200B85BBC /* TransitionOperation.swift */; };
 		C069758020EE58E700B85BBC /* UIEdgeInsetsExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C069757F20EE58E700B85BBC /* UIEdgeInsetsExtensions.swift */; };
@@ -26,9 +26,9 @@
 
 /* Begin PBXFileReference section */
 		52D6D97C1BEFF229002C0205 /* BulletinBoard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BulletinBoard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5543848A1F91FAC500AFFBCD /* BulletinAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletinAnimationController.swift; sourceTree = "<group>"; };
-		5543848C1F92026200AFFBCD /* BulletinBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletinBackgroundView.swift; sourceTree = "<group>"; };
-		5569CB7E1F920B72000F31EB /* BulletinSwipeInteractionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletinSwipeInteractionController.swift; sourceTree = "<group>"; };
+		5543848A1F91FAC500AFFBCD /* AnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationController.swift; sourceTree = "<group>"; };
+		5543848C1F92026200AFFBCD /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
+		5569CB7E1F920B72000F31EB /* InteractionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionController.swift; sourceTree = "<group>"; };
 		558A122C1F7D73CD005EC97C /* BulletinBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BulletinBoard.swift; sourceTree = "<group>"; };
 		558A122D1F7D73CD005EC97C /* HighlightButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HighlightButton.swift; sourceTree = "<group>"; };
 		558A122F1F7D73CD005EC97C /* PageBulletinItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageBulletinItem.swift; sourceTree = "<group>"; };
@@ -37,7 +37,7 @@
 		55DADE791F7D9428001B11A2 /* BulletinInterfaceBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletinInterfaceBuilder.swift; sourceTree = "<group>"; };
 		AD2FAA261CD0B6D800659CF4 /* BulletinBoard.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BulletinBoard.plist; sourceTree = "<group>"; };
 		B93495362008FF3A00849AE6 /* BulletinBoard.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BulletinBoard.xib; sourceTree = "<group>"; };
-		B934953820093C0D00849AE6 /* BulletinPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletinPresentationController.swift; sourceTree = "<group>"; };
+		B934953820093C0D00849AE6 /* PresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationController.swift; sourceTree = "<group>"; };
 		C01DE89A205DEE9300A9204A /* BulletinBoard.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = BulletinBoard.podspec; sourceTree = "<group>"; };
 		C069757D20EE461200B85BBC /* TransitionOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionOperation.swift; sourceTree = "<group>"; };
 		C069757F20EE58E700B85BBC /* UIEdgeInsetsExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIEdgeInsetsExtensions.swift; sourceTree = "<group>"; };
@@ -103,7 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				558A122D1F7D73CD005EC97C /* HighlightButton.swift */,
-				5543848C1F92026200AFFBCD /* BulletinBackgroundView.swift */,
+				5543848C1F92026200AFFBCD /* BackgroundView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -112,10 +112,10 @@
 			isa = PBXGroup;
 			children = (
 				55B3D1CE1FDADA8E00737791 /* AnimationChain.swift */,
-				B934953820093C0D00849AE6 /* BulletinPresentationController.swift */,
+				B934953820093C0D00849AE6 /* PresentationController.swift */,
 				C069757D20EE461200B85BBC /* TransitionOperation.swift */,
-				5543848A1F91FAC500AFFBCD /* BulletinAnimationController.swift */,
-				5569CB7E1F920B72000F31EB /* BulletinSwipeInteractionController.swift */,
+				5543848A1F91FAC500AFFBCD /* AnimationController.swift */,
+				5569CB7E1F920B72000F31EB /* InteractionController.swift */,
 			);
 			path = Animations;
 			sourceTree = "<group>";
@@ -229,11 +229,11 @@
 				55B3D1CF1FDADA8E00737791 /* AnimationChain.swift in Sources */,
 				558A12371F7D73E6005EC97C /* BulletinItem.swift in Sources */,
 				C0741822200A9F6400891D2B /* BulletinItemAction.swift in Sources */,
-				5543848B1F91FAC500AFFBCD /* BulletinAnimationController.swift in Sources */,
+				5543848B1F91FAC500AFFBCD /* AnimationController.swift in Sources */,
 				C069758020EE58E700B85BBC /* UIEdgeInsetsExtensions.swift in Sources */,
-				5543848D1F92026200AFFBCD /* BulletinBackgroundView.swift in Sources */,
-				B934953920093C0D00849AE6 /* BulletinPresentationController.swift in Sources */,
-				5569CB7F1F920B72000F31EB /* BulletinSwipeInteractionController.swift in Sources */,
+				5543848D1F92026200AFFBCD /* BackgroundView.swift in Sources */,
+				B934953920093C0D00849AE6 /* PresentationController.swift in Sources */,
+				5569CB7F1F920B72000F31EB /* InteractionController.swift in Sources */,
 				558A12351F7D73CD005EC97C /* PageBulletinItem.swift in Sources */,
 				558A12321F7D73CD005EC97C /* BulletinBoard.swift in Sources */,
 			);

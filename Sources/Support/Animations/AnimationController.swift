@@ -11,7 +11,7 @@ import UIKit
  * It moves the card on screen, creates and fades in the background view.
  */
 
-class BulletinAnimationController: NSObject, UIViewControllerAnimatedTransitioning {
+class AnimationController: NSObject, UIViewControllerAnimatedTransitioning {
 
     let operation: TransitionOperation
 

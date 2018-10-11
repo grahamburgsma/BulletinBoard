@@ -9,7 +9,7 @@ import UIKit
  * An interaction controller that handles swipe-to-dismiss for bulletins.
  */
 
-final class BulletinSwipeInteractionController: UIPercentDrivenInteractiveTransition {
+final class InteractionController: UIPercentDrivenInteractiveTransition {
 
     private let primaryRubberConstant: CGFloat = 0.4
     private let secondaryRubberConstant: CGFloat = 0.1

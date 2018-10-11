@@ -12,15 +12,15 @@ import BulletinBoard
  * This demonstrates how to set up a bulletin manager and present the bulletin.
  */
 
-class ViewController: UIViewController {
+final class MainCollectionViewController: UICollectionViewController {
 
-    @IBOutlet weak var styleButtonItem: UIBarButtonItem!
-    @IBOutlet weak var segmentedControl: UISegmentedControl!
-    @IBOutlet weak var showIntoButtonItem: UIBarButtonItem!
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet private weak var styleButtonItem: UIBarButtonItem!
+    @IBOutlet private weak var segmentedControl: UISegmentedControl!
 
     /// The data provider for the collection view.
-    private var dataSource: CollectionDataSource!
+    private lazy var dataSource: CollectionDataSource = {
+        return BulletinDataSource.favoriteTabIndex == 0 ? .cat : .dog
+    }()
 
     /// Whether the status bar should be hidden.
     private var shouldHideStatusBar: Bool = false
@@ -30,7 +30,7 @@ class ViewController: UIViewController {
     let backgroundStyles = BackgroundStyles()
 
     /// The current background style.
-    var currentBackground = (name: "Dimmed", style: BulletinBackgroundViewStyle.dimmed)
+    var currentBackground = (name: "Dimmed", style: BackgroundView.Style.dimmed)
 
     // MARK: - Bulletin Manager
 
@@ -48,30 +48,9 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         prepareForBulletin()
 
-        // Set up the data
-
-        let favoriteTab = BulletinDataSource.favoriteTabIndex
-        segmentedControl.selectedSegmentIndex = favoriteTab
-        dataSource = favoriteTab == 0 ? .cat : .dog
+        segmentedControl.selectedSegmentIndex = BulletinDataSource.favoriteTabIndex
 
         styleButtonItem.title = currentBackground.name
-
-        // Set up the collection view
-
-        collectionView.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-
-        collectionView.backgroundColor = .white
-        collectionView.delegate = self
-        collectionView.dataSource = self
-
-        let guide = view.readableContentGuide
-        collectionView.leadingAnchor.constraint(equalTo: guide.leadingAnchor).isActive = true
-        collectionView.trailingAnchor.constraint(equalTo: guide.trailingAnchor).isActive = true
-        collectionView.topAnchor.constraint(equalTo: guide.topAnchor).isActive = true
-
-        collectionView.contentInset.top = 8
-        collectionView.contentInset.bottom = 8
-
     }
 
     deinit {
@@ -98,27 +77,11 @@ class ViewController: UIViewController {
                                                name: .FavoriteTabIndexDidChange,
                                                object: nil)
 
-        // Add toolbar items
-
-        let fontItem = UIBarButtonItem(title: BulletinDataSource.useAvenirFont ? "Avenir" : "San Francisco",
-                                       style: .plain,
-                                       target: self,
-                                       action: #selector(fontButtonItemTapped))
-
-        let statusBarItem = UIBarButtonItem(title: shouldHideStatusBar ? "Status Bar: OFF" : "Status Bar: ON",
-                                            style: .plain,
-                                            target: self,
-                                            action: #selector(fullScreenButtonTapped))
-
-        navigationController?.isToolbarHidden = false
-        toolbarItems = [fontItem, statusBarItem]
-
         // If the user did not complete the setup, present the bulletin automatically
 
         if !BulletinDataSource.userDidCompleteSetup {
             showBulletin()
         }
-
     }
 
     /**
@@ -126,13 +89,6 @@ class ViewController: UIViewController {
      */
 
     func showBulletin() {
-
-//        Uncomment to customize interface
-//        bulletinManager.cardCornerRadius = 22
-//        bulletinManager.cardPadding = .none
-//        bulletinManager.allowsSwipeInteraction = false
-//        bulletinManager.hidesHomeIndicator = true
-//        bulletinManager.backgroundColor = .blue
 
 		let bulletinBoard = BulletinBoard(items: [
 			BulletinDataSource.makeIntroPage(),
@@ -144,10 +100,8 @@ class ViewController: UIViewController {
 			])
 
         bulletinBoard.backgroundViewStyle = currentBackground.style
-//        bulletinBoard.statusBarAppearance = shouldHideStatusBar ? .hidden : .automatic
 
 		present(bulletinBoard, animated: true, completion: nil)
-
     }
 
     // MARK: - Actions
@@ -232,23 +186,16 @@ class ViewController: UIViewController {
 
 // MARK: - Collection View
 
-extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension MainCollectionViewController: UICollectionViewDelegateFlowLayout {
 
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return dataSource.numberOfImages
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ImageCollectionViewCell
         cell.imageView.image = dataSource.image(at: indexPath.row)
-
         return cell
-
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -256,11 +203,10 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate, 
         let image = dataSource.image(at: indexPath.row)
         let aspectRatio = image.size.height / image.size.width
 
-        let width = collectionView.frame.width
+        let layout = collectionViewLayout as! UICollectionViewFlowLayout
+        let width = collectionView.frame.inset(by: layout.sectionInset).width
         let height = width * aspectRatio
 
         return CGSize(width: width, height: height)
-
     }
-
 }

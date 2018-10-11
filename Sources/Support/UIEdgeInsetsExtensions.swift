@@ -6,7 +6,7 @@
 
 import UIKit
 
-public extension UIEdgeInsets {
+extension UIEdgeInsets {
 
     static func + (left: UIEdgeInsets, right: UIEdgeInsets) -> UIEdgeInsets {
         return UIEdgeInsets(top: left.top + right.top,

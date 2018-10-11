@@ -11,7 +11,7 @@
 		551CF5F81FBF8492007DFEEA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55D7021C1FBCCA1A00835D8A /* Main.storyboard */; };
 		553CDD4D1FD6F44B00E18C82 /* PetValidationBulletinItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553CDD4C1FD6F44B00E18C82 /* PetValidationBulletinItem.swift */; };
 		558A12451F7D7865005EC97C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558A12441F7D7865005EC97C /* AppDelegate.swift */; };
-		558A12471F7D7865005EC97C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558A12461F7D7865005EC97C /* ViewController.swift */; };
+		558A12471F7D7865005EC97C /* MainCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558A12461F7D7865005EC97C /* MainCollectionViewController.swift */; };
 		55A7B1DB1FE3D858000F80DE /* DatePickerBulletinItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A7B1DA1FE3D858000F80DE /* DatePickerBulletinItem.swift */; };
 		55D702221FBCCA3600835D8A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55D7021E1FBCCA1A00835D8A /* Assets.xcassets */; };
 		55D7022C1FBCCADC00835D8A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55D7021A1FBCCA1A00835D8A /* LaunchScreen.storyboard */; };
@@ -47,7 +47,7 @@
 		553CDD4C1FD6F44B00E18C82 /* PetValidationBulletinItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetValidationBulletinItem.swift; sourceTree = "<group>"; };
 		558A12411F7D7865005EC97C /* BB-Swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BB-Swift.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		558A12441F7D7865005EC97C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		558A12461F7D7865005EC97C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		558A12461F7D7865005EC97C /* MainCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewController.swift; sourceTree = "<group>"; };
 		55A7B1DA1FE3D858000F80DE /* DatePickerBulletinItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerBulletinItem.swift; sourceTree = "<group>"; };
 		55D7021B1FBCCA1A00835D8A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		55D7021D1FBCCA1A00835D8A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Main.storyboard; sourceTree = "<group>"; };
@@ -107,7 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				558A12441F7D7865005EC97C /* AppDelegate.swift */,
-				558A12461F7D7865005EC97C /* ViewController.swift */,
+				558A12461F7D7865005EC97C /* MainCollectionViewController.swift */,
 				55D702161FBCC97B00835D8A /* Bulletin */,
 				55DADE7D1F7E3BBA001B11A2 /* Supporting Files */,
 			);
@@ -230,7 +230,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				558A12471F7D7865005EC97C /* ViewController.swift in Sources */,
+				558A12471F7D7865005EC97C /* MainCollectionViewController.swift in Sources */,
 				55DADE851F7E592F001B11A2 /* CollectionUtilities.swift in Sources */,
 				55DADE831F7E4204001B11A2 /* PermissionsManager.swift in Sources */,
 				C09569ED20422D2800D140EC /* BackgroundStyles.swift in Sources */,
