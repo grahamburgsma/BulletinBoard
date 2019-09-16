@@ -22,7 +22,7 @@ final public class BulletinBoard: UIViewController, UIGestureRecognizerDelegate 
 	}
 
 	private var currentIndex: Int {
-		return items.index(where: { $0 === currentItem }) ?? 0
+		return items.firstIndex { $0 === currentItem } ?? 0
 	}
 
 	public var backgroundViewStyle: BackgroundView.Style = .dimmed

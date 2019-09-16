@@ -20,7 +20,11 @@ open class BulletinInterfaceBuilder {
 
         let titleLabel = UILabel()
         titleLabel.textAlignment = .center
-        titleLabel.textColor = #colorLiteral(red: 0.568627451, green: 0.5647058824, blue: 0.5725490196, alpha: 1)
+        if #available(iOS 13.0, *) {
+            titleLabel.textColor = .secondaryLabel
+        } else {
+            titleLabel.textColor = #colorLiteral(red: 0.568627451, green: 0.5647058824, blue: 0.5725490196, alpha: 1)
+        }
         titleLabel.numberOfLines = 1
         titleLabel.adjustsFontSizeToFitWidth = true
 		titleLabel.text = text
@@ -38,7 +42,11 @@ open class BulletinInterfaceBuilder {
 
         let descriptionLabel = UILabel()
         descriptionLabel.textAlignment = .center
-        descriptionLabel.textColor = .black
+        if #available(iOS 13.0, *) {
+            descriptionLabel.textColor = .label
+        } else {
+            descriptionLabel.textColor = .black
+        }
         descriptionLabel.numberOfLines = 0
         descriptionLabel.font = .systemFont(ofSize: 20)
 		descriptionLabel.text = text

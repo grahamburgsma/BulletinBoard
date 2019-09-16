@@ -15,6 +15,6 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/alexaubry/BulletinBoard.git", :tag => s.version.to_s }
   s.source_files  = "Sources/**/*"
   s.frameworks  = "UIKit"
-  s.swift_version = "4.2"
+  s.swift_version = "5.0"
   s.documentation_url = "https://alexaubry.github.io/BulletinBoard"
 end
